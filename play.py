@@ -6,13 +6,13 @@ from my_baselines import PPO2
 from my_common import featurize
 from my_common import get_modify_act
 from my_common import get_prev2obs
-from my_agents import hit18Agent
+from my_agents import *
 
 def make_env(env_id):
     agent_list = [
         hit18Agent(),
         agents.SimpleAgent(),
-        agents.SimpleAgent(),
+        hit18Agent(),
         agents.SimpleAgent()
     ]
     env = pommerman.make(env_id, agent_list)

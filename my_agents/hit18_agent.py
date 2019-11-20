@@ -122,7 +122,6 @@ class hit18Agent(BaseAgent):
         self.neglog_probs = -self.dist.log_prob(self.action)
         self.params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=self.name)
         self.loadParams(params)
-
     def step_policy(self, obs):
         action = self.sess.run(self.action, {self.X_ob: obs})
         return action

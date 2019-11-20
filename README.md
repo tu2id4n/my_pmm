@@ -13,10 +13,12 @@
 
 ```python run.py --env=PommeRadioCompetition-v2 --policy_type=pgn --num_timesteps=1e7 --log_path=./logs/ --save_path=./models/test/ --save_interval=1e2```
 
-# 演示
+# 演示 或 评测
 参数解析可以参考 my_common.cmd_utils # play and evaluate
 
 model 0 --> 4 | using_prune
 
 
 ```python play.py```
+
+```python evaluate.py```
