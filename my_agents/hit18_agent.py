@@ -72,20 +72,19 @@ def featurize(obs):
 
 
 class hit18Agent(BaseAgent):
-    def __init__(self):
+    def __init__(self, pos):
         super(hit18Agent, self).__init__()
 
         sess = tf.InteractiveSession()
         params = joblib.load('models/hit18')
         self.act_dim = 6
         self.sess = sess
-        self.name = 'nets'
-
+        self.name = 'nets'+pos
 
         with tf.variable_scope(self.name):
             activation = tf.nn.relu
-            self.available_moves = tf.placeholder(tf.float32, [None, self.act_dim], name='availableActions')
-            self.X_ob = tf.placeholder(tf.float32, [None, 11, 11, 18], name="input")
+            self.available_moves = tf.placeholder(tf.float32, [None, self.act_dim], name='availableActions'+pos)
+            self.X_ob = tf.placeholder(tf.float32, [None, 11, 11, 18], name="input"+pos)
 
             conv1 = tf.layers.conv2d(inputs=self.X_ob,
                                      filters=256,
@@ -93,14 +92,15 @@ class hit18Agent(BaseAgent):
                                      strides=1,
                                      padding='same',
                                      activation=tf.nn.relu,
-                                     name='conv1')
+                                     name='conv1'+pos
+                                     )
             conv2 = tf.layers.conv2d(inputs=conv1,
                                      filters=256,
                                      kernel_size=3,
                                      strides=1,
                                      padding='same',
                                      activation=tf.nn.relu,
-                                     name='conv2'
+                                     name='conv2'+pos
                                      )
             conv3 = tf.layers.conv2d(inputs=conv2,
                                      filters=256,
@@ -108,12 +108,12 @@ class hit18Agent(BaseAgent):
                                      strides=1,
                                      padding='same',
                                      activation=tf.nn.relu,
-                                     name='conv3'
+                                     name='conv3'+pos
                                      )
             feature_dim = conv3.shape[1] * conv3.shape[2] * conv3.shape[3]
             h = tf.reshape(conv3, [-1, feature_dim])
-            self.pi = tf.layers.dense(h, self.act_dim, name='p')
-            self.vf = tf.layers.dense(h, 1, activation=tf.nn.tanh, name='v')
+            self.pi = tf.layers.dense(h, self.act_dim, name='p'+pos)
+            self.vf = tf.layers.dense(h, 1, activation=tf.nn.tanh, name='v'+pos)
 
         self.availPi = tf.add(self.pi, self.available_moves)
         # TODO argmax instead of sample
@@ -122,6 +122,7 @@ class hit18Agent(BaseAgent):
         self.neglog_probs = -self.dist.log_prob(self.action)
         self.params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=self.name)
         self.loadParams(params)
+
     def step_policy(self, obs):
         action = self.sess.run(self.action, {self.X_ob: obs})
         return action

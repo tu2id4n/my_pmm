@@ -10,9 +10,9 @@ from my_agents import *
 
 def make_env(env_id):
     agent_list = [
-        hit18Agent(),
+        hit18Agent('0'),
         agents.SimpleAgent(),
-        hit18Agent(),
+        hit18Agent('2'),
         agents.SimpleAgent()
     ]
     env = pommerman.make(env_id, agent_list)
