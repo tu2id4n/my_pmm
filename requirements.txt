@@ -21,3 +21,4 @@ Click==7.0
 cloudpickle==1.2.2
 pandas==0.25.1
 opencv-python==4.1.1.26
+joblib==0.14.0

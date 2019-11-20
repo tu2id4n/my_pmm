@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a06fd0df-76e2-40ba-860c-97824a54f2d9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pommerman/agents/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pommerman/agents/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pommerman/agents/stop_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_agents/stop_agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pommerman/agents/suicide_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_agents/suicide_agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -11,6 +15,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/my_pmm$tutorial.coverage" NAME="tutorial Coverage Results" MODIFIED="1574235483826" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_agents/hit18_agent" />
     <SUITE FILE_PATH="coverage/my_pmm$run.coverage" NAME="run Coverage Results" MODIFIED="1573701823111" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
@@ -24,15 +29,15 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="md" value="4" />
-          <entry key="py" value="79" />
-          <entry key="txt" value="3" />
+          <entry key="py" value="86" />
+          <entry key="txt" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Markdown" value="4" />
-          <entry key="PLAIN_TEXT" value="3" />
-          <entry key="Python" value="79" />
+          <entry key="PLAIN_TEXT" value="4" />
+          <entry key="Python" value="86" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -40,15 +45,15 @@
           <entry key="Python Console" value="20" />
           <entry key="dummy" value="48" />
           <entry key="md" value="169" />
-          <entry key="py" value="2521" />
-          <entry key="txt" value="34" />
+          <entry key="py" value="2599" />
+          <entry key="txt" value="49" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Markdown" value="169" />
-          <entry key="PLAIN_TEXT" value="82" />
-          <entry key="Python" value="2541" />
+          <entry key="PLAIN_TEXT" value="97" />
+          <entry key="Python" value="2619" />
         </counts>
       </usages-collector>
     </session>
@@ -59,7 +64,7 @@
         <entry file="file://$PROJECT_DIR$/play.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="324">
-              <caret line="12" column="29" lean-forward="true" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
+              <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
                 <marker date="1574219919308" expanded="true" signature="462:464" ph="..." />
@@ -68,26 +73,71 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/evaluate.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/my_agents/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
+            <state relative-caret-position="27">
+              <caret line="1" selection-start-line="1" selection-end-line="1" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/my_agents/stop_agent.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="27">
+              <caret line="1" column="21" selection-start-line="1" selection-start-column="21" selection-end-line="1" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/my_agents/suicide_agent.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="243">
+              <caret line="9" column="24" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/my_agents/hit18_agent/conv_agent.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2737">
+              <caret line="13" column="24" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
               <folding>
-                <element signature="e#0#16#0" expanded="true" />
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/my_agents/hit18_agent/tutorial.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
+              <folding>
+                <element signature="e#74#90#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/my_common/feature_utils.py">
+        <entry file="file://$PROJECT_DIR$/my_agents/hit18_agent/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3588">
-              <caret line="147" column="29" selection-start-line="147" selection-start-column="29" selection-end-line="147" selection-end-column="29" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
+            <state>
+              <caret column="35" selection-start-column="35" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="621">
+              <caret line="23" column="14" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -96,7 +146,7 @@
         <entry file="file://$PROJECT_DIR$/run.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="285">
-              <caret line="47" column="22" lean-forward="true" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
+              <caret line="47" column="22" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
               </folding>
@@ -175,8 +225,6 @@
         <option value="$PROJECT_DIR$/stable_baselines/gail/__init__.py" />
         <option value="$PROJECT_DIR$/stable_baselines/gail/dataset/dataset.py" />
         <option value="$PROJECT_DIR$/stable_baselines/deepq/__init__.py" />
-        <option value="$PROJECT_DIR$/pommerman/agents/__init__.py" />
-        <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/my_policies/pgn.py" />
         <option value="$PROJECT_DIR$/my_common/dataset.py" />
         <option value="$PROJECT_DIR$/my_common/__init__.py" />
@@ -188,6 +236,14 @@
         <option value="$PROJECT_DIR$/my_common/cmd_utils.py" />
         <option value="$PROJECT_DIR$/play.py" />
         <option value="$PROJECT_DIR$/evaluate.py" />
+        <option value="$PROJECT_DIR$/pommerman/agents/__init__.py" />
+        <option value="$PROJECT_DIR$/my_agents/stop_agent.py" />
+        <option value="$PROJECT_DIR$/my_agents/suicide_agent.py" />
+        <option value="$PROJECT_DIR$/my_agents/hit18_agent/conv_agent.py" />
+        <option value="$PROJECT_DIR$/my_agents/__init__.py" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$PROJECT_DIR$/my_agents/hit18_agent/__init__.py" />
+        <option value="$PROJECT_DIR$/my_agents/hit18_agent/tutorial.py" />
       </list>
     </option>
   </component>
@@ -217,7 +273,13 @@
             <path>
               <item name="my_pmm" type="b2602c69:ProjectViewProjectNode" />
               <item name="my_pmm" type="462c0819:PsiDirectoryNode" />
-              <item name="my_common" type="462c0819:PsiDirectoryNode" />
+              <item name="my_agents" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="my_pmm" type="b2602c69:ProjectViewProjectNode" />
+              <item name="my_pmm" type="462c0819:PsiDirectoryNode" />
+              <item name="my_agents" type="462c0819:PsiDirectoryNode" />
+              <item name="hit18_agent" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -231,10 +293,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/my_agents" />
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
@@ -255,7 +318,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.tutorial">
     <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="my_pmm" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -278,8 +341,35 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="tutorial" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="my_pmm" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/my_agents/hit18_agent" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/my_agents/hit18_agent/tutorial.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.run" />
+      <item itemvalue="Python.tutorial" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.tutorial" />
         <item itemvalue="Python.run" />
       </list>
     </recent_temporary>
@@ -312,7 +402,7 @@
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.44106463" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.44106463" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3993808" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -336,6 +426,17 @@
       <path value="$PROJECT_DIR$/playground" />
       <path value="$PROJECT_DIR$/stable_baselines" />
     </ignored-roots>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/my_agents/hit18_agent/tutorial.py</url>
+          <line>1</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/dataset.py">
@@ -486,22 +587,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pommerman/agents/stop_agent.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pommerman/agents/suicide_agent.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pommerman/agents/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="11" column="39" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
-          <folding>
-            <element signature="e#45#78#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/my_policies/pgn.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1127">
@@ -519,13 +604,6 @@
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
         </state>
       </provider>
     </entry>
@@ -623,20 +701,33 @@
     <entry file="file://$PROJECT_DIR$/run.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
-          <caret line="47" column="22" lean-forward="true" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
+          <caret line="47" column="22" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/play.py">
+    <entry file="file://$PROJECT_DIR$/my_agents/stop_agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="12" column="29" lean-forward="true" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
+        <state relative-caret-position="27">
+          <caret line="1" column="21" selection-start-line="1" selection-start-column="21" selection-end-line="1" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_agents/suicide_agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="9" column="24" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pommerman/agents/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
           <folding>
-            <element signature="e#0#16#0" expanded="true" />
-            <marker date="1574219919308" expanded="true" signature="462:464" ph="..." />
+            <element signature="e#45#78#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -647,6 +738,58 @@
           <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/play.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+            <marker date="1574219919308" expanded="true" signature="462:464" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_agents/hit18_agent/conv_agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2737">
+          <caret line="13" column="24" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_agents/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27">
+          <caret line="1" selection-start-line="1" selection-end-line="1" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="621">
+          <caret line="23" column="14" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_agents/hit18_agent/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="35" selection-start-column="35" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_agents/hit18_agent/tutorial.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
+          <folding>
+            <element signature="e#74#90#0" expanded="true" />
           </folding>
         </state>
       </provider>
