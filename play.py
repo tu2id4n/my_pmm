@@ -6,11 +6,11 @@ from my_baselines import PPO2
 from my_common import featurize
 from my_common import get_modify_act
 from my_common import get_prev2obs
-
+from my_agents import hit18Agent
 
 def make_env(env_id):
     agent_list = [
-        agents.SimpleAgent(),
+        hit18Agent(),
         agents.SimpleAgent(),
         agents.SimpleAgent(),
         agents.SimpleAgent()
@@ -59,42 +59,34 @@ def load_models():
     if args.model0_path:
         print()
         print("Load a model0 from", args.model0_path)
-        print()
         model0 = PPO2.load(args.model0_path, using_pgn=args.using_pgn, tensorboard_log=args.log_path)
     else:
         print()
         print("No model0")
-        print()
         model0 = None
     if args.model1_path:
         print()
         print("Load a model1 from", args.model1_path)
-        print()
         model1 = PPO2.load(args.model1_path, using_pgn=args.using_pgn, tensorboard_log=args.log_path)
     else:
         print()
         print("No model1")
-        print()
         model1 = None
     if args.model2_path:
         print()
         print("Load a model2 from", args.model2_path)
-        print()
         model2 = PPO2.load(args.model2_path, using_pgn=args.using_pgn, tensorboard_log=args.log_path)
     else:
         print()
         print("No model2")
-        print()
         model2 = None
     if args.model3_path:
         print()
         print("Load a model3 from", args.model3_path)
-        print()
         model3 = PPO2.load(args.model3_path, using_pgn=args.using_pgn, tensorboard_log=args.log_path)
     else:
         print()
         print("No model3")
-        print()
         model3 = None
 
     return model0, model1, model2, model3
