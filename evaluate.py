@@ -29,7 +29,7 @@ def _evaluate():
     win = 0
     tie = 0
     loss = 0
-    for episode in range(100):
+    for episode in range(10000):
         start = time.time()
         obs = env.reset()
         done = False
