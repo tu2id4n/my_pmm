@@ -45,8 +45,7 @@ def _learn():
         print()
         print("Load a model from", args.load_path)
         print()
-        model = PPO2.load(args.load_path, env=env, using_pgn=args.using_pgn, tensorboard_log=args.log_path,
-                          policy=get_my_policy())
+        model = PPO2.load(args.load_path, env=env, using_pgn=args.using_pgn, tensorboard_log=args.log_path)
     else:
         model = PPO2(get_my_policy(), env=env, verbose=1, tensorboard_log=args.log_path)
 
