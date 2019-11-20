@@ -1,12 +1,7 @@
 import pommerman
 from pommerman import agents
 import sys
-import os
-import multiprocessing
-import tensorflow as tf
 from my_common.cmd_utils import arg_parser
-from my_common.subproc_vec_env import SubprocVecEnv
-from my_policies import PGNPolicy, ResNetPolicy
 from my_baselines import PPO2
 from my_common import featurize
 from my_common import get_modify_act
