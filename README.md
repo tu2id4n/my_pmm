@@ -19,6 +19,6 @@
 model 0 --> 4 | using_prune
 
 
-```python play.py```
+```python play.py --env=PommeRadioCompetition-v2 --model0=hit18Agent_prune --model1=SimpleAgent_prune --model2=hit18Agent_prune --model3=SimpleAgent_prune --using_prune```
 
-```python evaluate.py```
+```python evaluate.py --env=PommeRadioCompetition-v2 --model0=hit18Agent_prune --model1=SimpleAgent_prune --model2=hit18Agent_prune --model3=SimpleAgent_prune --using_prune```

@@ -64,7 +64,7 @@ def load_models():
     if args.model0_path:
         print()
         print("Load a model0 from", args.model0_path)
-        model0 = PPO2.load(args.model0_path, using_pgn=args.using_pgn, tensorboard_log=args.log_path)
+        model0 = PPO2.load(args.model0_path, using_pgn=args.using_pgn)
     else:
         print()
         print("No model0")
@@ -72,7 +72,7 @@ def load_models():
     if args.model1_path:
         print()
         print("Load a model1 from", args.model1_path)
-        model1 = PPO2.load(args.model1_path, using_pgn=args.using_pgn, tensorboard_log=args.log_path)
+        model1 = PPO2.load(args.model1_path, using_pgn=args.using_pgn)
     else:
         print()
         print("No model1")
@@ -80,7 +80,7 @@ def load_models():
     if args.model2_path:
         print()
         print("Load a model2 from", args.model2_path)
-        model2 = PPO2.load(args.model2_path, using_pgn=args.using_pgn, tensorboard_log=args.log_path)
+        model2 = PPO2.load(args.model2_path, using_pgn=args.using_pgn)
     else:
         print()
         print("No model2")
@@ -88,7 +88,7 @@ def load_models():
     if args.model3_path:
         print()
         print("Load a model3 from", args.model3_path)
-        model3 = PPO2.load(args.model3_path, using_pgn=args.using_pgn, tensorboard_log=args.log_path)
+        model3 = PPO2.load(args.model3_path, using_pgn=args.using_pgn)
     else:
         print()
         print("No model3")
