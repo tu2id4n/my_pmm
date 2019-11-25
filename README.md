@@ -8,6 +8,9 @@
 
 ```pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt```
 
+# 预训练
+```python pretrain.py --env=PommeRadioCompetition-v2 --num_timesteps=1000 --policy_type=resnet --expert_path=dataset/hako_v0/agent0 --save_path=models/```
+
 # 训练
 参数解析可以参考 my_common.cmd_utils # learn
 
