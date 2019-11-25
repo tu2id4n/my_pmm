@@ -10,6 +10,7 @@ import time
 from pommerman import constants
 from my_agents import *
 
+
 def make_env(env_id):
     agent_list = [
         hit18Agent(),
@@ -27,6 +28,11 @@ def _evaluate():
     print()
     print("env = ", args.env)
     print("**************** Start to evaluate ****************")
+    print('model0 is: ', args.model0)
+    print('model1 is: ', args.model1)
+    print('model2 is: ', args.model2)
+    print('model3 is: ', args.model3)
+
     win = 0
     tie = 0
     loss = 0

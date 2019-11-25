@@ -25,6 +25,11 @@ def _play():
     print()
     print("env = ", args.env)
     print("**************** Start to play ****************")
+    print('model0 is: ', args.model0)
+    print('model1 is: ', args.model1)
+    print('model2 is: ', args.model2)
+    print('model3 is: ', args.model3)
+
     for episode in range(100):
         obs = env.reset()
         done = False
