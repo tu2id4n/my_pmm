@@ -9,7 +9,7 @@
 ```pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt```
 
 # 后台运行
-```nohup python *.py > logs/filename 2>&1 &```
+```nohup python -u *.py > logs/filename 2>&1 &```
 
 # 预训练
 ```python pretrain.py --env=PommeRadioCompetition-v2 --num_timesteps=1000 --policy_type=resnet --expert_path=dataset/hako_v0/agent0 --save_path=models/```
