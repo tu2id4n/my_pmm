@@ -13,10 +13,10 @@ from my_agents import *
 
 def make_env(env_id):
     agent_list = [
+        SuicideAgent(),
         hit18Agent('0'),
-        agents.SimpleAgent(),
-        hit18Agent('2'),
-        agents.SimpleAgent()
+        SuicideAgent(),
+        hit18Agent('2')
     ]
     env = pommerman.make(env_id, agent_list)
     return env
@@ -41,7 +41,7 @@ def _evaluate():
         obs = env.reset()
         done = False
         prev2s = [(None, None)] * 4
-        nokicks = [True, True, True, True]  # 调整是否使用kick
+        nokicks = [False] * 4  # 调整是否使用kick
         while not done:
             all_actions = env.act(obs)
 

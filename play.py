@@ -8,12 +8,13 @@ from my_common import get_modify_act
 from my_common import get_prev2obs
 from my_agents import *
 
+
 def make_env(env_id):
     agent_list = [
         SuicideAgent(),
-        agents.SimpleAgent(),
+        hit18Agent('1'),
         SuicideAgent(),
-        agents.SimpleAgent()
+        hit18Agent('3')
     ]
     env = pommerman.make(env_id, agent_list)
     return env
@@ -34,7 +35,7 @@ def _play():
         obs = env.reset()
         done = False
         prev2s = [(None, None)] * 4
-        nokicks = [True, True, True, True]  # 调整是否使用kick
+        nokicks = [False] * 4  # 调整是否使用kick
         while not done:
             all_actions = env.act(obs)
 
@@ -53,6 +54,12 @@ def _play():
                 for i in range(len(all_actions)):
                     all_actions[i] = get_modify_act(obs[i], all_actions[i], prev2s[i], nokick=nokicks[i])
                     prev2s[i] = get_prev2obs(prev2s[i], obs[i])
+
+            # 修正为适应通信的动作
+            if args.env == 'PommeRadioCompetition-v2':
+                for i in range(len(all_actions)):
+                    all_actions[i] = [all_actions[i], 1, 1]
+
             obs, rewards, done, info = env.step(all_actions)
             env.render()
         print(info)
