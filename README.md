@@ -12,7 +12,11 @@
 ```nohup python -u *.py > logs/filename 2>&1 &```
 
 # 预训练
+pretrain v0
 ```python pretrain.py --env=PommeRadioCompetition-v2 --num_timesteps=1000 --policy_type=resnet --expert_path=dataset/hako_v0/agent0 --save_path=models/hako_v0```
+
+pretrain v1
+```python pretrain.py --env=PommeRadioCompetition-v2  --num_timesteps=1000 --policy_type=resnet --expert_path=dataset/hako_v1/ --save_path=models/hako_v1 --load_path=models/hako_v0_e29.zip --pretrain_version=v1```
 
 # 训练
 参数解析可以参考 my_common.cmd_utils # learn
@@ -27,4 +31,4 @@ model 0 --> 4 | using_prune
 
 ```python play.py --env=PommeRadioCompetition-v2 --model0=hit18Agent_prune --model1=SimpleAgent_prune --model2=hit18Agent_prune --model3=SimpleAgent_prune --using_prune```
 
-```python evaluate.py --env=PommeRadioCompetition-v2 --model0=hit18Agent_prune --model1=SimpleAgent_prune --model2=hit18Agent_prune --model3=SimpleAgent_prune --using_prune```
+```python evaluate.py --env=PommeRadioCompetition-v2 --using_prune --model0=hako_v0_e29.zip+prune --model1=hit18Agent+prune --model2=hako_v0_e29.zip+prune --model3=hit18Agent+prune --model0_path=models/hako_v0_e29.zip --model2_path=models/hako_v0_e29.zip```

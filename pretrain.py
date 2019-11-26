@@ -42,23 +42,14 @@ def _pretrain():
 
     num_episodes = int(args.num_timesteps)
     if args.load_path:
-        print()
-        print("Load a model from", args.load_path)
-        print()
         model = PPO2.load(args.load_path, env=env, using_pgn=args.using_pgn, tensorboard_log=args.log_path)
     else:
         model = PPO2(get_my_policy(), env=env, verbose=1, tensorboard_log=args.log_path)
 
-    print()
-    print("**************** Start to pretrain ****************")
-    print("num_episodes = ", num_episodes)
-    print("policy_type = ", args.policy_type)
     print("env = ", args.env)
-    print("num_envs = ", num_envs)
+    print("policy_type = ", args.policy_type)
     print("expert_dir_path = ", args.expert_path)
-    print("save_path = ", args.save_path)
-    print()
-    expert_dataset = ExpertDataset(expert_path=args.expert_path)
+    expert_dataset = ExpertDataset(expert_path=args.expert_path, version=args.pretrain_version)
     model.pretrain(dataset=expert_dataset, n_epochs=num_episodes, save_path=args.save_path)
 
     env.close()

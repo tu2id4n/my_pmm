@@ -513,6 +513,12 @@ class PPO2(ActorCriticRLModel):
             By default, every 10th of the maximum number of epochs.
         :return: (BaseRLModel) the pretrained model
         """
+
+        print()
+        print("**************** PRETRAIN ****************")
+        print("n_epochs = ", n_epochs)
+        print("num_envs = ", self.num_envs)
+        print("save_path = ", save_path)
         continuous_actions = isinstance(self.action_space, gym.spaces.Box)
         discrete_actions = isinstance(self.action_space, gym.spaces.Discrete)
 

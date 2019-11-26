@@ -36,16 +36,11 @@ def merge_data(dir_path):
     actions = np.array(actions)
     actions = actions.reshape(-1, 1)
     end = time.time()
-    print("Featurize", end - start)
-    numpy_dict = {
-        'actions': actions,
-        'obs': obs,
-    }
-    del obs
-    del actions
-    for key, val in numpy_dict.items():
-        print(key, val.shape)
-    return numpy_dict
+    print("featurize time: ", end - start)
+
+    print('obs.shape = ', obs.shape)
+    print('actions.shape = ', actions.shape)
+    return obs, actions
 
 
 class ExpertDataset(object):
@@ -70,40 +65,31 @@ class ExpertDataset(object):
         the data (slower but use less memory for the CI)
     """
 
-    def __init__(self, expert_path=None, traj_data=None, train_fraction=0.7, batch_size=64,
-                 traj_limitation=-1, randomize=True, verbose=1, sequential_preprocessing=False):
-        if traj_data is not None and expert_path is not None:
-            raise ValueError("Cannot specify both 'traj_data' and 'expert_path'")
-        if traj_data is None and expert_path is None:
-            raise ValueError("Must specify one of 'traj_data' or 'expert_path'")
-        # if traj_data is None:
-        #     # traj_data = np.load(expert_path, allow_pickle=True)
-        #     traj_data = merge_data(expert_path)
+    def __init__(self, expert_path=None, traj_data=None,version='v0',
+                 train_fraction=0.7, batch_size=64, traj_limitation=-1, randomize=True, verbose=1, sequential_preprocessing=False):
+        print()
+        print("**************** DATASET ****************")
 
-        # if verbose > 0:
-        #     for key, val in traj_data.items():
-        #         print("traj_data", key, val.shape)
+        if version == 'v0':
+            observations = pickle.load(open(expert_path + '_obs.pkl', 'rb'))
+            actions = pickle.load(open(expert_path + '_act.pkl', 'rb'))
+            print('len(obs) = ', len(observations))
+            print('len(act) = ', len(actions))
+            traj_limit_idx = len(actions)
 
-        # Array of bool where episode_starts[i] = True for each new episode
-        # episode_starts = traj_data['episode_starts']
+            start = time.time()
+            for index in tqdm(range(traj_limit_idx)):
+                observations[index] = featurize(observations[index])
+            observations = np.array(observations)
+            actions = np.array(actions)
+            actions = actions.reshape(-1, 1)
+            end = time.time()
+            print("featurize time: ", end - start)
 
-        observations = pickle.load(open(expert_path + '_obs.pkl', 'rb'))
-        actions = pickle.load(open(expert_path + '_act.pkl', 'rb'))
-        print('obs', len(observations))
-        print('act', len(actions))
-        traj_limit_idx = len(actions)
+        if version == 'v1':
+            observations, actions = merge_data(expert_path)
+            traj_limit_idx = len(actions)
 
-        start = time.time()
-        for index in tqdm(range(traj_limit_idx)):
-            observations[index] = featurize(observations[index])
-        observations = np.array(observations)
-        actions = np.array(actions)
-        actions = actions.reshape(-1, 1)
-        end = time.time()
-        print("Featurize", end - start)
-
-        # observations = traj_data['obs'][:traj_limit_idx]
-        # actions = traj_data['actions'][:traj_limit_idx]
 
         if len(actions.shape) > 2:
             actions = np.reshape(actions, [-1, np.prod(actions.shape[1:])])

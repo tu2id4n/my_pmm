@@ -61,6 +61,11 @@ def _evaluate():
                     all_actions[i] = get_modify_act(obs[i], all_actions[i], prev2s[i], nokick=nokicks[i])
                     prev2s[i] = get_prev2obs(prev2s[i], obs[i])
 
+            # 修正为适应通信的动作
+            if args.env == 'PommeRadioCompetition-v2':
+                for i in range(len(all_actions)):
+                    all_actions[i] = [all_actions[i], 1, 1]
+
             obs, rewards, done, info = env.step(all_actions)
 
         if info['result'] == constants.Result.Tie:

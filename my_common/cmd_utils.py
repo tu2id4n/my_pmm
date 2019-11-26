@@ -7,7 +7,8 @@ def arg_parser():
     parser.add_argument('--policy_type', help="ResNet or PGN", default='resnet')
 
     # pretrain
-    parser.add_argument('--expert_path', help='加载模型', default=None, type=str)
+    parser.add_argument('--expert_path', help='专家数据路径', default=None, type=str)
+    parser.add_argument('--pretrain_version', help='模式', default='v0', type=str)
 
     # learn
     parser.add_argument('--env', help='环境名称', type=str, default='PommeRadioCompetition-v2')
