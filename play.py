@@ -10,9 +10,9 @@ from my_agents import *
 
 def make_env(env_id):
     agent_list = [
-        hit18Agent('0'),
+        SuicideAgent(),
         agents.SimpleAgent(),
-        hit18Agent('2'),
+        SuicideAgent(),
         agents.SimpleAgent()
     ]
     env = pommerman.make(env_id, agent_list)
@@ -34,14 +34,14 @@ def _play():
         obs = env.reset()
         done = False
         prev2s = [(None, None)] * 4
-        nokicks = [True] * 4
+        nokicks = [True, True, True, True]  # 调整是否使用kick
         while not done:
             all_actions = env.act(obs)
 
             # Use model
             for i in range(len(models)):
                 if models[i] is not None:
-                    feature_obs = featurize(obs)
+                    feature_obs = featurize(obs[i])
                     action, _states = models[i].predict(feature_obs)
                     if type(action) == list:
                         action = action[0]
@@ -53,7 +53,6 @@ def _play():
                 for i in range(len(all_actions)):
                     all_actions[i] = get_modify_act(obs[i], all_actions[i], prev2s[i], nokick=nokicks[i])
                     prev2s[i] = get_prev2obs(prev2s[i], obs[i])
-
             obs, rewards, done, info = env.step(all_actions)
             env.render()
         print(info)
@@ -62,35 +61,23 @@ def _play():
 
 def load_models():
     if args.model0_path:
-        print()
-        print("Load a model0 from", args.model0_path)
         model0 = PPO2.load(args.model0_path, using_pgn=args.using_pgn)
     else:
-        print()
         print("No model0")
         model0 = None
     if args.model1_path:
-        print()
-        print("Load a model1 from", args.model1_path)
         model1 = PPO2.load(args.model1_path, using_pgn=args.using_pgn)
     else:
-        print()
         print("No model1")
         model1 = None
     if args.model2_path:
-        print()
-        print("Load a model2 from", args.model2_path)
         model2 = PPO2.load(args.model2_path, using_pgn=args.using_pgn)
     else:
-        print()
         print("No model2")
         model2 = None
     if args.model3_path:
-        print()
-        print("Load a model3 from", args.model3_path)
         model3 = PPO2.load(args.model3_path, using_pgn=args.using_pgn)
     else:
-        print()
         print("No model3")
         model3 = None
 

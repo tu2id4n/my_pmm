@@ -112,8 +112,6 @@ class PPO2(ActorCriticRLModel):
 
     def setup_model(self):
         with SetVerbosity(self.verbose):
-            print()
-            print("**************** Init model ****************")
             assert issubclass(self.policy, ActorCriticPolicy), "Error: the input policy for the PPO2 model must be " \
                                                                "an instance of common.policies.ActorCriticPolicy."
 
@@ -253,9 +251,6 @@ class PPO2(ActorCriticRLModel):
                 # writer = tf.summary.FileWriter('../logs/graph',self.graph)
                 # writer.flush()
                 # writer.close()
-            print()
-            print("Trainable params", len(self.get_parameter_list()))
-            print()
 
     def _train_step(self, learning_rate, cliprange, obs, returns, masks, actions, values, neglogpacs, update,
                     writer, states=None, cliprange_vf=None):
@@ -317,7 +312,11 @@ class PPO2(ActorCriticRLModel):
 
     def learn(self, total_timesteps, callback=None, seed=None, log_interval=1, tb_log_name="PPO2",
               reset_num_timesteps=True, save_interval=None, save_path=None):
-
+        print("**************** LEARN ****************")
+        print("num timesteps = ", total_timesteps)
+        print("num_envs = ", self.num_envs)
+        print("save_interval = ", save_interval)
+        print()
         save_interval_st = save_interval
 
         # Transform to callable if needed
@@ -419,10 +418,6 @@ class PPO2(ActorCriticRLModel):
                 if self.num_timesteps >= save_interval_st:
                     save_interval_st += save_interval
                     s_path = save_path + '_' + str(self.num_timesteps) + '.zip'
-                    print()
-                    print("**************** Save interval ****************")
-                    print("Save learning model in ", s_path)
-                    print()
                     self.save(save_path=s_path)
 
             return self
@@ -451,13 +446,24 @@ class PPO2(ActorCriticRLModel):
         }
 
         params_to_save = self.get_parameters()
-        print("Save the current network, len of trainable params is", len(params_to_save))
-        print("Save %d old networks" % len(self.old_params))
+
+        print()
+        print("**************** SAVE ****************")
+        print('load_path =', save_path)
+        print("num of current networks = ", len(self.old_params))
+        print("len_parm = ", len(params_to_save))
+        print()
+
         self._save_to_file(save_path, data=data, params=params_to_save, cloudpickle=cloudpickle)
 
     @classmethod
     def load(cls, load_path, env=None, custom_objects=None, using_pgn=False, tensorboard_log=None, **kwargs):
         data, params = cls._load_from_file(load_path, custom_objects=custom_objects)
+        print()
+        print("**************** LOAD ****************")
+        print('load_path =', load_path)
+        print('using pgn = : ', using_pgn)
+        print('tensorboard_log = ', tensorboard_log)
 
         if 'policy_kwargs' in kwargs and kwargs['policy_kwargs'] != data['policy_kwargs']:
             raise ValueError("The specified policy kwargs do not equal the stored policy kwargs. "
@@ -474,11 +480,6 @@ class PPO2(ActorCriticRLModel):
         print("using_pgn = ", using_pgn)
         if using_pgn:
             len_parm = len(model.get_parameters())
-            print()
-            print("**************** Save the learned params ****************")
-            print('Len of network params', len_parm)
-            print()
-
             params_to_old = model.get_parameters()
             old = {}
             for _ in range(len_parm):
@@ -488,8 +489,9 @@ class PPO2(ActorCriticRLModel):
                 old[key] = val
                 # print(key,val.shape)
             model.old_params.append(old)
-            print("Now we have %d old networks" % len(model.old_params))
-            print("Per network has num of parms is ", len(model.old_params[0]))
+            print("**************** Save the old learned params")
+            print("num of old networks = ", len(model.old_params))
+            print("len_parm = ", len_parm)
             print()
             model.setup_model()
 

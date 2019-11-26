@@ -42,21 +42,12 @@ def _learn():
 
     total_timesteps = int(args.num_timesteps)
     if args.load_path:
-        print()
-        print("Load a model from", args.load_path)
-        print()
         model = PPO2.load(args.load_path, env=env, using_pgn=args.using_pgn, tensorboard_log=args.log_path)
     else:
         model = PPO2(get_my_policy(), env=env, verbose=1, tensorboard_log=args.log_path)
 
-    print()
-    print("**************** Start to learn ****************")
-    print("num timesteps = ", args.num_timesteps)
     print("policy_type = ", args.policy_type)
-    print("env = ", args.env)
-    print("num_envs = ", num_envs)
-    print("save_interval = ", args.save_interval)
-    print()
+    print('env = ', args.env)
 
     model.learn(total_timesteps=total_timesteps, save_path=args.save_path, save_interval=args.save_interval)
 

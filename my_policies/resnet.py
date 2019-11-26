@@ -40,9 +40,8 @@ class ResNetPolicy(ActorCriticPolicy):
     def __init__(self, sess, ob_space, ac_space, n_env, n_steps, n_batch, reuse=False, old_params=None, **kwargs):
         super(ResNetPolicy, self).__init__(sess, ob_space, ac_space, n_env, n_steps, n_batch, reuse=reuse,
                                            scale=True)
-
+        print("ResNet")
         with tf.variable_scope('model', reuse=reuse):
-            print("Custom")
             """CNN提取后的特征"""
             extracted_features = resnet_cnn(self.processed_obs, **kwargs)  # 使用残差网络
             extracted_features = tf.layers.flatten(extracted_features)
