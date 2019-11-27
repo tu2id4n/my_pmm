@@ -30,12 +30,12 @@ def _play():
     print('model1 is: ', args.model1)
     print('model2 is: ', args.model2)
     print('model3 is: ', args.model3)
-
+    nokicks = [False] * 4  # 调整是否使用kick
+    print('nokicks', nokicks)
     for episode in range(100):
         obs = env.reset()
         done = False
         prev2s = [(None, None)] * 4
-        nokicks = [False] * 4  # 调整是否使用kick
         while not done:
             all_actions = env.act(obs)
 
