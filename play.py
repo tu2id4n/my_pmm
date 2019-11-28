@@ -30,8 +30,12 @@ def _play():
     print('model1 is: ', args.model1)
     print('model2 is: ', args.model2)
     print('model3 is: ', args.model3)
-    nokicks = [False] * 4  # 调整是否使用kick
-    print('nokicks', nokicks)
+
+    if args.using_prune:
+        nokicks = [False] * 4  # 调整是否使用kick
+        print('using_prune')
+        print('nokicks', nokicks)
+
     for episode in range(100):
         obs = env.reset()
         done = False

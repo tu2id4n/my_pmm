@@ -36,8 +36,12 @@ def _evaluate():
     win = 0
     tie = 0
     loss = 0
-    nokicks = [False] * 4  # 调整是否使用kick
-    print('nokicks', nokicks)
+    
+    if args.using_prune:
+        nokicks = [False] * 4  # 调整是否使用kick
+        print('using_prune')
+        print('nokicks', nokicks)
+
     for episode in range(10000):
         start = time.time()
         obs = env.reset()
