@@ -32,8 +32,9 @@ def _play():
     print('model3 is: ', args.model3)
 
     if args.using_prune:
+        using_prune = [0, 1, 2, 3]  # 哪些智能体使用剪枝
         nokicks = [False] * 4  # 调整是否使用kick
-        print('using_prune')
+        print('using_prune = ', using_prune)
         print('nokicks', nokicks)
 
     for episode in range(100):
@@ -55,7 +56,7 @@ def _play():
 
             # Use prune
             if args.using_prune:
-                for i in range(len(all_actions)):
+                for i in using_prune:
                     all_actions[i] = get_modify_act(obs[i], all_actions[i], prev2s[i], nokick=nokicks[i])
                     prev2s[i] = get_prev2obs(prev2s[i], obs[i])
 
