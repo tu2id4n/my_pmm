@@ -156,7 +156,7 @@ class DQN(OffPolicyRLModel):
                 self.summary = tf.summary.merge_all()
 
     def learn(self, total_timesteps, callback=None, log_interval=100, tb_log_name="DQN",
-              reset_num_timesteps=True, replay_wrapper=None, save_interval=None, save_path=None):
+              reset_num_timesteps=True, replay_wrapper=None, save_interval=None, save_path=None, k=10):
 
         print("**************** LEARN ****************************************************************")
         print("num timesteps = ", total_timesteps)
@@ -247,7 +247,7 @@ class DQN(OffPolicyRLModel):
 
                 episode_rewards[-1] += rew
                 if done:
-                    self.replay_buffer.add_k_goals(10)
+                    self.replay_buffer.add_k_goals(k=k)
                     maybe_is_success = (rew > 0)  # info.get('is_success')  # .ntc
                     if maybe_is_success is not None:
                         episode_successes.append(float(maybe_is_success))
