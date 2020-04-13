@@ -158,7 +158,7 @@ class DQN(OffPolicyRLModel):
     def learn(self, total_timesteps, callback=None, log_interval=100, tb_log_name="DQN",
               reset_num_timesteps=True, replay_wrapper=None, save_interval=None, save_path=None):
 
-        print("**************** LEARN ****************")
+        print("**************** LEARN ****************************************************************")
         print("num timesteps = ", total_timesteps)
         print("save_interval = ", save_interval)
         print()
@@ -397,9 +397,30 @@ class DQN(OffPolicyRLModel):
         params_to_save = self.get_parameters()
 
         print()
-        print("**************** SAVE ****************")
+        print("**************** SAVE ****************************************************************")
         print('load_path =', save_path)
         print("len_parm = ", len(params_to_save))
         print()
 
         self._save_to_file(save_path, data=data, params=params_to_save, cloudpickle=cloudpickle)
+
+    @classmethod
+    def load(cls, load_path, env=None, custom_objects=None, **kwargs):
+        print()
+        print("**************** LOAD ****************************************************************")
+        data, params = cls._load_from_file(load_path, custom_objects=custom_objects)
+
+        if 'policy_kwargs' in kwargs and kwargs['policy_kwargs'] != data['policy_kwargs']:
+            raise ValueError("The specified policy kwargs do not equal the stored policy kwargs. "
+                             "Stored kwargs: {}, specified kwargs: {}".format(data['policy_kwargs'],
+                                                                              kwargs['policy_kwargs']))
+
+        model = cls(policy=data["policy"], env=None, _init_setup_model=False)
+        model.__dict__.update(data)
+        model.__dict__.update(kwargs)
+        model.set_env(env)
+        model.setup_model()
+
+        model.load_parameters(params)
+
+        return model

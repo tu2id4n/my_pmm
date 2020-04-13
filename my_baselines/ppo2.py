@@ -97,7 +97,7 @@ class PPO2(ActorCriticRLModel):
         self.summary = None
         self.episode_reward = None
 
-        ##  tu2id4n 
+        ##  tu2id4n
         self.observation_space = get_observertion_space()
         self.action_space = get_action_space()
         self.old_params = []
@@ -313,7 +313,7 @@ class PPO2(ActorCriticRLModel):
 
     def learn(self, total_timesteps, callback=None, seed=None, log_interval=1, tb_log_name="PPO2",
               reset_num_timesteps=True, save_interval=None, save_path=None):
-        print("**************** LEARN ****************")
+        print("**************** LEARN ****************************************************************")
         print("num timesteps = ", total_timesteps)
         print("num_envs = ", self.num_envs)
         print("save_interval = ", save_interval)
@@ -449,7 +449,7 @@ class PPO2(ActorCriticRLModel):
         params_to_save = self.get_parameters()
 
         print()
-        print("**************** SAVE ****************")
+        print("**************** SAVE ****************************************************************")
         print('load_path =', save_path)
         print("num of current networks = ", len(self.old_params))
         print("len_parm = ", len(params_to_save))
@@ -461,7 +461,7 @@ class PPO2(ActorCriticRLModel):
     def load(cls, load_path, env=None, custom_objects=None, using_pgn=False, tensorboard_log=None, **kwargs):
         data, params = cls._load_from_file(load_path, custom_objects=custom_objects)
         print()
-        print("**************** LOAD ****************")
+        print("**************** LOAD ****************************************************************")
         print('load_path =', load_path)
         print('using pgn = : ', using_pgn)
         print('tensorboard_log = ', tensorboard_log)
@@ -516,7 +516,7 @@ class PPO2(ActorCriticRLModel):
         """
 
         print()
-        print("**************** PRETRAIN ****************")
+        print("**************** PRETRAIN ****************************************************************")
         print("n_epochs = ", n_epochs)
         print("save_path = ", save_path)
         continuous_actions = isinstance(self.action_space, gym.spaces.Box)

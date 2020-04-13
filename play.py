@@ -1,35 +1,17 @@
-import pommerman
-from pommerman import agents
 import sys
 from my_common.cmd_utils import arg_parser
-from my_baselines import PPO2
 from my_common import featurize
 from my_common import get_modify_act
 from my_common import get_prev2obs
-from my_agents import *
-
-
-def make_env(env_id):
-    agent_list = [
-        SuicideAgent(),
-        hit18Agent('1'),
-        SuicideAgent(),
-        hit18Agent('3')
-    ]
-    env = pommerman.make(env_id, agent_list)
-    return env
+from utils import *
 
 
 def _play():
     env = make_env(args.env)
-    models = load_models()
-    print()
-    print("env = ", args.env)
-    print("**************** Start to play ****************")
-    print('model0 is: ', args.model0)
-    print('model1 is: ', args.model1)
-    print('model2 is: ', args.model2)
-    print('model3 is: ', args.model3)
+    model_paths = [args.model0_path, args.model1_path, args.model2_path, args.model3_path]
+    models = get_load_models(args.model_type, model_paths, args.log_path, args.using_pgn)
+    print(
+        "**************** Start to play ****************************************************************")
 
     if args.using_prune:
         using_prune = [0, 1, 2, 3]  # 哪些智能体使用剪枝
@@ -69,31 +51,6 @@ def _play():
             env.render()
         print(info)
     env.close()
-
-
-def load_models():
-    if args.model0_path:
-        model0 = PPO2.load(args.model0_path, using_pgn=args.using_pgn)
-    else:
-        print("No model0")
-        model0 = None
-    if args.model1_path:
-        model1 = PPO2.load(args.model1_path, using_pgn=args.using_pgn)
-    else:
-        print("No model1")
-        model1 = None
-    if args.model2_path:
-        model2 = PPO2.load(args.model2_path, using_pgn=args.using_pgn)
-    else:
-        print("No model2")
-        model2 = None
-    if args.model3_path:
-        model3 = PPO2.load(args.model3_path, using_pgn=args.using_pgn)
-    else:
-        print("No model3")
-        model3 = None
-
-    return model0, model1, model2, model3
 
 
 if __name__ == '__main__':

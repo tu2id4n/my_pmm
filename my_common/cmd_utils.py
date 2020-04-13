@@ -26,10 +26,6 @@ def arg_parser():
     parser.add_argument('--model2_path', help='加载model2', default=None, type=str)
     parser.add_argument('--model3_path', help='加载model3', default=None, type=str)
     parser.add_argument('--using_prune', help='是否使用prune', default=False, action='store_true')
-    parser.add_argument('--model0', help='model0_name', default='SimpleAgent', type=str)
-    parser.add_argument('--model1', help='model1_name', default='SimpleAgent', type=str)
-    parser.add_argument('--model2', help='model2_name', default='SimpleAgent', type=str)
-    parser.add_argument('--model3', help='model3_name', default='SimpleAgent', type=str)
 
     # save and load
     parser.add_argument('--save_path', help='保存模型', default=None, type=str)
