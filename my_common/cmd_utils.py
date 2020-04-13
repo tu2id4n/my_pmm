@@ -4,6 +4,9 @@ def arg_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     # 通用参数
+    parser.add_argument('--model_type', help="PPO2 or dqn", default='ppo')
+
+    # PPO2
     parser.add_argument('--policy_type', help="ResNet or PGN", default='resnet')
 
     # pretrain

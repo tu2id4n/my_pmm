@@ -108,7 +108,7 @@ class DockerAgent(BaseAgent):
                 print("This is a Docker error. Please fix: ", e)
                 raise
 
-    def init_agent(self, id, game_type):
+    def init_agent(self, id, game_type):  # not this function
         super(DockerAgent, self).init_agent(id, game_type)
         request_url = "http://localhost:{}/init_agent".format(self._port)
         try:
@@ -122,13 +122,13 @@ class DockerAgent(BaseAgent):
         except requests.exceptions.Timeout as e:
             print('Timeout in init_agent()!')
 
-    def act(self, obs, action_space):
+    def act(self, obs, action_space):  # this function
         obs_serialized = json.dumps(obs, cls=utility.PommermanJSONEncoder)
         request_url = "http://localhost:{}/action".format(self._port)
         try:
             req = requests.post(
                 request_url,
-                timeout=0.15,
+                timeout=0.15,  # e.g. timeout = 10
                 json={
                     "obs":
                     obs_serialized,
@@ -136,6 +136,7 @@ class DockerAgent(BaseAgent):
                     json.dumps(action_space, cls=utility.PommermanJSONEncoder)
                 })
             action = req.json()['action']
+            # print(action)
         except requests.exceptions.Timeout as e:
             print('Timeout!')
             # TODO: Fix this. It's ugly.

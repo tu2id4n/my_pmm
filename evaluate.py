@@ -38,7 +38,7 @@ def _evaluate():
     loss = 0
 
     if args.using_prune:
-        using_prune = [0, 1, 2, 3]  # 哪些智能体使用剪枝
+        using_prune = [0, 2]  # 哪些智能体使用剪枝
         nokicks = [False] * 4  # 调整是否使用kick
         print('using_prune = ', using_prune)
         print('nokicks', nokicks)

@@ -97,6 +97,7 @@ class PPO2(ActorCriticRLModel):
         self.summary = None
         self.episode_reward = None
 
+        ##  tu2id4n 
         self.observation_space = get_observertion_space()
         self.action_space = get_action_space()
         self.old_params = []

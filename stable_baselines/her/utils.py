@@ -20,9 +20,9 @@ class HERGoalEnvWrapper(object):
     def __init__(self, env):
         super(HERGoalEnvWrapper, self).__init__()
         self.env = env
-        self.metadata = self.env.metadata
-        self.action_space = env.action_space
-        self.spaces = list(env.observation_space.spaces.values())
+        self.metadata = self.env.metadata  # .ntc
+        self.action_space = env.action_space  # .ntc
+        self.spaces = list(env.observation_space.spaces.values())  # .ntc
         # Check that all spaces are of the same type
         # (current limitation of the wrapper)
         space_types = [type(env.observation_space.spaces[key]) for key in KEY_ORDER]

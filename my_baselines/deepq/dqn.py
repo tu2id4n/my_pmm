@@ -4,14 +4,18 @@ import tensorflow as tf
 import numpy as np
 import gym
 
-from stable_baselines import logger, deepq
+from stable_baselines import logger  # , deepq
 from stable_baselines.common import tf_util, OffPolicyRLModel, SetVerbosity, TensorboardWriter
 from stable_baselines.common.vec_env import VecEnv
 from stable_baselines.common.schedules import LinearSchedule
-from stable_baselines.deepq.replay_buffer import ReplayBuffer, PrioritizedReplayBuffer
-from stable_baselines.deepq.policies import DQNPolicy
+# from stable_baselines.deepq.replay_buffer import ReplayBuffer, PrioritizedReplayBuffer
+# from stable_baselines.deepq.policies import DQNPolicy
 from stable_baselines.a2c.utils import total_episode_reward_logger
 
+from my_baselines import deepq
+from my_baselines.deepq.replay_buffer import ReplayBuffer, PrioritizedReplayBuffer
+from my_baselines.deepq.policies import DQNPolicy
+from  my_common import get_action_space, get_observertion_space
 
 class DQN(OffPolicyRLModel):
     """
@@ -98,6 +102,9 @@ class DQN(OffPolicyRLModel):
         self.summary = None
         self.episode_reward = None
 
+        self.observation_space = get_observertion_space()
+        self.action_space = get_action_space()
+
         if _init_setup_model:
             self.setup_model()
 
@@ -149,7 +156,13 @@ class DQN(OffPolicyRLModel):
                 self.summary = tf.summary.merge_all()
 
     def learn(self, total_timesteps, callback=None, log_interval=100, tb_log_name="DQN",
-              reset_num_timesteps=True, replay_wrapper=None):
+              reset_num_timesteps=True, replay_wrapper=None, save_interval=None, save_path=None):
+
+        print("**************** LEARN ****************")
+        print("num timesteps = ", total_timesteps)
+        print("save_interval = ", save_interval)
+        print()
+        save_interval_st = save_interval
 
         new_tb_log = self._init_num_timesteps(reset_num_timesteps)
 
@@ -217,6 +230,13 @@ class DQN(OffPolicyRLModel):
                 new_obs, rew, done, info = self.env.step(env_action)  # .ntc
                 # Store transition in the replay buffer.
                 self.replay_buffer.add(obs, action, rew, new_obs, float(done))
+                '''
+                每次重置环境的话，需要清空replay_buffer
+                这里添加一个判断 can_add_future
+                然后将new_obs作为future传进去，然后添加到当前的replay_buffer中去
+                最好把更新全部加入到if done里
+                需要写一个距离对比的函数
+                '''
                 obs = new_obs
 
                 if writer is not None:
@@ -227,7 +247,8 @@ class DQN(OffPolicyRLModel):
 
                 episode_rewards[-1] += rew
                 if done:
-                    maybe_is_success = info.get('is_success')  # .ntc
+                    self.replay_buffer.add_k_goals(10)
+                    maybe_is_success = (rew > 0)  # info.get('is_success')  # .ntc
                     if maybe_is_success is not None:
                         episode_successes.append(float(maybe_is_success))
                     if not isinstance(self.env, VecEnv):
@@ -292,7 +313,14 @@ class DQN(OffPolicyRLModel):
                                           int(100 * self.exploration.value(self.num_timesteps)))
                     logger.dump_tabular()
 
+                # save interval
+                if self.num_timesteps >= save_interval_st:
+                    save_interval_st += save_interval
+                    s_path = save_path + '_' + str(self.num_timesteps) + '.zip'
+                    self.save(save_path=s_path)
+
                 self.num_timesteps += 1
+
 
         return self
 
@@ -367,5 +395,11 @@ class DQN(OffPolicyRLModel):
         }
 
         params_to_save = self.get_parameters()
+
+        print()
+        print("**************** SAVE ****************")
+        print('load_path =', save_path)
+        print("len_parm = ", len(params_to_save))
+        print()
 
         self._save_to_file(save_path, data=data, params=params_to_save, cloudpickle=cloudpickle)
