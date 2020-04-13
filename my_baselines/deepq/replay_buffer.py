@@ -80,12 +80,11 @@ class ReplayBuffer(object):
             obs_g, act_g, rew_g, next_obs_g, done_g = data_g
             if rew >= 0 and rew_g >= 0:
                 new_data = (obs, act, 0.5, next_obs, done)
-
-            if self._next_idx >= len(self._storage):
-                self._storage.append(new_data)
-            else:
-                self._storage[self._next_idx] = new_data
-            self._next_idx = (self._next_idx + 1) % self._maxsize
+                if self._next_idx >= len(self._storage):
+                    self._storage.append(new_data)
+                else:
+                    self._storage[self._next_idx] = new_data
+                self._next_idx = (self._next_idx + 1) % self._maxsize
 
     def _clear(self):
         self.storage = []
