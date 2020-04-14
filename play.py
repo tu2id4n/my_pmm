@@ -34,7 +34,8 @@ def _play():
                     if type(action) == list:
                         action = action[0]
                     all_actions[i] = action
-                    nokicks[i] = False
+                    print('model', i, ' action: ', action)
+                    # nokicks[i] = False
 
             # Use prune
             if args.using_prune:

@@ -227,8 +227,7 @@ class DQN(OffPolicyRLModel):
                     kwargs['update_param_noise_scale'] = True
                 with self.sess.as_default():
                     action = self.act(np.array(obs)[None], update_eps=update_eps, **kwargs)[0]
-                    if (self.num_timesteps < 20000 and (action == 0 or action == 5)) or (  # 前20000步不能stop和bomb
-                            self.num_timesteps < 50000 and action == 0):  # 前50000步不能stop
+                    if action == 0 or action == 5 or self.num_timesteps > 50000:
                         action = self.act(np.array(obs)[None], update_eps=update_eps, **kwargs)[0]
                 env_action = action
                 reset = False
