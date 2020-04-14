@@ -15,7 +15,8 @@ from stable_baselines.a2c.utils import total_episode_reward_logger
 from my_baselines import deepq
 from my_baselines.deepq.replay_buffer import ReplayBuffer, PrioritizedReplayBuffer
 from my_baselines.deepq.policies import DQNPolicy
-from  my_common import get_action_space, get_observertion_space
+from my_common import get_action_space, get_observertion_space
+
 
 class DQN(OffPolicyRLModel):
     """
@@ -57,6 +58,7 @@ class DQN(OffPolicyRLModel):
     :param n_cpu_tf_sess: (int) The number of threads for TensorFlow operations
         If None, the number of cpu of the current machine will be used.
     """
+
     def __init__(self, policy, env, gamma=0.99, learning_rate=5e-4, buffer_size=50000, exploration_fraction=0.1,
                  exploration_final_eps=0.02, train_freq=1, batch_size=32, double_q=True,
                  learning_starts=1000, target_network_update_freq=500, prioritized_replay=False,
@@ -67,7 +69,8 @@ class DQN(OffPolicyRLModel):
 
         # TODO: replay_buffer refactoring
         super(DQN, self).__init__(policy=policy, env=env, replay_buffer=None, verbose=verbose, policy_base=DQNPolicy,
-                                  requires_vec_env=False, policy_kwargs=policy_kwargs, seed=seed, n_cpu_tf_sess=n_cpu_tf_sess)
+                                  requires_vec_env=False, policy_kwargs=policy_kwargs, seed=seed,
+                                  n_cpu_tf_sess=n_cpu_tf_sess)
 
         self.param_noise = param_noise
         self.learning_starts = learning_starts
@@ -188,7 +191,6 @@ class DQN(OffPolicyRLModel):
                 assert not self.prioritized_replay, "Prioritized replay buffer is not supported by HER"
                 self.replay_buffer = replay_wrapper(self.replay_buffer)  # 升级
 
-
             # Create the schedule for exploration starting from 1.
             self.exploration = LinearSchedule(schedule_timesteps=int(self.exploration_fraction * total_timesteps),
                                               initial_p=1.0,
@@ -225,6 +227,9 @@ class DQN(OffPolicyRLModel):
                     kwargs['update_param_noise_scale'] = True
                 with self.sess.as_default():
                     action = self.act(np.array(obs)[None], update_eps=update_eps, **kwargs)[0]
+                    if (self.num_timesteps < 20000 and (action == 0 or action == 5)) or (  # 前20000步不能stop和bomb
+                            self.num_timesteps < 50000 and action == 0):  # 前50000步不能stop
+                        action = self.act(np.array(obs)[None], update_eps=update_eps, **kwargs)[0]
                 env_action = action
                 reset = False
                 new_obs, rew, done, info = self.env.step(env_action)  # .ntc
@@ -259,7 +264,7 @@ class DQN(OffPolicyRLModel):
                 # or if there are not enough samples in the replay buffer
                 can_sample = self.replay_buffer.can_sample(self.batch_size)
                 if can_sample and self.num_timesteps > self.learning_starts \
-                    and self.num_timesteps % self.train_freq == 0:
+                        and self.num_timesteps % self.train_freq == 0:
                     self.replay_buffer.add_k_goals(k=k)  # 加入goal sample
                     # Minimize the error in Bellman's equation on a batch sampled from replay buffer.
                     if self.prioritized_replay:
@@ -320,7 +325,6 @@ class DQN(OffPolicyRLModel):
                     self.save(save_path=s_path)
 
                 self.num_timesteps += 1
-
 
         return self
 
