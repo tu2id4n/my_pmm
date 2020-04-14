@@ -227,8 +227,8 @@ class DQN(OffPolicyRLModel):
                     kwargs['update_param_noise_scale'] = True
                 with self.sess.as_default():
                     action = self.act(np.array(obs)[None], update_eps=update_eps, **kwargs)[0]
-                    if action == 0 or action == 5 or self.num_timesteps > 50000:
-                        action = self.act(np.array(obs)[None], update_eps=update_eps, **kwargs)[0]
+                    # if action == 0 or action == 5 or self.num_timesteps > 50000:
+                    #     action = self.act(np.array(obs)[None], update_eps=update_eps, **kwargs)[0]
                 env_action = action
                 reset = False
                 new_obs, rew, done, info = self.env.step(env_action)  # .ntc
@@ -258,6 +258,7 @@ class DQN(OffPolicyRLModel):
                         obs = self.env.reset()
                     episode_rewards.append(0.0)
                     reset = True
+                    self.replay_buffer._clear()  # 清空replay buffer
 
                 # Do not train if the warmup phase is not over
                 # or if there are not enough samples in the replay buffer

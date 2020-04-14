@@ -87,7 +87,7 @@ class ReplayBuffer(object):
                 self._next_idx = (self._next_idx + 1) % self._maxsize
 
     def _clear(self):
-        self.storage = []
+        self._storage = []
         self._next_idx = 0
 
     def _encode_sample(self, idxes):

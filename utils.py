@@ -51,7 +51,7 @@ def get_init_model(env, model_type, my_policy, log_path):
         model = PPO2(my_policy, env=env, verbose=1, tensorboard_log=log_path)
     elif model_type.lower() == 'dqn':
         model = DQN(CnnPolicy, env=env, verbose=1, tensorboard_log=log_path, buffer_size=2000, param_noise=True,
-                    batch_size=64, train_freq=50, target_network_update_freq=500, gamma=0.99)
+                    batch_size=64, train_freq=1, target_network_update_freq=200, gamma=0.99)
     return model
 
 
