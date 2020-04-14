@@ -258,7 +258,6 @@ class DQN(OffPolicyRLModel):
                         obs = self.env.reset()
                     episode_rewards.append(0.0)
                     reset = True
-                    self.replay_buffer._clear()  # 清空replay buffer
 
                 # Do not train if the warmup phase is not over
                 # or if there are not enough samples in the replay buffer
@@ -321,7 +320,7 @@ class DQN(OffPolicyRLModel):
                 # save interval
                 if self.num_timesteps >= save_interval_st:
                     save_interval_st += save_interval
-                    s_path = save_path + '_' + str(self.num_timesteps/1000) + 'k.zip'
+                    s_path = save_path + '_' + str(int(self.num_timesteps/1000)) + 'k.zip'
                     self.save(save_path=s_path)
 
                 self.num_timesteps += 1
