@@ -162,8 +162,8 @@ class DQN(OffPolicyRLModel):
               reset_num_timesteps=True, replay_wrapper=None, save_interval=None, save_path=None, k=10):
 
         print("**************** LEARN ****************************************************************")
-        print("num timesteps = ", total_timesteps)
-        print("save_interval = ", save_interval)
+        print("num timesteps = " + str(int(total_timesteps/1000)) + 'k')
+        print("save_interval = " + str(int(save_interval/1000)) + 'k')
         print()
         save_interval_st = save_interval
 
@@ -321,7 +321,7 @@ class DQN(OffPolicyRLModel):
                 # save interval
                 if self.num_timesteps >= save_interval_st:
                     save_interval_st += save_interval
-                    s_path = save_path + '_' + str(self.num_timesteps) + '.zip'
+                    s_path = save_path + '_' + str(self.num_timesteps/1000) + 'k.zip'
                     self.save(save_path=s_path)
 
                 self.num_timesteps += 1
