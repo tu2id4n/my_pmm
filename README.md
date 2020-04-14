@@ -29,7 +29,7 @@ pretrain v1
 model 0 --> 4 | using_prune
 
 
-```python play.py --env=PommeRadioCompetition-v2 --model0=hit18Agent_prune --model1=SimpleAgent_prune --model2=hit18Agent_prune --model3=SimpleAgent_prune --using_prune```
+```python play.py --env=PommeRadioCompetition-v2 --model_type=ppo --using_prune  --model0_path=./models/hako_v0_e29.zip```
 
 ```python evaluate.py --env=PommeRadioCompetition-v2 --using_prune --model0=hako_v0_e29.zip+prune --model1=hit18Agent+prune --model2=hako_v0_e29.zip+prune --model3=hit18Agent+prune --model0_path=models/hako_v0_e29.zip --model2_path=models/hako_v0_e29.zip```
 

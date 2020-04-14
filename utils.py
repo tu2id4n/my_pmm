@@ -48,22 +48,16 @@ def get_init_model(env, model_type, my_policy, log_path):
     if model_type.lower() == 'ppo':
         model = PPO2(my_policy, env=env, verbose=1, tensorboard_log=log_path)
     elif model_type.lower() == 'dqn':
-        model = DQN(CnnPolicy, env=env, verbose=1, tensorboard_log=log_path, buffer_size=50000, param_noise=True,
-                    batch_size=64)
+        model = DQN(CnnPolicy, env=env, verbose=1, tensorboard_log=log_path, buffer_size=1000, param_noise=True,
+                    batch_size=64, train_freq=100, target_network_update_freq=1000, gamma=0.99)
     return model
 
 
 def get_load_model(model_type, load_path, log_path, env=None, using_pgn=False):
-    if model_type.lower() == 'ppo' and env is None:
-        model = PPO2.load(load_path=load_path, using_pgn=using_pgn, tensorboard_log=log_path)
-    elif model_type.lower() == 'dqn' and env is None:
-        model = DQN.load(load_path=load_path)
-    # 如果需要更换环境
-    elif model_type.lower() == 'ppo' and env is not None:
+    if model_type.lower() == 'ppo':
         model = PPO2.load(load_path=load_path, using_pgn=using_pgn, tensorboard_log=log_path, env=env)
-    elif model_type.lower() == 'dqn' and env is not None:
+    elif model_type.lower() == 'dqn':
         model = DQN.load(load_path=load_path, env=env)
-
     return model
 
 

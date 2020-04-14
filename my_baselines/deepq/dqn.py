@@ -247,7 +247,6 @@ class DQN(OffPolicyRLModel):
 
                 episode_rewards[-1] += rew
                 if done:
-                    self.replay_buffer.add_k_goals(k=k)
                     maybe_is_success = (rew > 0)  # info.get('is_success')  # .ntc
                     if maybe_is_success is not None:
                         episode_successes.append(float(maybe_is_success))
@@ -261,6 +260,7 @@ class DQN(OffPolicyRLModel):
                 can_sample = self.replay_buffer.can_sample(self.batch_size)
                 if can_sample and self.num_timesteps > self.learning_starts \
                     and self.num_timesteps % self.train_freq == 0:
+                    self.replay_buffer.add_k_goals(k=k)  # 加入goal sample
                     # Minimize the error in Bellman's equation on a batch sampled from replay buffer.
                     if self.prioritized_replay:
                         experience = self.replay_buffer.sample(self.batch_size,

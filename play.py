@@ -9,7 +9,7 @@ from utils import *
 def _play():
     env = make_env(args.env)
     model_paths = [args.model0_path, args.model1_path, args.model2_path, args.model3_path]
-    models = get_load_models(args.model_type, model_paths, args.log_path, args.using_pgn)
+    models = get_load_models(args.model_type, model_paths, args.log_path, using_pgn=args.using_pgn)
     print(
         "**************** Start to play ****************************************************************")
 

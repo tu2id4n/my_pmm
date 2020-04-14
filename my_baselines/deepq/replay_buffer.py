@@ -78,7 +78,7 @@ class ReplayBuffer(object):
             data_g = self._storage[i + 1]
             obs, act, rew, next_obs, done = data
             obs_g, act_g, rew_g, next_obs_g, done_g = data_g
-            if rew == 0 and rew_g >= 0:
+            if rew == 0 and rew_g >= 0 and act != 0:
                 new_data = (obs, act, 0.5, next_obs, done)
                 if self._next_idx >= len(self._storage):
                     self._storage.append(new_data)
