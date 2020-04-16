@@ -198,8 +198,8 @@ class ForwardModel(object):
                 desired_position = utility.get_next_position(
                     bomb.position, bomb.moving_direction)
                 if utility.position_on_board(curr_board, desired_position) \
-                   and not utility.position_is_powerup(curr_board, desired_position) \
-                   and not utility.position_is_wall(curr_board, desired_position):
+                        and not utility.position_is_powerup(curr_board, desired_position) \
+                        and not utility.position_is_wall(curr_board, desired_position):
                     desired_bomb_positions[num_bomb] = desired_position
 
         # Position switches:
@@ -266,7 +266,7 @@ class ForwardModel(object):
                 # one bomb is going to this position. In both scenarios, revert
                 # to the original position.
                 if desired_position != curr_position and \
-                      (agent_occupancy[desired_position] > 1 or bomb_occupancy[desired_position] > 1):
+                        (agent_occupancy[desired_position] > 1 or bomb_occupancy[desired_position] > 1):
                     desired_agent_positions[num_agent] = curr_position
                     agent_occupancy[curr_position] += 1
                     change = True
@@ -275,7 +275,7 @@ class ForwardModel(object):
                 desired_position = desired_bomb_positions[num_bomb]
                 curr_position = bomb.position
                 if desired_position != curr_position and \
-                      (bomb_occupancy[desired_position] > 1 or agent_occupancy[desired_position] > 1):
+                        (bomb_occupancy[desired_position] > 1 or agent_occupancy[desired_position] > 1):
                     desired_bomb_positions[num_bomb] = curr_position
                     bomb_occupancy[curr_position] += 1
                     change = True
@@ -329,10 +329,10 @@ class ForwardModel(object):
             target_position = utility.get_next_position(desired_position,
                                                         direction)
             if utility.position_on_board(curr_board, target_position) and \
-                       agent_occupancy[target_position] == 0 and \
-                       bomb_occupancy[target_position] == 0 and \
-                       not utility.position_is_powerup(curr_board, target_position) and \
-                       not utility.position_is_wall(curr_board, target_position):
+                    agent_occupancy[target_position] == 0 and \
+                    bomb_occupancy[target_position] == 0 and \
+                    not utility.position_is_powerup(curr_board, target_position) and \
+                    not utility.position_is_wall(curr_board, target_position):
                 # Ok to update bomb desired location as we won't iterate over it again here
                 # but we can not update bomb_occupancy on target position and need to check it again
                 # However we need to set the bomb count on the current position to zero so
@@ -365,7 +365,7 @@ class ForwardModel(object):
                 # Agents and bombs can only share a square if they are both in their
                 # original position (Agent dropped bomb and has not moved)
                 if desired_position != curr_position and \
-                      (agent_occupancy[desired_position] > 1 or bomb_occupancy[desired_position] != 0):
+                        (agent_occupancy[desired_position] > 1 or bomb_occupancy[desired_position] != 0):
                     # Late collisions resulting from failed kicks force this agent to stay at the
                     # original position. Check if this agent successfully kicked a bomb above and undo
                     # the kick.
@@ -409,7 +409,7 @@ class ForwardModel(object):
 
         for num_bomb, bomb in enumerate(curr_bombs):
             if desired_bomb_positions[num_bomb] == bomb.position and \
-               not num_bomb in agent_indexed_by_kicked_bomb:
+                    not num_bomb in agent_indexed_by_kicked_bomb:
                 # Bomb was not kicked this turn and its desired position is its
                 # current location. Stop it just in case it was moving before.
                 bomb.stop()
@@ -451,7 +451,7 @@ class ForwardModel(object):
                 for _, indices in bomb.explode().items():
                     for r, c in indices:
                         if not all(
-                            [r >= 0, c >= 0, r < board_size, c < board_size]):
+                                [r >= 0, c >= 0, r < board_size, c < board_size]):
                             break
                         if curr_board[r][c] == constants.Item.Rigid.value:
                             break
@@ -504,7 +504,7 @@ class ForwardModel(object):
             for bomb in bombs:
                 x, y = bomb.position
                 if not is_partially_observable \
-                   or in_view_range(position, x, y):
+                        or in_view_range(position, x, y):
                     blast_strengths[(x, y)] = bomb.blast_strength
                     life[(x, y)] = bomb.life
                     if bomb.moving_direction is not None:
@@ -518,7 +518,7 @@ class ForwardModel(object):
             for flame in flames:
                 x, y = flame.position
                 if not is_partially_observable \
-                   or in_view_range(position, x, y):
+                        or in_view_range(position, x, y):
                     # +1 needed because flame removal check is done
                     # before flame is ticked down, i.e. flame life
                     # in environment is 2 -> 1 -> 0 -> dead
@@ -581,9 +581,9 @@ class ForwardModel(object):
                 return True
             return len(alive) <= 1
         elif any([
-                len(alive_ids) <= 1,
-                alive_ids == [0, 2],
-                alive_ids == [1, 3],
+            len(alive_ids) <= 1,
+            alive_ids == [0, 2],
+            alive_ids == [1, 3],
         ]):
             return True
         return False

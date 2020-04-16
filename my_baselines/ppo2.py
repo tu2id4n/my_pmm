@@ -8,11 +8,14 @@ import numpy as np
 import tensorflow as tf
 
 from stable_baselines import logger
-from stable_baselines.common import explained_variance, ActorCriticRLModel, tf_util, SetVerbosity, TensorboardWriter
+from stable_baselines.common import explained_variance, tf_util  # ActorCriticRLModel, tf_util, SetVerbosity, TensorboardWriter
 from stable_baselines.common.runners import AbstractEnvRunner
 from stable_baselines.common.policies import ActorCriticPolicy, RecurrentActorCriticPolicy
 from stable_baselines.a2c.utils import total_episode_reward_logger
-from my_common import get_observertion_space, get_action_space
+from my_common import get_observertion_space, get_action_space, get_pre_action_space
+# from my_common import get_modify_act, get_prev2obs
+# import random
+from my_baselines import ActorCriticRLModel, SetVerbosity, TensorboardWriter
 
 
 class PPO2(ActorCriticRLModel):
@@ -101,6 +104,8 @@ class PPO2(ActorCriticRLModel):
         self.observation_space = get_observertion_space()
         self.action_space = get_action_space()
         self.old_params = []
+        self.pre_action_space = get_pre_action_space()
+        # self.pre_action_ph = tf.placeholder(dtype=tf.int32, shape=[None]+[], name='pre_action_ph')
 
         if _init_setup_model:
             self.setup_model()
@@ -315,7 +320,7 @@ class PPO2(ActorCriticRLModel):
               reset_num_timesteps=True, save_interval=None, save_path=None):
         print("**************** LEARN ****************************************************************")
         print("num timesteps = ", total_timesteps)
-        print("num_envs = ", self.num_envs)
+        # print("num_envs = ", self.num_envs)
         print("save_interval = ", save_interval)
         print()
         save_interval_st = save_interval
@@ -418,7 +423,7 @@ class PPO2(ActorCriticRLModel):
                 # save interval
                 if self.num_timesteps >= save_interval_st:
                     save_interval_st += save_interval
-                    s_path = save_path + '_' + str(self.num_timesteps) + '.zip'
+                    s_path = save_path + '_' + str(int(self.num_timesteps/10000)) + 'k.zip'
                     self.save(save_path=s_path)
 
             return self
@@ -465,7 +470,6 @@ class PPO2(ActorCriticRLModel):
         print('load_path =', load_path)
         print('using pgn = : ', using_pgn)
         print('tensorboard_log = ', tensorboard_log)
-
         if 'policy_kwargs' in kwargs and kwargs['policy_kwargs'] != data['policy_kwargs']:
             raise ValueError("The specified policy kwargs do not equal the stored policy kwargs. "
                              "Stored kwargs: {}, specified kwargs: {}".format(data['policy_kwargs'],
@@ -477,6 +481,7 @@ class PPO2(ActorCriticRLModel):
         model.setup_model()
         model.load_parameters(params)
 
+        model.tensorboard_log = tensorboard_log
         # PGN MOD: Use new policy
         print("using_pgn = ", using_pgn)
         if using_pgn:
@@ -486,7 +491,7 @@ class PPO2(ActorCriticRLModel):
             for _ in range(len_parm):
                 key, val = params_to_old.popitem()
                 key = key[6:-2]
-                print(key)
+                # print(key)
                 old[key] = val
                 # print(key,val.shape)
             model.old_params.append(old)
@@ -536,7 +541,7 @@ class PPO2(ActorCriticRLModel):
                     # actions_ph has a shape if (n_batch,), we reshape it to (n_batch, 1)
                     # so no additional changes is needed in the dataloader
                     actions_ph = tf.expand_dims(actions_ph, axis=1)
-                    one_hot_actions = tf.one_hot(actions_ph, self.action_space.n)
+                    one_hot_actions = tf.one_hot(actions_ph, self.pre_action_space.n)
                     loss = tf.nn.softmax_cross_entropy_with_logits_v2(
                         logits=actions_logits_ph,
                         labels=tf.stop_gradient(one_hot_actions)

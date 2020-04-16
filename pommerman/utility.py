@@ -78,6 +78,7 @@ def make_board(size, num_rigid=0, num_wood=0, num_agents=4):
                          size)).astype(np.uint8) * constants.Item.Passage.value
 
         # Gather all the possible coordinates to use for walls.
+        # x == y 全部是passage
         coordinates = set([
             (x, y) for x, y in \
             itertools.product(range(size), range(size)) \
@@ -92,7 +93,7 @@ def make_board(size, num_rigid=0, num_wood=0, num_agents=4):
             board[1, 1] = constants.Item.Agent0.value
             board[size - 2, size - 2] = constants.Item.Agent1.value
             agents = [(1, 1), (size - 2, size - 2)]
-        else:
+        else:  # 0和2是队友
             board[1, 1] = constants.Item.Agent0.value
             board[size - 2, 1] = constants.Item.Agent1.value
             board[size - 2, size - 2] = constants.Item.Agent2.value

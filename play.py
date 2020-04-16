@@ -4,6 +4,8 @@ from my_common import featurize
 from my_common import get_modify_act
 from my_common import get_prev2obs
 from utils import *
+from my_common import _djikstra_act
+import random
 
 
 def _play():
@@ -31,10 +33,16 @@ def _play():
                 if models[i] is not None:
                     feature_obs = featurize(obs[i])
                     action, _states = models[i].predict(feature_obs)
+                    print(action)
+                    action = _djikstra_act(obs[i], action)
                     if type(action) == list:
                         action = action[0]
+                    print(action)
+                    # print('model', i, ' action: ', action)
+                    # if action == 3:
+                    #     action = random.randint(0, 5)
                     all_actions[i] = action
-                    print('model', i, ' action: ', action)
+                    # print('model', i, ' action: ', action)
                     # nokicks[i] = False
 
             # Use prune

@@ -5,7 +5,7 @@ import numpy as np
 import gym
 
 from stable_baselines import logger  # , deepq
-from stable_baselines.common import tf_util, OffPolicyRLModel, SetVerbosity, TensorboardWriter
+from stable_baselines.common import tf_util  # OffPolicyRLModel, SetVerbosity, TensorboardWriter
 from stable_baselines.common.vec_env import VecEnv
 from stable_baselines.common.schedules import LinearSchedule
 # from stable_baselines.deepq.replay_buffer import ReplayBuffer, PrioritizedReplayBuffer
@@ -16,6 +16,9 @@ from my_baselines import deepq
 from my_baselines.deepq.replay_buffer import ReplayBuffer, PrioritizedReplayBuffer
 from my_baselines.deepq.policies import DQNPolicy
 from my_common import get_action_space, get_observertion_space
+from my_common import get_modify_act, get_prev2obs
+import random
+from my_baselines import OffPolicyRLModel, SetVerbosity, TensorboardWriter
 
 
 class DQN(OffPolicyRLModel):
@@ -159,12 +162,13 @@ class DQN(OffPolicyRLModel):
                 self.summary = tf.summary.merge_all()
 
     def learn(self, total_timesteps, callback=None, log_interval=100, tb_log_name="DQN",
-              reset_num_timesteps=True, replay_wrapper=None, save_interval=None, save_path=None, k=10):
+              reset_num_timesteps=True, replay_wrapper=None, save_interval=None, save_path=None):
 
         print("**************** LEARN ****************************************************************")
-        print("num timesteps = " + str(int(total_timesteps/1000)) + 'k')
-        print("save_interval = " + str(int(save_interval/1000)) + 'k')
+        print("num timesteps = " + str(int(total_timesteps / 1000)) + 'k')
+        print("save_interval = " + str(int(save_interval / 1000)) + 'k')
         print()
+        k = 10
         save_interval_st = save_interval
 
         new_tb_log = self._init_num_timesteps(reset_num_timesteps)
@@ -198,9 +202,14 @@ class DQN(OffPolicyRLModel):
 
             episode_rewards = [0.0]
             episode_successes = []
-            obs = self.env.reset()
+            obs, obs_p = self.env.reset()
             reset = True
             self.episode_reward = np.zeros((1,))
+
+            """
+            探索使用prune
+            """
+            prev2s = [None, None]
 
             for _ in range(total_timesteps):
                 if callback is not None:
@@ -225,13 +234,25 @@ class DQN(OffPolicyRLModel):
                     kwargs['reset'] = reset
                     kwargs['update_param_noise_threshold'] = update_param_noise_threshold
                     kwargs['update_param_noise_scale'] = True
+                # tf.summary.scalar('update_eps', update_eps)
                 with self.sess.as_default():
-                    action = self.act(np.array(obs)[None], update_eps=update_eps, **kwargs)[0]
+                    action = self.act(np.array(obs)[None], update_eps=-1, **kwargs)[0]  # 原本为update_eps=update_eps
+                    # print(action)
+                    print(update_eps)
+                    # writer.add_summary(update_eps)
+                    if random.random() < update_eps:
+                        choose_random = True
+                    else:
+                        choose_random = False
+                    if choose_random:
+                        action = random.randint(0, 5)
+                        action = get_modify_act(obs_p, action, prev2s, nokick=True)
                     # if action == 0 or action == 5 or self.num_timesteps > 50000:
                     #     action = self.act(np.array(obs)[None], update_eps=update_eps, **kwargs)[0]
                 env_action = action
                 reset = False
-                new_obs, rew, done, info = self.env.step(env_action)  # .ntc
+                new_obs, rew, done, info, obs_p = self.env.step(env_action)  # .ntc
+                prev2s = get_prev2obs(prev2s, obs_p)
                 # Store transition in the replay buffer.
                 self.replay_buffer.add(obs, action, rew, new_obs, float(done))
                 '''
@@ -255,16 +276,17 @@ class DQN(OffPolicyRLModel):
                     if maybe_is_success is not None:
                         episode_successes.append(float(maybe_is_success))
                     if not isinstance(self.env, VecEnv):
-                        obs = self.env.reset()
+                        obs, obs_p = self.env.reset()
                     episode_rewards.append(0.0)
                     reset = True
+                    prev2s = [None, None]
 
                 # Do not train if the warmup phase is not over
                 # or if there are not enough samples in the replay buffer
                 can_sample = self.replay_buffer.can_sample(self.batch_size)
                 if can_sample and self.num_timesteps > self.learning_starts \
                         and self.num_timesteps % self.train_freq == 0:
-                    self.replay_buffer.add_k_goals(k=k)  # 加入goal sample
+                    # self.replay_buffer.add_k_goals(k=k)  # 加入goal sample
                     # Minimize the error in Bellman's equation on a batch sampled from replay buffer.
                     if self.prioritized_replay:
                         experience = self.replay_buffer.sample(self.batch_size,
@@ -320,7 +342,7 @@ class DQN(OffPolicyRLModel):
                 # save interval
                 if self.num_timesteps >= save_interval_st:
                     save_interval_st += save_interval
-                    s_path = save_path + '_' + str(int(self.num_timesteps/1000)) + 'k.zip'
+                    s_path = save_path + '_' + str(int(self.num_timesteps / 1000)) + 'k.zip'
                     self.save(save_path=s_path)
 
                 self.num_timesteps += 1

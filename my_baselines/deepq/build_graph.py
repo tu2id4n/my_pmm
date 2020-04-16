@@ -151,7 +151,7 @@ def build_act(q_func, ob_space, ac_space, stochastic_ph, update_eps_ph, sess):
     output_actions = tf.cond(stochastic_ph, lambda: stochastic_actions, lambda: deterministic_actions)
     update_eps_expr = eps.assign(tf.cond(update_eps_ph >= 0, lambda: update_eps_ph, lambda: eps))
     _act = tf_util.function(inputs=[policy.obs_ph, stochastic_ph, update_eps_ph],
-                            outputs=output_actions,
+                            outputs=output_actions,  # 永远不探索
                             givens={update_eps_ph: -1.0, stochastic_ph: True},
                             updates=[update_eps_expr])
 
@@ -402,7 +402,8 @@ def build_train(q_func, ob_space, ac_space, optimizer, sess, grad_norm_clipping=
         # compute estimate of best possible value starting from state at t + 1
         if double_q:
             q_tp1_best_using_online_net = tf.argmax(double_q_values, axis=1)
-            q_tp1_best = tf.reduce_sum(target_policy.q_values * tf.one_hot(q_tp1_best_using_online_net, n_actions), axis=1)
+            q_tp1_best = tf.reduce_sum(target_policy.q_values * tf.one_hot(q_tp1_best_using_online_net, n_actions),
+                                       axis=1)
         else:
             q_tp1_best = tf.reduce_max(target_policy.q_values, axis=1)
         q_tp1_best_masked = (1.0 - done_mask_ph) * q_tp1_best

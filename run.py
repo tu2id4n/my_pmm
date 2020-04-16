@@ -23,7 +23,7 @@ def _learn():
     env = SubprocVecEnv(envs)
 
     if args.load_path:
-        model = get_load_model(args.model_type, args.load_path, args.log_path, env=env, using_pgn=False)
+        model = get_load_model(args.model_type, args.load_path, args.log_path, env=env, using_pgn=args.using_pgn)
     else:
         model = get_init_model(env, args.model_type, my_policy, args.log_path)
 

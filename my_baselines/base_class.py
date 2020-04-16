@@ -108,8 +108,8 @@ class BaseRLModel(ABC):
         # sanity checking the environment
         assert self.observation_space == env.observation_space, \
             "Error: the environment passed must have at least the same observation space as the model was trained on."
-        assert self.action_space == env.action_space, \
-            "Error: the environment passed must have at least the same action space as the model was trained on."
+        # assert self.action_space == env.action_space, \
+        #     "Error: the environment passed must have at least the same action space as the model was trained on."
         if self._requires_vec_env:
             assert isinstance(env, VecEnv), \
                 "Error: the environment passed is not a vectorized environment, however {} requires it".format(
@@ -799,7 +799,7 @@ class ActorCriticRLModel(BaseRLModel):
                 # Discrete action probability, over multiple categories
                 actions = np.swapaxes(actions, 0, 1)  # swap axis for easier categorical split
                 prob = np.prod([proba[np.arange(act.shape[0]), act]
-                                for proba, act in zip(actions_proba, actions)], axis=0)
+                                         for proba, act in zip(actions_proba, actions)], axis=0)
 
             elif isinstance(self.action_space, gym.spaces.MultiBinary):
                 actions = actions.reshape((-1, self.action_space.n))
@@ -809,12 +809,12 @@ class ActorCriticRLModel(BaseRLModel):
                 prob = np.prod(actions_proba * actions + (1 - actions_proba) * (1 - actions), axis=1)
 
             elif isinstance(self.action_space, gym.spaces.Box):
-                actions = actions.reshape((-1,) + self.action_space.shape)
+                actions = actions.reshape((-1, ) + self.action_space.shape)
                 mean, logstd = actions_proba
                 std = np.exp(logstd)
 
                 n_elts = np.prod(mean.shape[1:])  # first dimension is batch size
-                log_normalizer = n_elts / 2 * np.log(2 * np.pi) + 1 / 2 * np.sum(logstd, axis=1)
+                log_normalizer = n_elts/2 * np.log(2 * np.pi) + 1/2 * np.sum(logstd, axis=1)
 
                 # Diagonal Gaussian action probability, for every action
                 logprob = -np.sum(np.square(actions - mean) / (2 * std), axis=1) - log_normalizer
@@ -968,7 +968,6 @@ class OffPolicyRLModel(BaseRLModel):
         model.load_parameters(params)
 
         return model
-
 
 class _UnvecWrapper(VecEnvWrapper):
     def __init__(self, venv):

@@ -8,6 +8,7 @@ from stable_baselines.common.vec_env import VecEnv, CloudpickleWrapper
 from stable_baselines.common.tile_images import tile_images
 
 from my_common.feature_utils import *
+from my_common.feature_utils import _djikstra_act
 
 
 def _worker(remote, parent_remote, env_fn_wrapper):
@@ -27,6 +28,7 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                     if not isinstance(all_actions[i], tuple):
                         all_actions[i] = (all_actions[i], 0, 0)
 
+                data = _djikstra_act(whole_obs[train_idx], data)
                 data = (data, 0, 0)
                 all_actions[train_idx] = data  # 当前训练的 agent 的动作也加进来
                 whole_obs, whole_rew, done, info = env.step(all_actions)  # 得到所有 agent 的四元组
@@ -44,12 +46,14 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                 obs = featurize(whole_obs[train_idx])
 
                 remote.send((obs, rew, done, info))
+                # remote.send((obs, rew, done, info, whole_obs[train_idx]))
 
             elif cmd == 'reset':
                 whole_obs = env.reset()
                 obs = featurize(whole_obs[train_idx])
 
                 remote.send(obs)
+                # remote.send((obs, whole_obs[train_idx]))
 
             elif cmd == 'render':
                 remote.send(env.render(*data[0], **data[1]))
