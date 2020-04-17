@@ -25,13 +25,14 @@ def _play():
         obs = env.reset()
         done = False
         prev2s = [(None, None)] * 4
+        rew = 0
         while not done:
             all_actions = env.act(obs)
 
             # Use model
             for i in range(len(models)):
                 if models[i] is not None:
-                    feature_obs = featurize(obs[i])
+                    feature_obs = featurize(obs[i], env.position_trav)
                     action, _states = models[i].predict(feature_obs)
                     # print(action)
                     action = _djikstra_act(obs[i], action)
@@ -58,7 +59,11 @@ def _play():
 
             obs, rewards, done, info = env.step(all_actions)
             env.render()
-        print(info)
+            rew += rewards[0]
+            print(all_actions[0])
+            print(rew)
+            print()
+        print(info, rew)
     env.close()
 
 

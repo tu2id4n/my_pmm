@@ -302,7 +302,7 @@ def position_is_passable(board, position, enemies):
         any([
             position_is_agent(board, position),
             position_is_powerup(board, position),
-            position_is_passage(board, position)
+            position_is_passage(board, position),
         ]), not position_is_enemy(board, position, enemies)
     ])
 

@@ -24,7 +24,7 @@ class Pomme(v0.Pomme):
         'video.frames_per_second': constants.RENDER_FPS
     }
     def __init__(self, *args, **kwargs):
-        self.position_trav = []
+        self.position_trav = set()
         self._radio_vocab_size = kwargs.get('radio_vocab_size')
         self._radio_num_words = kwargs.get('radio_num_words')
         if (self._radio_vocab_size and
@@ -90,7 +90,7 @@ class Pomme(v0.Pomme):
 
     def reset(self):
         assert (self._agents is not None)
-        self.position_trav = []
+        self.position_trav = set()
         if self._init_game_state is not None:
             self.set_json_info()
         else:
@@ -106,7 +106,7 @@ class Pomme(v0.Pomme):
                 col = pos[1][0]
                 agent.set_start_position((row, col))
                 agent.reset()
-        self.position_trav.append(self.get_observations()[0]['position'])
+        self.position_trav.add(self.get_observations()[0]['position'])
         return self.get_observations()
 
     def step(self, actions):
@@ -149,7 +149,7 @@ class Pomme(v0.Pomme):
         obs = self.get_observations()
         reward = self._get_rewards()
         info = self._get_info(done, reward)
-        self.position_trav.append(obs[0]['position'])  # 添加 agent0 已访问过的位置
+        self.position_trav.add(obs[0]['position'])  # 添加 agent0 已访问过的位置
         if done:
             # Callback to let the agents know that the game has ended.
             for agent in self._agents:

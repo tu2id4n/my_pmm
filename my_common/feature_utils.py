@@ -6,6 +6,7 @@ from .prune import get_filtered_actions
 from pommerman import utility, constants
 from collections import defaultdict
 import queue
+from my_pommerman import position_is_passable
 
 
 def get_observertion_space():
@@ -53,7 +54,8 @@ def _djikstra_act(obs_nf, goal_abs, exclude=None):
 
     if exclude is None:
         exclude = [
-            constants.Item.Fog, constants.Item.Rigid, constants.Item.Flames
+            constants.Item.Rigid,
+            constants.Item.Flames,
         ]
 
     # def out_of_range(p_1, p_2):
@@ -96,7 +98,7 @@ def _djikstra_act(obs_nf, goal_abs, exclude=None):
     while not Q.empty():
         position = Q.get()
 
-        if utility.position_is_passable(board, position, enemies):
+        if position_is_passable(board, position, enemies):
             x, y = position
             val = dist[(x, y)] + 1
             for row, col in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
@@ -178,9 +180,9 @@ def _featurize1(obs_nf, position_trav):
     maps.append(np.full(board.shape, obs['can_kick']))
 
     '''获得访问过的positions'''
-    position_map = np.ones(shape=(11, 11))
+    position_map = np.zeros(shape=(11, 11))
     for p in position_trav:
-        position_map[p] = 0
+        position_map[p] = 1
     maps.append(position_map)
 
     return np.stack(maps, axis=2)  # 11*11*23

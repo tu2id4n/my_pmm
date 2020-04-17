@@ -346,9 +346,9 @@ class PPO2(ActorCriticRLModel):
             ep_info_buf = deque(maxlen=100)
             t_first_start = time.time()
 
-            n_updates = total_timesteps // self.n_batch
+            n_updates = total_timesteps // self.n_batch  # self.n_batch = self.n_envs(8) * self.n_steps(128)
             for update in range(1, n_updates + 1):
-                assert self.n_batch % self.nminibatches == 0
+                assert self.n_batch % self.nminibatches == 0  # self.nminibatches == 4
                 batch_size = self.n_batch // self.nminibatches
                 t_start = time.time()
                 frac = 1.0 - (update - 1.0) / n_updates

@@ -11,7 +11,19 @@ from gym import spaces
 import numpy as np
 
 from pommerman import constants
-from pommerman.utility import inaccessible_passages
+from pommerman.utility import *
+
+
+def position_is_passable(board, position, enemies):
+    '''Determins if a possible can be passed'''
+    return all([
+        any([
+            position_is_agent(board, position),
+            position_is_powerup(board, position),
+            position_is_passage(board, position),
+            position_is_fog(board, position),
+        ]), not position_is_enemy(board, position, enemies)
+    ])
 
 
 def make_board_v3(size, num_rigid=0, num_wood=0, num_agents=4):

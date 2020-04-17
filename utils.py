@@ -11,9 +11,9 @@ def make_env(env_id):
     agent_list = [
         StopAgent(),
         # hit18Agent('1'),
-        SimpleNoBombAgent(),
-        SuicideAgent(),
-        SimpleNoBombAgent(),
+        StopAgent(),
+        StopAgent(),
+        StopAgent(),
         # hit18Agent('3')
     ]
     env = pommerman.make(env_id, agent_list)
@@ -25,10 +25,10 @@ def make_envs(env_id):
 
     def _thunk():
         agent_list = [
-            SimpleNoBombAgent(),
-            SimpleNoBombAgent(),
-            SimpleNoBombAgent(),
-            SimpleNoBombAgent(),
+            StopAgent(),
+            agents.SimpleAgent(),
+            agents.SimpleAgent(),
+            agents.SimpleAgent(),
         ]
         env = pommerman.make(env_id, agent_list)
         return env
@@ -48,7 +48,7 @@ def get_my_policy(policy_type):
 
 def get_init_model(env, model_type, my_policy, log_path):
     if model_type.lower() == 'ppo':
-        model = PPO2(my_policy, env=env, verbose=1, tensorboard_log=log_path)
+        model = PPO2(my_policy, env=env, verbose=1, tensorboard_log=log_path, n_steps=64)
     elif model_type.lower() == 'dqn':
         model = DQN(CnnPolicy, env=env, verbose=1, tensorboard_log=log_path, buffer_size=8000, param_noise=False,
                     batch_size=32, train_freq=1, target_network_update_freq=200, gamma=0.99,
