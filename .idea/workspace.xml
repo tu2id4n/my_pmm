@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a06fd0df-76e2-40ba-860c-97824a54f2d9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/my_baselines/ppo2.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_baselines/ppo2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_common/feature_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_common/feature_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_pommerman/reward_shaping.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_pommerman/reward_shaping.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_pommerman/test_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_pommerman/test_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_pommerman/utility.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_pommerman/utility.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_pommerman/v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_pommerman/v3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/play.py" beforeDir="false" afterPath="$PROJECT_DIR$/play.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my_policies/pgn.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_policies/pgn.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,7 +15,7 @@
     <SUITE FILE_PATH="coverage/my_pmm$tutorial.coverage" NAME="tutorial Coverage Results" MODIFIED="1574235483826" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_agents/hit18_agent" />
     <SUITE FILE_PATH="coverage/my_pmm$pretrain_v1.coverage" NAME="pretrain_v1 Coverage Results" MODIFIED="1574764885600" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$pretrain.coverage" NAME="pretrain Coverage Results" MODIFIED="1574650770050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/my_pmm$run.coverage" NAME="run Coverage Results" MODIFIED="1587087985233" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/my_pmm$run.coverage" NAME="run Coverage Results" MODIFIED="1587088440764" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$play.coverage" NAME="play Coverage Results" MODIFIED="1587087138005" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$evaluate.coverage" NAME="evaluate Coverage Results" MODIFIED="1574752394896" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$test.coverage" NAME="test Coverage Results" MODIFIED="1579349923693" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -45,7 +39,7 @@
           <entry key="evaluate_hit18_prune" value="11" />
           <entry key="md" value="13" />
           <entry key="png" value="1" />
-          <entry key="py" value="479" />
+          <entry key="py" value="480" />
           <entry key="pyi" value="3" />
           <entry key="txt" value="86" />
         </counts>
@@ -55,7 +49,7 @@
           <entry key="Image" value="1" />
           <entry key="Markdown" value="13" />
           <entry key="PLAIN_TEXT" value="97" />
-          <entry key="Python" value="479" />
+          <entry key="Python" value="480" />
           <entry key="PythonStub" value="3" />
         </counts>
       </usages-collector>
@@ -64,7 +58,7 @@
           <entry key="Python Console" value="245" />
           <entry key="dummy" value="56" />
           <entry key="md" value="632" />
-          <entry key="py" value="14439" />
+          <entry key="py" value="14490" />
           <entry key="txt" value="68" />
         </counts>
       </usages-collector>
@@ -72,18 +66,18 @@
         <counts>
           <entry key="Markdown" value="632" />
           <entry key="PLAIN_TEXT" value="124" />
-          <entry key="Python" value="14684" />
+          <entry key="Python" value="14735" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/my_common/feature_utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="291">
-              <caret line="30" column="65" lean-forward="true" selection-start-line="30" selection-start-column="65" selection-end-line="30" selection-end-column="65" />
+            <state relative-caret-position="318">
+              <caret line="31" column="65" lean-forward="true" selection-start-line="29" selection-start-column="8" selection-end-line="31" selection-end-column="65" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
                 <marker date="1587088096245" expanded="true" signature="374:528" ph="..." />
@@ -96,10 +90,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/my_baselines/ppo2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2144">
-              <caret line="322" column="75" selection-start-line="322" selection-start-column="75" selection-end-line="322" selection-end-column="75" />
+            <state relative-caret-position="115">
+              <caret line="531" column="63" lean-forward="true" selection-start-line="529" selection-start-column="8" selection-end-line="531" selection-end-column="63" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/my_policies/pgn.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="71">
+              <caret line="144" column="67" lean-forward="true" selection-start-line="144" selection-start-column="67" selection-end-line="144" selection-end-column="67" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -136,7 +142,6 @@
       <find>reset</find>
       <find>item</find>
       <find>obs_ps</find>
-      <find>print</find>
       <find>assert</find>
       <find>TensorboardWriter</find>
       <find>self.tensorboard_log_path</find>
@@ -146,6 +151,7 @@
       <find>get_re</find>
       <find>save</find>
       <find>up</find>
+      <find>print</find>
     </findStrings>
     <replaceStrings>
       <replace>model3</replace>
@@ -201,10 +207,8 @@
         <option value="$PROJECT_DIR$/my_pommerman/__init__.py" />
         <option value="$PROJECT_DIR$/my_baselines/base_class.py" />
         <option value="$PROJECT_DIR$/run.py" />
-        <option value="$PROJECT_DIR$/my_policies/pgn.py" />
         <option value="$PROJECT_DIR$/my_agents/simple_no_bomb_agent.py" />
         <option value="$PROJECT_DIR$/my_agents/__init__.py" />
-        <option value="$PROJECT_DIR$/my_baselines/ppo2.py" />
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/play.py" />
         <option value="$PROJECT_DIR$/my_pommerman/v3.py" />
@@ -212,6 +216,8 @@
         <option value="$PROJECT_DIR$/my_pommerman/test_env.py" />
         <option value="$PROJECT_DIR$/my_pommerman/reward_shaping.py" />
         <option value="$PROJECT_DIR$/my_common/feature_utils.py" />
+        <option value="$PROJECT_DIR$/my_baselines/ppo2.py" />
+        <option value="$PROJECT_DIR$/my_policies/pgn.py" />
       </list>
     </option>
   </component>
@@ -243,7 +249,7 @@
             <path>
               <item name="my_pmm" type="b2602c69:ProjectViewProjectNode" />
               <item name="my_pmm" type="462c0819:PsiDirectoryNode" />
-              <item name="logs" type="462c0819:PsiDirectoryNode" />
+              <item name="my_policies" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -462,7 +468,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32953104" />
-      <window_info active="true" anchor="bottom" content_ui="combo" id="Run" order="2" visible="true" weight="0.42839035" />
+      <window_info anchor="bottom" content_ui="combo" id="Run" order="2" visible="true" weight="0.42839035" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39923954" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -504,17 +510,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/my_baselines/ppo2.py</url>
-          <line>339</line>
+          <line>342</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/my_baselines/ppo2.py</url>
-          <line>355</line>
+          <line>358</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/my_baselines/ppo2.py</url>
-          <line>371</line>
+          <line>374</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -845,16 +851,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my_policies/pgn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="154" column="29" selection-start-line="154" selection-start-column="29" selection-end-line="154" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/my_agents/simple_no_bomb_agent.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
@@ -932,24 +928,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/my_common/feature_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="31" column="65" lean-forward="true" selection-start-line="29" selection-start-column="8" selection-end-line="31" selection-end-column="65" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <marker date="1587088096245" expanded="true" signature="374:528" ph="..." />
+            <marker date="1587088096245" expanded="true" signature="4028:4030" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/my_baselines/ppo2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2144">
-          <caret line="322" column="75" selection-start-line="322" selection-start-column="75" selection-end-line="322" selection-end-column="75" />
+        <state relative-caret-position="115">
+          <caret line="531" column="63" lean-forward="true" selection-start-line="529" selection-start-column="8" selection-end-line="531" selection-end-column="63" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my_common/feature_utils.py">
+    <entry file="file://$PROJECT_DIR$/my_policies/pgn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="30" column="65" lean-forward="true" selection-start-line="30" selection-start-column="65" selection-end-line="30" selection-end-column="65" />
+        <state relative-caret-position="71">
+          <caret line="144" column="67" lean-forward="true" selection-start-line="144" selection-start-column="67" selection-end-line="144" selection-end-column="67" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <marker date="1587088096245" expanded="true" signature="374:528" ph="..." />
-            <marker date="1587088096245" expanded="true" signature="4028:4030" ph="..." />
+            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>

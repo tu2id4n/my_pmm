@@ -319,7 +319,10 @@ class PPO2(ActorCriticRLModel):
 
     def learn(self, total_timesteps, callback=None, seed=None, log_interval=1, tb_log_name="PPO2",
               reset_num_timesteps=True, save_interval=None, save_path=None):
-        print("**************** LEARN ****************************************************************")
+        print('----------------------------------------------')
+        print('|                 L E A R N                  |')
+        print('----------------------------------------------')
+
         print("num timesteps = " + str(int(total_timesteps / 1000000)) + 'm')
         # print("num_envs = ", self.num_envs)
         print("save_interval = " + str(int(save_interval/1000)) + 'k')
@@ -454,8 +457,9 @@ class PPO2(ActorCriticRLModel):
 
         params_to_save = self.get_parameters()
 
-        print()
-        print("**************** SAVE ****************************************************************")
+        print('----------------------------------------------')
+        print('|                  S A V E                   |')
+        print('----------------------------------------------')
         print('load_path =', save_path)
         print("num of current networks = ", len(self.old_params))
         print("len_parm = ", len(params_to_save))
@@ -466,8 +470,10 @@ class PPO2(ActorCriticRLModel):
     @classmethod
     def load(cls, load_path, env=None, custom_objects=None, using_pgn=False, tensorboard_log=None, **kwargs):
         data, params = cls._load_from_file(load_path, custom_objects=custom_objects)
-        print()
-        print("**************** LOAD ****************************************************************")
+        print('----------------------------------------------')
+        print('|                  L O A D                   |')
+        print('----------------------------------------------')
+
         print('load_path =', load_path)
         print('using pgn = : ', using_pgn)
         print('tensorboard_log = ', tensorboard_log)
@@ -521,8 +527,10 @@ class PPO2(ActorCriticRLModel):
         :return: (BaseRLModel) the pretrained model
         """
 
-        print()
-        print("**************** PRETRAIN ****************************************************************")
+        print('----------------------------------------------')
+        print('|               P R E T A I N                |')
+        print('----------------------------------------------')
+
         print("n_epochs = ", n_epochs)
         print("save_path = ", save_path)
         continuous_actions = isinstance(self.action_space, gym.spaces.Box)
