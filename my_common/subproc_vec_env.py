@@ -43,7 +43,7 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                     info['terminal_observation'] = whole_obs  # 保存终结的 observation，否则 reset 后将丢失
                     whole_obs = env.reset()  # 重新开一把
 
-                obs = featurize(whole_obs[train_idx], env.position_trav)
+                obs = featurize(whole_obs[train_idx], env.position_trav, env.action_pre)
 
                 remote.send((obs, rew, done, info))
                 # remote.send((obs, rew, done, info, whole_obs[train_idx]))

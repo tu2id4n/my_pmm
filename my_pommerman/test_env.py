@@ -2,6 +2,7 @@
 import pommerman
 from pommerman import agents
 from my_agents import *
+from my_common import featurize
 
 def main():
     '''Simple function to bootstrap a game.
@@ -31,6 +32,8 @@ def main():
         while not done:
             actions = env.act(state)
             state, reward, done, info = env.step(actions)
+            # print(actions[0])
+            # obs = featurize(state[0], env.position_trav)
             env.render()
             print(reward)
             print()

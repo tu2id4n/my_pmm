@@ -1,11 +1,7 @@
 import sys
-from my_common.cmd_utils import arg_parser
-from my_common import featurize
-from my_common import get_modify_act
-from my_common import get_prev2obs
 from utils import *
+from my_common import *
 from my_common import _djikstra_act
-import random
 
 
 def _play():
@@ -33,12 +29,14 @@ def _play():
             for i in range(len(models)):
                 if models[i] is not None:
                     feature_obs = featurize(obs[i], env.position_trav)
-                    action, _states = models[i].predict(feature_obs)
-                    # print(action)
-                    action = _djikstra_act(obs[i], action)
+                    action_abs, _states = models[i].predict(feature_obs)
+                    goal_abs = extra_goal(action_abs, obs[i])
+                    print('action_obs', action_abs)
+                    print('goal_obs', goal_abs)
+                    action = _djikstra_act(obs[i], action_abs)
                     if type(action) == list:
                         action = action[0]
-                    # print(action)
+                    print('action', action)
                     # print('model', i, ' action: ', action)
                     # if action == 3:
                     #     action = random.randint(0, 5)
@@ -61,9 +59,10 @@ def _play():
             env.render()
             rew += rewards[0]
             print(all_actions[0])
-            print(rew)
+            print('reward', rew)
             print()
-        print(info, rew)
+        print(info)
+        print('reward', rew)
     env.close()
 
 

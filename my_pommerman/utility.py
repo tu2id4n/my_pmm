@@ -157,17 +157,17 @@ def make_board_v3(size, num_rigid=0, num_wood=0, num_agents=4):
 def make_items_v3(board, num_items):
     '''Lays all of the items on the board'''
     item_positions = {}
-    while num_items > 0:
-        row = random.randint(0, len(board) - 1)
-        col = random.randint(0, len(board[0]) - 1)
-        # if board[row, col] != constants.Item.Wood.value:
-        #     continue
-        if (row, col) in item_positions:
-            continue
-
-        item_positions[(row, col)] = random.choice([
-            constants.Item.ExtraBomb, constants.Item.IncrRange,
-            constants.Item.Kick
-        ]).value
-        num_items -= 1
+    # while num_items > 0:
+    #     row = random.randint(0, len(board) - 1)
+    #     col = random.randint(0, len(board[0]) - 1)
+    #     # if board[row, col] != constants.Item.Wood.value:
+    #     #     continue
+    #     if (row, col) in item_positions:
+    #         continue
+    #
+    #     item_positions[(row, col)] = random.choice([
+    #         constants.Item.ExtraBomb, constants.Item.IncrRange,
+    #         constants.Item.Kick
+    #     ]).value
+    #     num_items -= 1
     return item_positions

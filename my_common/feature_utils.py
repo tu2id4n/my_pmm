@@ -10,7 +10,7 @@ from my_pommerman import position_is_passable
 
 
 def get_observertion_space():
-    return spaces.Box(low=0, high=1, shape=(11, 11, 23))
+    return spaces.Box(low=0, high=1, shape=(11, 11, 24))
 
 
 def get_action_space():
@@ -21,50 +21,37 @@ def get_pre_action_space():
     return spaces.Discrete(6)
 
 
-def featurize(obs_nf, position_trav):
-    return _featurize1(obs_nf, position_trav)  # 11 * 11 * 23
+def featurize(obs_nf, position_trav, action_pre=None):
+    return _featurize1(obs_nf, position_trav, action_pre)  # 11 * 11 * 24
     # return _featurize2(obs_nf)  # 11 * 11 * 30
+
+
+# 提取goal_abs:
+def extra_goal(goal_abs, obs=None):
+    if goal_abs == 121:
+        return obs['postion']
+    for r in range(0, 11):
+        for c in range(0, 11):
+            if r * 11 + c == goal_abs:
+                return (r, c)
 
 
 def _djikstra_act(obs_nf, goal_abs, exclude=None):
     if goal_abs == 121:
-        # print('----------------------------------------------')
-        # print('|                    bomb                    |')
-        # print('----------------------------------------------')
         return 5
-
-    def convert_bombs(bomb_map):
-        '''Flatten outs the bomb array'''
-        ret = []
-        locations = np.where(bomb_map > 0)
-        for r, c in zip(locations[0], locations[1]):
-            ret.append({
-                'position': (r, c),
-                'blast_strength': int(bomb_map[(r, c)])
-            })
-        return ret
 
     board = np.array(obs_nf['board'])
     my_position = tuple(obs_nf['position'])
-    bombs = convert_bombs(np.array(obs_nf['bomb_blast_strength']))
     enemies = [constants.Item(e) for e in obs_nf['enemies']]
-
-    # depth = 10
-    # assert (depth is not None)
 
     if exclude is None:
         exclude = [
             constants.Item.Rigid,
             constants.Item.Flames,
+            constants.Item.Wood,
+            constants.Item.Bomb,
         ]
 
-    # def out_of_range(p_1, p_2):
-    #     '''Determines if two points are out of rang of each other'''
-    #     x_1, y_1 = p_1
-    #     x_2, y_2 = p_2
-    #     return any([abs(y_2 - y_1) > depth, abs(x_2 - x_1) > depth])
-
-    items = defaultdict(list)
     dist = {}
     prev = {}
     Q = queue.Queue()
@@ -74,26 +61,16 @@ def _djikstra_act(obs_nf, goal_abs, exclude=None):
         for c in range(0, 11):
             position = (r, c)
 
-            if any([
-                # out_of_range(my_position, position),
-                # utility.position_on_board(board, position),
-                utility.position_in_items(board, position, exclude),
-            ]):
+            if any([utility.position_in_items(board, position, exclude)]):
                 continue
 
             prev[position] = None
-            item = constants.Item(board[position])
-            items[item].append(position)
 
             if position == my_position:
                 Q.put(position)
                 dist[position] = 0
             else:
                 dist[position] = np.inf
-
-    for bomb in bombs:
-        if bomb['position'] == my_position:
-            items[constants.Item.Bomb].append(my_position)
 
     while not Q.empty():
         position = Q.get()
@@ -110,23 +87,13 @@ def _djikstra_act(obs_nf, goal_abs, exclude=None):
                     dist[new_position] = val
                     prev[new_position] = position
                     Q.put(new_position)
-                elif (val == dist[new_position] and random.random() < .5):
+                elif val == dist[new_position] and random.random() < .5:
                     dist[new_position] = val
                     prev[new_position] = position
 
-    # 提取goal_abs:
-    def extra_goal(goal_abs):
-        for r in range(0, 11):
-            for c in range(0, 11):
-                if r * 10 + c == goal_abs:
-                    return (r, c)
-
     goal = extra_goal(goal_abs)
-    # print('my_position', my_position)
-    # print('goal', goal)
     while goal in dist and prev[goal] != my_position:
         goal = prev[goal]
-        # print('prev', goal)
 
     # up, down, left, right
     my_x, my_y = my_position
@@ -139,7 +106,7 @@ def _djikstra_act(obs_nf, goal_abs, exclude=None):
     return 0
 
 
-def _featurize1(obs_nf, position_trav):
+def _featurize1(obs_nf, position_trav, action_pre):
     obs = copy.deepcopy(obs_nf)
     board = np.array(obs['board'])
 
@@ -185,7 +152,15 @@ def _featurize1(obs_nf, position_trav):
         position_map[p] = 1
     maps.append(position_map)
 
-    return np.stack(maps, axis=2)  # 11*11*23
+    '''加入上一次的goal'''
+    goal_map = np.zeros(shape=(11, 11))
+    if action_pre is None:
+        goal_map[obs['position']] = 1
+    else:
+        goal_map[extra_goal(action_pre, obs)] = 1
+    maps.append(goal_map)
+
+    return np.stack(maps, axis=2)  # 11*11*24
 
 
 def scalar_feature(obs1):

@@ -24,7 +24,6 @@ class Pomme(v0.Pomme):
         'video.frames_per_second': constants.RENDER_FPS
     }
     def __init__(self, *args, **kwargs):
-        self.position_trav = set()
         self._radio_vocab_size = kwargs.get('radio_vocab_size')
         self._radio_num_words = kwargs.get('radio_num_words')
         if (self._radio_vocab_size and
@@ -91,6 +90,7 @@ class Pomme(v0.Pomme):
     def reset(self):
         assert (self._agents is not None)
         self.position_trav = set()
+        self.action_pre = None
         if self._init_game_state is not None:
             self.set_json_info()
         else:
