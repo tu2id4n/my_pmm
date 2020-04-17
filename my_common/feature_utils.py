@@ -27,6 +27,9 @@ def featurize(obs_nf):
 
 def _djikstra_act(obs_nf, goal_abs, exclude=None):
     if goal_abs == 121:
+        # print('----------------------------------------------')
+        # print('|                    bomb                    |')
+        # print('----------------------------------------------')
         return 5
 
     def convert_bombs(bomb_map):

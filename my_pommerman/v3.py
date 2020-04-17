@@ -110,6 +110,7 @@ class Pomme(v0.Pomme):
         return self.get_observations()
 
     def step(self, actions):
+        self.action_pre = actions[0]
         self.obs_pre = copy.deepcopy(self.get_observations())
         self.position_trav.append(self.obs_pre[0]['position'])  # 添加 agent0 已访问过的位置
         # print(self.position_trav)
@@ -158,7 +159,7 @@ class Pomme(v0.Pomme):
         return obs, reward, done, info
 
     def _get_rewards(self):
-        return get_rewards_v3(self._agents, self._step_count, self._max_steps, self.obs_pre, self.get_observations(), self.position_trav)
+        return get_rewards_v3(self._agents, self._step_count, self._max_steps, self.obs_pre, self.get_observations(), self.position_trav, self.action_pre)
 
     @staticmethod
     def featurize(obs):

@@ -1,7 +1,7 @@
 '''An example to show how to set up an pommerman game programmatically'''
 import pommerman
 from pommerman import agents
-
+from my_agents import *
 
 def main():
     '''Simple function to bootstrap a game.
@@ -13,7 +13,7 @@ def main():
 
     # Create a set of agents (exactly four)
     agent_list = [
-        agents.SimpleAgent(),
+        SuicideAgent(),
         agents.SimpleAgent(),
         agents.SimpleAgent(),
         agents.SimpleAgent(),
@@ -29,10 +29,11 @@ def main():
         print('Reset complete')
         done = False
         while not done:
-            env.render()
             actions = env.act(state)
             state, reward, done, info = env.step(actions)
+            env.render()
             print(reward)
+            print()
         print('Episode {} finished'.format(i_episode))
     env.close()
 

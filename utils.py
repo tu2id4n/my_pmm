@@ -11,9 +11,9 @@ def make_env(env_id):
     agent_list = [
         StopAgent(),
         # hit18Agent('1'),
-        agents.SimpleAgent(),
+        SimpleNoBombAgent(),
         SuicideAgent(),
-        agents.SimpleAgent(),
+        SimpleNoBombAgent(),
         # hit18Agent('3')
     ]
     env = pommerman.make(env_id, agent_list)
@@ -25,10 +25,10 @@ def make_envs(env_id):
 
     def _thunk():
         agent_list = [
-            SimpleNoBombAgent,
-            SimpleNoBombAgent,
-            SimpleNoBombAgent,
-            SimpleNoBombAgent,
+            SimpleNoBombAgent(),
+            SimpleNoBombAgent(),
+            SimpleNoBombAgent(),
+            SimpleNoBombAgent(),
         ]
         env = pommerman.make(env_id, agent_list)
         return env

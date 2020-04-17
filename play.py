@@ -33,11 +33,11 @@ def _play():
                 if models[i] is not None:
                     feature_obs = featurize(obs[i])
                     action, _states = models[i].predict(feature_obs)
-                    print(action)
+                    # print(action)
                     action = _djikstra_act(obs[i], action)
                     if type(action) == list:
                         action = action[0]
-                    print(action)
+                    # print(action)
                     # print('model', i, ' action: ', action)
                     # if action == 3:
                     #     action = random.randint(0, 5)

@@ -120,7 +120,7 @@ def make_board_v3(size, num_rigid=0, num_wood=0, num_agents=4):
         #     num_wood = lay_wall(constants.Item.Wood.value, num_wood,
         #                         coordinates, board)
 
-        # Lay down the power ups.
+        # Lay down the powerups.
         num_item = 20
         while num_item > 0:
             item_value = random.choice([

@@ -8,7 +8,8 @@ import numpy as np
 import tensorflow as tf
 
 from stable_baselines import logger
-from stable_baselines.common import explained_variance, tf_util  # ActorCriticRLModel, tf_util, SetVerbosity, TensorboardWriter
+from stable_baselines.common import explained_variance, \
+    tf_util  # ActorCriticRLModel, tf_util, SetVerbosity, TensorboardWriter
 from stable_baselines.common.runners import AbstractEnvRunner
 from stable_baselines.common.policies import ActorCriticPolicy, RecurrentActorCriticPolicy
 from stable_baselines.a2c.utils import total_episode_reward_logger
@@ -319,9 +320,9 @@ class PPO2(ActorCriticRLModel):
     def learn(self, total_timesteps, callback=None, seed=None, log_interval=1, tb_log_name="PPO2",
               reset_num_timesteps=True, save_interval=None, save_path=None):
         print("**************** LEARN ****************************************************************")
-        print("num timesteps = ", total_timesteps)
+        print("num timesteps = " + str(int(total_timesteps / 1000000)) + 'm')
         # print("num_envs = ", self.num_envs)
-        print("save_interval = ", save_interval)
+        print("save_interval = " + str(int(save_interval/1000)) + 'k')
         print()
         save_interval_st = save_interval
 
@@ -423,7 +424,7 @@ class PPO2(ActorCriticRLModel):
                 # save interval
                 if self.num_timesteps >= save_interval_st:
                     save_interval_st += save_interval
-                    s_path = save_path + '_' + str(int(self.num_timesteps/10000)) + 'k.zip'
+                    s_path = save_path + '_' + str(int(self.num_timesteps / 10000)) + 'k.zip'
                     self.save(save_path=s_path)
 
             return self
