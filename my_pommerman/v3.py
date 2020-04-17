@@ -90,7 +90,7 @@ class Pomme(v0.Pomme):
 
     def reset(self):
         assert (self._agents is not None)
-
+        self.position_trav = []
         if self._init_game_state is not None:
             self.set_json_info()
         else:
@@ -114,6 +114,7 @@ class Pomme(v0.Pomme):
         self.obs_pre = copy.deepcopy(self.get_observations())
         self.position_trav.append(self.obs_pre[0]['position'])  # 添加 agent0 已访问过的位置
         # print(self.position_trav)
+
         personal_actions = []
         radio_actions = []
         for agent_actions, agent in zip(actions, self._agents):

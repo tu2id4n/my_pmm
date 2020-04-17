@@ -9,7 +9,7 @@ import queue
 
 
 def get_observertion_space():
-    return spaces.Box(low=0, high=1, shape=(11, 11, 22))
+    return spaces.Box(low=0, high=1, shape=(11, 11, 23))
 
 
 def get_action_space():
@@ -20,8 +20,8 @@ def get_pre_action_space():
     return spaces.Discrete(6)
 
 
-def featurize(obs_nf):
-    return _featurize1(obs_nf)  # 11 * 11 * 22
+def featurize(obs_nf, position_trav):
+    return _featurize1(obs_nf, position_trav)  # 11 * 11 * 23
     # return _featurize2(obs_nf)  # 11 * 11 * 30
 
 
@@ -137,7 +137,7 @@ def _djikstra_act(obs_nf, goal_abs, exclude=None):
     return 0
 
 
-def _featurize1(obs_nf):
+def _featurize1(obs_nf, position_trav):
     obs = copy.deepcopy(obs_nf)
     board = np.array(obs['board'])
 
@@ -177,7 +177,13 @@ def _featurize1(obs_nf):
     maps.append(np.full(board.shape, obs['blast_strength']) / 10)
     maps.append(np.full(board.shape, obs['can_kick']))
 
-    return np.stack(maps, axis=2)  # 11*11*22
+    '''获得访问过的positions'''
+    position_map = np.ones(shape=(11, 11))
+    for p in position_trav:
+        position_map[p] = 0
+    maps.append(position_map)
+
+    return np.stack(maps, axis=2)  # 11*11*23
 
 
 def scalar_feature(obs1):
