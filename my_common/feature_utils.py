@@ -10,7 +10,7 @@ from my_pommerman import position_is_passable
 
 
 def get_observertion_space():
-    return spaces.Box(low=0, high=1, shape=(11, 11, 24))
+    return spaces.Box(low=0, high=1, shape=(11, 11, 23))
 
 
 def get_action_space():
@@ -21,15 +21,15 @@ def get_pre_action_space():
     return spaces.Discrete(6)
 
 
-def featurize(obs_nf, position_trav, action_pre=None):
-    return _featurize1(obs_nf, position_trav, action_pre)  # 11 * 11 * 24
+def featurize(obs_nf, position_trav=set(), action_pre=None):
+    return _featurize1(obs_nf, position_trav, action_pre)  # 11 * 11 * 23
     # return _featurize2(obs_nf)  # 11 * 11 * 30
 
 
 # 提取goal_abs:
 def extra_goal(goal_abs, obs=None):
     if goal_abs == 121:
-        return obs['postion']
+        return obs['position']
     for r in range(0, 11):
         for c in range(0, 11):
             if r * 11 + c == goal_abs:
@@ -158,7 +158,7 @@ def _featurize1(obs_nf, position_trav, action_pre):
         goal_map[obs['position']] = 1
     else:
         goal_map[extra_goal(action_pre, obs)] = 1
-    maps.append(goal_map)
+    # maps.append(goal_map)
 
     return np.stack(maps, axis=2)  # 11*11*24
 
