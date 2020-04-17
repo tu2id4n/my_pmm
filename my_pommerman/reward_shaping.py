@@ -44,7 +44,7 @@ def get_rewards_v3(agents, step_count, max_steps, obs_pre, obs, position_trav, a
             reward -= 0.2
             print_info('no ammo but bomb')
     if ammo_pre > 0 and action_pre != 5:
-        reward -= 0.003
+        reward -= 0.001
         print_info('have ammo but dont bomb')
 
     alive_agents = [num for num, agent in enumerate(agents) \

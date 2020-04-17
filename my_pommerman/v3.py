@@ -106,13 +106,12 @@ class Pomme(v0.Pomme):
                 col = pos[1][0]
                 agent.set_start_position((row, col))
                 agent.reset()
-
+        self.position_trav.append(self.get_observations()[0]['position'])
         return self.get_observations()
 
     def step(self, actions):
         self.action_pre = actions[0]
         self.obs_pre = copy.deepcopy(self.get_observations())
-        self.position_trav.append(self.obs_pre[0]['position'])  # 添加 agent0 已访问过的位置
         # print(self.position_trav)
 
         personal_actions = []
@@ -150,7 +149,7 @@ class Pomme(v0.Pomme):
         obs = self.get_observations()
         reward = self._get_rewards()
         info = self._get_info(done, reward)
-
+        self.position_trav.append(obs[0]['position'])  # 添加 agent0 已访问过的位置
         if done:
             # Callback to let the agents know that the game has ended.
             for agent in self._agents:
