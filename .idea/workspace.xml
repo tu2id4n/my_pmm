@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a06fd0df-76e2-40ba-860c-97824a54f2d9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/my_baselines/ppo2.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_baselines/ppo2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_policies/pgn.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_policies/pgn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my_pommerman/reward_shaping.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_pommerman/reward_shaping.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,7 +15,7 @@
     <SUITE FILE_PATH="coverage/my_pmm$pretrain_v1.coverage" NAME="pretrain_v1 Coverage Results" MODIFIED="1574764885600" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$pretrain.coverage" NAME="pretrain Coverage Results" MODIFIED="1574650770050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$run.coverage" NAME="run Coverage Results" MODIFIED="1587088440764" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/my_pmm$play.coverage" NAME="play Coverage Results" MODIFIED="1587087138005" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/my_pmm$play.coverage" NAME="play Coverage Results" MODIFIED="1587088916206" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$evaluate.coverage" NAME="evaluate Coverage Results" MODIFIED="1574752394896" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$test.coverage" NAME="test Coverage Results" MODIFIED="1579349923693" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$test_env.coverage" NAME="test_env Coverage Results" MODIFIED="1587087513178" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_pommerman" />
@@ -39,7 +38,7 @@
           <entry key="evaluate_hit18_prune" value="11" />
           <entry key="md" value="13" />
           <entry key="png" value="1" />
-          <entry key="py" value="480" />
+          <entry key="py" value="482" />
           <entry key="pyi" value="3" />
           <entry key="txt" value="86" />
         </counts>
@@ -49,7 +48,7 @@
           <entry key="Image" value="1" />
           <entry key="Markdown" value="13" />
           <entry key="PLAIN_TEXT" value="97" />
-          <entry key="Python" value="480" />
+          <entry key="Python" value="482" />
           <entry key="PythonStub" value="3" />
         </counts>
       </usages-collector>
@@ -58,7 +57,7 @@
           <entry key="Python Console" value="245" />
           <entry key="dummy" value="56" />
           <entry key="md" value="632" />
-          <entry key="py" value="14490" />
+          <entry key="py" value="14569" />
           <entry key="txt" value="68" />
         </counts>
       </usages-collector>
@@ -66,7 +65,7 @@
         <counts>
           <entry key="Markdown" value="632" />
           <entry key="PLAIN_TEXT" value="124" />
-          <entry key="Python" value="14735" />
+          <entry key="Python" value="14814" />
         </counts>
       </usages-collector>
     </session>
@@ -77,7 +76,7 @@
         <entry file="file://$PROJECT_DIR$/my_common/feature_utils.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="318">
-              <caret line="31" column="65" lean-forward="true" selection-start-line="29" selection-start-column="8" selection-end-line="31" selection-end-column="65" />
+              <caret line="31" column="65" selection-start-line="29" selection-start-column="8" selection-end-line="31" selection-end-column="65" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
                 <marker date="1587088096245" expanded="true" signature="374:528" ph="..." />
@@ -90,8 +89,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/my_baselines/ppo2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="531" column="63" lean-forward="true" selection-start-line="529" selection-start-column="8" selection-end-line="531" selection-end-column="63" />
+            <state relative-caret-position="327">
+              <caret line="616" column="21" selection-start-line="616" selection-start-column="21" selection-end-line="616" selection-end-column="21" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -99,11 +98,29 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/stable_baselines/common/runners.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="20">
+              <caret line="4" column="22" lean-forward="true" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/my_pommerman/reward_shaping.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="600">
+              <caret line="84" column="27" selection-start-line="84" selection-start-column="27" selection-end-line="84" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/my_policies/pgn.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="71">
-              <caret line="144" column="67" lean-forward="true" selection-start-line="144" selection-start-column="67" selection-end-line="144" selection-end-column="67" />
+              <caret line="144" column="67" selection-start-line="144" selection-start-column="67" selection-end-line="144" selection-end-column="67" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -214,10 +231,10 @@
         <option value="$PROJECT_DIR$/my_pommerman/v3.py" />
         <option value="$PROJECT_DIR$/my_pommerman/utility.py" />
         <option value="$PROJECT_DIR$/my_pommerman/test_env.py" />
-        <option value="$PROJECT_DIR$/my_pommerman/reward_shaping.py" />
         <option value="$PROJECT_DIR$/my_common/feature_utils.py" />
         <option value="$PROJECT_DIR$/my_baselines/ppo2.py" />
         <option value="$PROJECT_DIR$/my_policies/pgn.py" />
+        <option value="$PROJECT_DIR$/my_pommerman/reward_shaping.py" />
       </list>
     </option>
   </component>
@@ -249,7 +266,12 @@
             <path>
               <item name="my_pmm" type="b2602c69:ProjectViewProjectNode" />
               <item name="my_pmm" type="462c0819:PsiDirectoryNode" />
-              <item name="my_policies" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="my_pmm" type="b2602c69:ProjectViewProjectNode" />
+              <item name="my_pmm" type="462c0819:PsiDirectoryNode" />
+              <item name="my_pommerman" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -295,7 +317,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.run">
+  <component name="RunManager" selected="Python.play">
     <configuration name="evaluate" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="my_pmm" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -332,7 +354,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/play.py" />
-      <option name="PARAMETERS" value="--env=PommeRadioCompetition-v3 --model_type=ppo --model0_path=models/test/pgn_180k.zip" />
+      <option name="PARAMETERS" value="--env=PommeRadioCompetition-v3 --model_type=ppo --model0_path=models/test/pgn_1k.zip" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -438,9 +460,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.play" />
         <item itemvalue="Python.run" />
         <item itemvalue="Python.test_env" />
-        <item itemvalue="Python.play" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.evaluate" />
       </list>
@@ -468,7 +490,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32953104" />
-      <window_info anchor="bottom" content_ui="combo" id="Run" order="2" visible="true" weight="0.42839035" />
+      <window_info anchor="bottom" content_ui="combo" id="Run" order="2" weight="0.42839035" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39923954" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -674,13 +696,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stable_baselines/common/runners.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="18" column="21" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/stable_baselines/common/vec_env/base_vec_env.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -858,16 +873,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my_pommerman/reward_shaping.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
-          <folding>
-            <marker date="1587087755029" expanded="true" signature="90:130" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/play.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="397">
@@ -931,7 +936,7 @@
     <entry file="file://$PROJECT_DIR$/my_common/feature_utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="318">
-          <caret line="31" column="65" lean-forward="true" selection-start-line="29" selection-start-column="8" selection-end-line="31" selection-end-column="65" />
+          <caret line="31" column="65" selection-start-line="29" selection-start-column="8" selection-end-line="31" selection-end-column="65" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
             <marker date="1587088096245" expanded="true" signature="374:528" ph="..." />
@@ -940,23 +945,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/my_policies/pgn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="71">
+          <caret line="144" column="67" selection-start-line="144" selection-start-column="67" selection-end-line="144" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/my_baselines/ppo2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="531" column="63" lean-forward="true" selection-start-line="529" selection-start-column="8" selection-end-line="531" selection-end-column="63" />
+        <state relative-caret-position="327">
+          <caret line="616" column="21" selection-start-line="616" selection-start-column="21" selection-end-line="616" selection-end-column="21" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my_policies/pgn.py">
+    <entry file="file://$PROJECT_DIR$/stable_baselines/common/runners.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="71">
-          <caret line="144" column="67" lean-forward="true" selection-start-line="144" selection-start-column="67" selection-end-line="144" selection-end-column="67" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="20">
+          <caret line="4" column="22" lean-forward="true" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_pommerman/reward_shaping.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="84" column="27" selection-start-line="84" selection-start-column="27" selection-end-line="84" selection-end-column="27" />
         </state>
       </provider>
     </entry>
