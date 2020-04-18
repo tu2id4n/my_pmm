@@ -6,6 +6,11 @@ from my_baselines import PPO2, DQN
 from my_baselines.deepq.policies import CnnPolicy
 
 
+def print_info(name, info, verbose=False):
+    if verbose:
+        print(name, info)
+
+
 def make_env(env_id):
     print('env = ', env_id)
     agent_list = [

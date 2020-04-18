@@ -109,8 +109,7 @@ def make_board_v3(size, num_rigid=0, num_wood=0, num_agents=4):
 
         # Lay down wooden walls providing guaranteed passage to other agents.
         # 这里需要去掉
-        # wood = constants.Item.Wood.value
-        # passage = constants.Item.Passage.value
+        wood = constants.Item.Wood.value
         if num_agents == 4:
             for i in range(4, size - 4):
                 # board[1, i] = wood
@@ -121,24 +120,24 @@ def make_board_v3(size, num_rigid=0, num_wood=0, num_agents=4):
                 coordinates.remove((size - i - 1, 1))
                 coordinates.remove((size - 2, size - i - 1))
                 coordinates.remove((size - i - 1, size - 2))
-                # num_wood -= 4
+                num_wood -= 4
 
         # Lay down the rigid walls.
         while num_rigid > 0:
             num_rigid = lay_wall(constants.Item.Rigid.value, num_rigid,
                                  coordinates, board)
         # Lay down the wooden walls.
-        # while num_wood > 0:
-        #     num_wood = lay_wall(constants.Item.Wood.value, num_wood,
-        #                         coordinates, board)
+        while num_wood > 0:
+            num_wood = lay_wall(constants.Item.Wood.value, num_wood,
+                                coordinates, board)
 
         # Lay down the powerups.
-        num_item = 20
-        while num_item > 0:
-            item_value = random.choice([
-                constants.Item.ExtraBomb.value, constants.Item.IncrRange.value,
-                constants.Item.Kick.value])
-            num_item = lay_wall(item_value, num_item, coordinates, board)
+        # num_item = 20
+        # while num_item > 0:
+        #     item_value = random.choice([
+        #         constants.Item.ExtraBomb.value, constants.Item.IncrRange.value,
+        #         constants.Item.Kick.value])
+        #     num_item = lay_wall(item_value, num_item, coordinates, board)
 
         return board, agents
 
@@ -157,17 +156,17 @@ def make_board_v3(size, num_rigid=0, num_wood=0, num_agents=4):
 def make_items_v3(board, num_items):
     '''Lays all of the items on the board'''
     item_positions = {}
-    # while num_items > 0:
-    #     row = random.randint(0, len(board) - 1)
-    #     col = random.randint(0, len(board[0]) - 1)
-    #     # if board[row, col] != constants.Item.Wood.value:
-    #     #     continue
-    #     if (row, col) in item_positions:
-    #         continue
-    #
-    #     item_positions[(row, col)] = random.choice([
-    #         constants.Item.ExtraBomb, constants.Item.IncrRange,
-    #         constants.Item.Kick
-    #     ]).value
-    #     num_items -= 1
+    while num_items > 0:
+        row = random.randint(0, len(board) - 1)
+        col = random.randint(0, len(board[0]) - 1)
+        if board[row, col] != constants.Item.Wood.value:
+            continue
+        if (row, col) in item_positions:
+            continue
+
+        item_positions[(row, col)] = random.choice([
+            constants.Item.ExtraBomb, constants.Item.IncrRange,
+            constants.Item.Kick
+        ]).value
+        num_items -= 1
     return item_positions

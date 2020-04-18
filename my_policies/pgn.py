@@ -42,12 +42,12 @@ def custom_cnn_pgn(scaled_images, old_params=None, **kwargs):
     activ = tf.nn.relu
 
     layer_1 = activ(
-        conv(scaled_images, 'c1', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
+        conv(scaled_images, 'c1', n_filters=256, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
     old_conv = []
     for n in range(len(old_params)):
         param = old_params[n]
         old_c = activ(
-            pgn_conv(scaled_images, 'old_c1' + str(n), n_filters=64, stride=1,
+            pgn_conv(scaled_images, 'old_c1' + str(n), n_filters=256, stride=1,
                      ww=param['c1/w'], bb=param['c1/b'], pad='SAME', **kwargs))
         if n == 0:
             sumc = old_c
@@ -56,14 +56,14 @@ def custom_cnn_pgn(scaled_images, old_params=None, **kwargs):
         old_conv.append(sumc)
 
     layer_2 = activ(
-        conv(tf.add(layer_1, sumc), 'c2', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME',
+        conv(tf.add(layer_1, sumc), 'c2', n_filters=256, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME',
              **kwargs))
-    old_conv, sumc = compute_old_conv(input=old_conv, old_params=old_params, n_fil=64, scop='c2')
+    old_conv, sumc = compute_old_conv(input=old_conv, old_params=old_params, n_fil=256, scop='c2')
 
     layer_21 = activ(
-        conv(tf.add(layer_2, sumc), 'c21', n_filters=128, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME',
+        conv(tf.add(layer_2, sumc), 'c21', n_filters=256, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME',
              **kwargs))
-    old_conv, sumc = compute_old_conv(input=old_conv, old_params=old_params, n_fil=128, scop='c21')
+    old_conv, sumc = compute_old_conv(input=old_conv, old_params=old_params, n_fil=256, scop='c21')
 
     layer_3 = activ(
         conv(tf.add(layer_21, sumc), 'c3', n_filters=256, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME',
@@ -75,7 +75,7 @@ def custom_cnn_pgn(scaled_images, old_params=None, **kwargs):
     for i in range(len(old_conv)):
         old_conv[i] = conv_to_fc(old_conv[i])
 
-    layer_4 = activ(linear(tf.add(layer_4, sumc), 'fc1', n_hidden=512, init_scale=np.sqrt(2)))
+    layer_4 = activ(linear(tf.add(layer_4, sumc), 'fc1', n_hidden=256, init_scale=np.sqrt(2)))
     # old_linear, suml = compute_old_linear(input=old_conv, scop='fc1', old_params=old_params)
 
     return layer_4  # , old_linear, suml
@@ -85,19 +85,19 @@ def custom_cnn(scaled_images, **kwargs):
     activ = tf.nn.relu
 
     layer_1 = activ(
-        conv(scaled_images, 'c1', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
+        conv(scaled_images, 'c1', n_filters=256, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
 
     layer_2 = activ(
-        conv(layer_1, 'c2', n_filters=64, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
+        conv(layer_1, 'c2', n_filters=256, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
     layer_21 = activ(
-        conv(layer_2, 'c21', n_filters=128, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
-
+        conv(layer_2, 'c21', n_filters=256, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
+    
     layer_3 = activ(
         conv(layer_21, 'c3', n_filters=256, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
 
     layer_4 = conv_to_fc(layer_3)
 
-    return activ(linear(layer_4, 'fc1', n_hidden=512, init_scale=np.sqrt(2)))
+    return activ(linear(layer_4, 'fc1', n_hidden=256, init_scale=np.sqrt(2)))
 
 
 class PGNPolicy(ActorCriticPolicy):
@@ -106,41 +106,6 @@ class PGNPolicy(ActorCriticPolicy):
                                         scale=True)
         with tf.variable_scope('model', reuse=reuse):
 
-            # if old_params:
-            #     print()
-            #     print("Num of old networks", len(old_params))
-            #     print()
-            #     """CNN提取后的特征"""
-            #     extracted_features, old_fc1, sum_fc1 = custom_cnn_pgn(self.processed_obs, old_params=old_params,
-            #                                                           **kwargs)
-            #     extracted_features = tf.layers.flatten(extracted_features)
-            #     for fc in range(len(old_fc1)):
-            #         old_fc1[fc] = tf.layers.flatten(old_fc1[fc])
-            #     sum_fc1 = tf.layers.flatten(sum_fc1)
-            #
-            #     pi_h = tf.add(extracted_features, sum_fc1)
-            #     pi_latent = pi_h
-            #
-            #     vf_h = tf.add(extracted_features, sum_fc1)
-            #     vf_latent = vf_h
-            #
-            #     value_fn = linear(vf_h, 'vf', n_hidden=1)
-            #
-            #     self._proba_distribution, self._policy, self.q_value = \
-            #         self.pdtype.proba_distribution_from_latent(pi_latent, vf_latent, init_scale=0.01)
-            #
-            #     self._value_fn = value_fn
-            #     self._setup_init()
-
-                # self._proba_distribution, self._policy, self.q_value = \
-                #     self.pgn_proba_distribution_from_latent(pi_latent, vf_latent, init_scale=0.01,
-                #                                                    old_pi_fc=old_fc1, old_params=old_params)
-                # param = old_params[-1]
-                # value_fn = pgn_vf_linear(vf_h, 'vf', n_hidden=1, ww=param['vf/w'], bb=param['vf/b'])
-                # self._value_fn = value_fn
-                # self._setup_init()
-
-            # else:
             print('----------------------------------------------')
             print('|               Progressive Net              |')
             print('----------------------------------------------')

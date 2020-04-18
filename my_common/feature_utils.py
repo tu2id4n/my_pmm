@@ -10,20 +10,16 @@ from my_pommerman import position_is_passable
 
 
 def get_observertion_space():
-    return spaces.Box(low=0, high=1, shape=(11, 11, 23))
+    return spaces.Box(low=0, high=1, shape=(11, 11, 30))
 
 
 def get_action_space():
     return spaces.Discrete(122)
 
 
-def get_pre_action_space():
-    return spaces.Discrete(6)
-
-
 def featurize(obs_nf, position_trav=set(), action_pre=None):
-    return _featurize1(obs_nf, position_trav, action_pre)  # 11 * 11 * 23
-    # return _featurize2(obs_nf)  # 11 * 11 * 30
+    # return _featurize1(obs_nf, position_trav, action_pre)  # 11 * 11 * 23
+    return _featurize2(obs_nf)  # 11 * 11 * 30
 
 
 # 提取goal_abs:
@@ -151,6 +147,7 @@ def _featurize1(obs_nf, position_trav, action_pre):
     for p in position_trav:
         position_map[p] = 1
     maps.append(position_map)
+    print(position_map)
 
     '''加入上一次的goal'''
     goal_map = np.zeros(shape=(11, 11))
@@ -192,8 +189,8 @@ def _featurize2(obs_nf):
         maps.append(bomb_moving_direction == i)  # --> 4
 
     """标量映射为11*11的矩阵"""
-    maps.append(np.full(board.shape, obs['ammo'] / 3))  # --> 1
-    maps.append(np.full(board.shape, obs['blast_strength'] / 5))  # --> 1
+    maps.append(np.full(board.shape, obs['ammo'] / 5))  # --> 1
+    maps.append(np.full(board.shape, obs['blast_strength'] / 10))  # --> 1
     maps.append(np.full(board.shape, obs['can_kick']))  # --> 1
 
     """一个队友的位置 one-hot """
@@ -218,8 +215,8 @@ def _featurize2(obs_nf):
     return np.stack(maps, axis=2)  # 11*11*30
 
 
-def get_bomb_life(obs1):
-    obs = copy.deepcopy(obs1)
+def get_bomb_life(obs_nf):
+    obs = copy.deepcopy(obs_nf)
     board = np.array(obs['board'])
     bomb_life = np.array(obs['bomb_life'])
     bomb_blast_strength = np.array(obs['bomb_blast_strength'])

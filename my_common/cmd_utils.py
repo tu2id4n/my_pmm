@@ -20,7 +20,7 @@ def arg_parser():
     parser.add_argument('--nsteps', type=int, default=128)
     parser.add_argument('--save_interval', help='保存间隔', type=float, default=1e5)
 
-    # play or evaluate
+    # evaluate
     parser.add_argument('--model0_path', help='加载model0', default=None, type=str)
     parser.add_argument('--model1_path', help='加载model1', default=None, type=str)
     parser.add_argument('--model2_path', help='加载model2', default=None, type=str)

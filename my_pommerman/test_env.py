@@ -2,7 +2,7 @@
 import pommerman
 from pommerman import agents
 from my_agents import *
-from my_common import featurize
+from my_common import feature_utils
 
 def main():
     '''Simple function to bootstrap a game.
@@ -24,7 +24,7 @@ def main():
     env = pommerman.make('PommeRadioCompetition-v3', agent_list)
 
     # Run the episodes just like OpenAI Gym
-    for i_episode in range(1):
+    for i_episode in range(100):
         print('Start to reset')
         state = env.reset()
         print('Reset complete')
@@ -32,11 +32,12 @@ def main():
         while not done:
             actions = env.act(state)
             state, reward, done, info = env.step(actions)
+            # bomb_life = feature_utils.get_bomb_life(state[0])
             # print(actions[0])
             # obs = featurize(state[0], env.position_trav)
             env.render()
-            print(reward)
-            print()
+            # print(reward)
+            # print()
         print('Episode {} finished'.format(i_episode))
     env.close()
 

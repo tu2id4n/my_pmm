@@ -13,7 +13,7 @@ from stable_baselines.common import explained_variance, \
 from stable_baselines.common.runners import AbstractEnvRunner
 from stable_baselines.common.policies import ActorCriticPolicy, RecurrentActorCriticPolicy
 from stable_baselines.a2c.utils import total_episode_reward_logger
-from my_common import get_observertion_space, get_action_space, get_pre_action_space
+from my_common import get_observertion_space, get_action_space
 # from my_common import get_modify_act, get_prev2obs
 # import random
 from my_baselines import ActorCriticRLModel, SetVerbosity, TensorboardWriter
@@ -105,7 +105,6 @@ class PPO2(ActorCriticRLModel):
         self.observation_space = get_observertion_space()
         self.action_space = get_action_space()
         self.old_params = []
-        self.pre_action_space = get_pre_action_space()
         # self.pre_action_ph = tf.placeholder(dtype=tf.int32, shape=[None]+[], name='pre_action_ph')
 
         if _init_setup_model:
@@ -506,6 +505,8 @@ class PPO2(ActorCriticRLModel):
             print("num of old networks = ", len(model.old_params))
             print("len_parm = ", len_parm)
             print()
+            if env is not None:
+                model.action_space = get_action_space()
             model.setup_model()
 
         return model
@@ -550,7 +551,7 @@ class PPO2(ActorCriticRLModel):
                     # actions_ph has a shape if (n_batch,), we reshape it to (n_batch, 1)
                     # so no additional changes is needed in the dataloader
                     actions_ph = tf.expand_dims(actions_ph, axis=1)
-                    one_hot_actions = tf.one_hot(actions_ph, self.pre_action_space.n)
+                    one_hot_actions = tf.one_hot(actions_ph, self.action_space.n)
                     loss = tf.nn.softmax_cross_entropy_with_logits_v2(
                         logits=actions_logits_ph,
                         labels=tf.stop_gradient(one_hot_actions)

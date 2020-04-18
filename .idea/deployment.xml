@@ -7,6 +7,11 @@
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" />
           </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/dataset" />
+            <excludedPath local="true" path="$PROJECT_DIR$/logs" />
+            <excludedPath local="true" path="$PROJECT_DIR$/models" />
+          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>
