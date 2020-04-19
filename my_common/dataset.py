@@ -56,6 +56,27 @@ def merge_data(dir_path):
     return obs, actions
 
 
+def merge_data_v2(dir_path):
+    files_list = os.listdir(dir_path)
+    obs = []
+    actions = []
+    start = time.time()
+    for i in tqdm(range(len(files_list))):
+        f_name = files_list[i]
+        f_path = dir_path + f_name
+        sub_data = np.load(f_path, allow_pickle=True)
+        obs.extend(sub_data['obs'])
+        actions.extend(sub_data['actions'])
+        del sub_data
+    end = time.time()
+    print('read file', end - start)
+    obs = np.array(obs)
+    actions = np.array(actions)
+    print('obs.shape = ', obs.shape)
+    print('actions.shape = ', actions.shape)
+    return obs, actions
+
+
 class ExpertDataset(object):
     """
     Dataset for using behavior cloning or GAIL.
@@ -102,6 +123,10 @@ class ExpertDataset(object):
 
         if version == 'v1':
             observations, actions = merge_data(expert_path)
+            traj_limit_idx = len(actions)
+
+        if version == 'v2':
+            observations, actions = merge_data_v2(expert_path)
             traj_limit_idx = len(actions)
 
         if len(actions.shape) > 2:

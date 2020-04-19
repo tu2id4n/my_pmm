@@ -1,4 +1,3 @@
-#  --expert_path=dataset/hako_v1/
 from my_common.cmd_utils import arg_parser
 import sys
 import numpy as np
