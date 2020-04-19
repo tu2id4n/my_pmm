@@ -43,9 +43,7 @@ def _djikstra_act(obs_nf, goal_abs, exclude=None):
     if exclude is None:
         exclude = [
             constants.Item.Rigid,
-            constants.Item.Flames,
             constants.Item.Wood,
-            constants.Item.Bomb,
         ]
 
     dist = {}
@@ -100,6 +98,25 @@ def _djikstra_act(obs_nf, goal_abs, exclude=None):
             return count
         count += 1
     return 0
+
+
+def get_act_abs(obs, action):
+    count = 1000
+    if action == 5:
+        return 121
+    while count > 0:
+        rand_act_obs = random.randint(0, 120)
+        if _djikstra_act(obs_nf=obs, goal_abs=rand_act_obs) == action:
+            return rand_act_obs
+        count -= 1
+    print()
+    print('*******Problem')
+    print('action', action)
+    print(obs['board'])
+    r, c = obs['position']
+    act_abs = r * 11 + c
+    print('act_abs', act_abs)
+    return act_abs
 
 
 def _featurize1(obs_nf, position_trav, action_pre):

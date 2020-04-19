@@ -486,8 +486,8 @@ class PPO2(ActorCriticRLModel):
         model.set_env(env)
         model.setup_model()
         model.load_parameters(params)
-
         model.tensorboard_log = tensorboard_log
+
         # PGN MOD: Use new policy
         print("using_pgn = ", using_pgn)
         if using_pgn:

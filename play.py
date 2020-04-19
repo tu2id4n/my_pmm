@@ -19,9 +19,10 @@ def _play():
         print('nokicks', nokicks)
 
     model_type = 'ppo'
-    pretrain = False
-    model_path0 = 'models/test/pgn_simple_v3_1_250k.zip'
-    # model_path0 = 'models/pretrain_v1/pgn_e104.zip'
+    vb = True
+    pretrain = True
+    model_path0 = 'models/test/pgn_v1_simple_0k.zip'
+    # model_path0 = 'models/pretrain_v1/pgn_v1_e118.zip'
     model_path1 = None
     model_path2 = None
     model_path3 = None
@@ -45,13 +46,13 @@ def _play():
                     else:
                         action_abs, _states = models[i].predict(feature_obs)
                         goal_abs = extra_goal(action_abs, obs[i])
-                        print_info('action_obs', action_abs)
-                        print_info('goal_obs', goal_abs)
+                        print_info('action_obs', action_abs, vb)
+                        print_info('goal_obs', goal_abs, vb)
                         action = _djikstra_act(obs[i], action_abs)
                     if type(action) == list:
                         action = action[0]
-                    print_info('action', action)
-                    print_info('model' + str(i) + ' action: ', action)
+                    print_info('action', action, vb)
+                    print_info('model' + str(i) + ' action: ', action, vb)
                     # if action == 3:
                     #     action = random.randint(0, 5)
                     all_actions[i] = action

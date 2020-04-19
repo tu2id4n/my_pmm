@@ -12,31 +12,44 @@ import os
 import time
 import pickle
 from tqdm import tqdm
+from my_common import get_act_abs
+
 
 def merge_data(dir_path):
     files_list = os.listdir(dir_path)
     obs = []
     actions = []
-    for f_name in files_list:
-        start = time.time()
+    start = time.time()
+    for i in tqdm(range(len(files_list))):
+        f_name = files_list[i]
         f_path = dir_path + f_name
         sub_data = np.load(f_path, allow_pickle=True)
         obs.extend(sub_data['obs'])
         actions.extend(sub_data['actions'])
         del sub_data
-        end = time.time()
-        print(f_name, end - start)
+    end = time.time()
+    print('read file', end - start)
+
     start = time.time()
-    ob = []
-    for o in obs:
-        o = featurize(o)
-        ob.append(o)
-    obs = np.array(ob)
-    del ob
+    print("get act_abs")
+    for i in tqdm(range(len(obs))):
+        # print('action', actions[i])
+        actions[i] = get_act_abs(obs[i], actions[i])
+        # print('action_abs', actions[i])
     actions = np.array(actions)
     actions = actions.reshape(-1, 1)
     end = time.time()
+    print("get act_abs time: ", end - start)
+
+    ob = []
+    print('featurize')
+    for i in tqdm(range(len(obs))):
+        o = featurize(obs[i])
+        ob.append(o)
+    end = time.time()
     print("featurize time: ", end - start)
+    obs = np.array(ob)
+    del ob
 
     print('obs.shape = ', obs.shape)
     print('actions.shape = ', actions.shape)
@@ -65,8 +78,9 @@ class ExpertDataset(object):
         the data (slower but use less memory for the CI)
     """
 
-    def __init__(self, expert_path=None, traj_data=None,version='v0',
-                 train_fraction=0.7, batch_size=64, traj_limitation=-1, randomize=True, verbose=1, sequential_preprocessing=False):
+    def __init__(self, expert_path=None, traj_data=None, version='v0',
+                 train_fraction=0.7, batch_size=64, traj_limitation=-1, randomize=True, verbose=1,
+                 sequential_preprocessing=False):
         print()
         print("**************** DATASET ****************")
 
@@ -89,7 +103,6 @@ class ExpertDataset(object):
         if version == 'v1':
             observations, actions = merge_data(expert_path)
             traj_limit_idx = len(actions)
-
 
         if len(actions.shape) > 2:
             actions = np.reshape(actions, [-1, np.prod(actions.shape[1:])])
