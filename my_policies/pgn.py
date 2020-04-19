@@ -76,9 +76,9 @@ def custom_cnn_pgn(scaled_images, old_params=None, **kwargs):
         old_conv[i] = conv_to_fc(old_conv[i])
 
     layer_4 = activ(linear(tf.add(layer_4, sumc), 'fc1', n_hidden=256, init_scale=np.sqrt(2)))
-    # old_linear, suml = compute_old_linear(input=old_conv, scop='fc1', old_params=old_params)
+    old_linear, suml = compute_old_linear(input=old_conv, scop='fc1', old_params=old_params)
 
-    return layer_4  # , old_linear, suml
+    return layer_4, suml
 
 
 def custom_cnn(scaled_images, **kwargs):
@@ -91,7 +91,7 @@ def custom_cnn(scaled_images, **kwargs):
         conv(layer_1, 'c2', n_filters=256, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
     layer_21 = activ(
         conv(layer_2, 'c21', n_filters=256, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
-    
+
     layer_3 = activ(
         conv(layer_21, 'c3', n_filters=256, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
 
@@ -113,13 +113,15 @@ class PGNPolicy(ActorCriticPolicy):
             """CNN提取后的特征"""
             if old_params:
                 print('Num of pre networks:', len(old_params))
-                extracted_features = custom_cnn_pgn(self.processed_obs, old_params=old_params, **kwargs)
+                extracted_features, sum_fc1 = custom_cnn_pgn(self.processed_obs, old_params=old_params, **kwargs)
+                extracted_features = tf.layers.flatten(extracted_features)
+                sum_fc1 = tf.layers.flatten(sum_fc1)
+                extracted_features = tf.add(extracted_features, sum_fc1)
             else:
                 print('Start networks:', len(old_params))
                 extracted_features = custom_cnn(self.processed_obs, **kwargs)
+                extracted_features = tf.layers.flatten(extracted_features)
 
-
-            extracted_features = tf.layers.flatten(extracted_features)
 
             pi_h = extracted_features
             pi_latent = pi_h

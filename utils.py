@@ -31,9 +31,9 @@ def make_envs(env_id):
     def _thunk():
         agent_list = [
             StopAgent(),
-            StopAgent(),
-            StopAgent(),
-            StopAgent(),
+            agents.SimpleAgent(),
+            agents.SimpleAgent(),
+            agents.SimpleAgent()
         ]
         env = pommerman.make(env_id, agent_list)
         return env
@@ -69,7 +69,7 @@ def get_load_model(model_type, load_path, log_path, env=None, using_pgn=False):
     return model
 
 
-def get_load_models(model_type, model_paths, log_path, env=None, using_pgn=False):
+def get_load_models(model_type, model_paths, log_path=None, env=None, using_pgn=False):
     count = 0
     models = []
     for model_path in model_paths:

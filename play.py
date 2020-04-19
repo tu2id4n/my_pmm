@@ -8,8 +8,8 @@ def _play():
     print('----------------------------------------------')
     print('|                  P L A Y                   |')
     print('----------------------------------------------')
-    env = make_env(args.env)
-    pretrain = False
+    env_id = 'PommeRadioCompetition-v3'
+    env = make_env(env_id)
     using_prune = False
 
     if using_prune:
@@ -18,12 +18,15 @@ def _play():
         print('prune_agents = ', prune_agnets)
         print('nokicks', nokicks)
 
-    model_path0 = 'models/test/pgn_stop_0k.zip'
+    model_type = 'ppo'
+    pretrain = False
+    model_path0 = 'models/test/pgn_simple_v3_1_250k.zip'
+    # model_path0 = 'models/pretrain_v1/pgn_e104.zip'
     model_path1 = None
     model_path2 = None
     model_path3 = None
     model_paths = [model_path0, model_path1, model_path2, model_path3]
-    models = get_load_models(args.model_type, model_paths, args.log_path, using_pgn=args.using_pgn)
+    models = get_load_models(model_type, model_paths)
 
     for episode in range(100):
         obs = env.reset()
@@ -71,9 +74,9 @@ def _play():
                 done = True
             # print(all_actions[0])
             # print('reward', rew)
-            print()
+            # print()
         print(info)
-        print_info('total_reward', total_reward)
+        print('total_reward', total_reward)
     env.close()
 
 

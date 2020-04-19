@@ -12,7 +12,7 @@ from pommerman import constants
 from pommerman import utility
 from pommerman.envs import v0
 from my_pommerman import make_board_v3, make_items_v3
-from my_pommerman import get_rewards_v3
+from my_pommerman import get_rewards_v3, get_rewards_v3_1
 import copy
 
 
@@ -159,7 +159,7 @@ class Pomme(v0.Pomme):
         return obs, reward, done, info
 
     def _get_rewards(self):
-        return get_rewards_v3(self._agents, self._step_count, self._max_steps, self.obs_pre, self.get_observations(), self.position_trav, self.action_pre)
+        return get_rewards_v3_1(self._agents, self._step_count, self._max_steps, self.obs_pre, self.get_observations(), self.position_trav, self.action_pre)
 
     @staticmethod
     def featurize(obs):

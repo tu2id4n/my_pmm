@@ -112,10 +112,10 @@ def make_board_v3(size, num_rigid=0, num_wood=0, num_agents=4):
         wood = constants.Item.Wood.value
         if num_agents == 4:
             for i in range(4, size - 4):
-                # board[1, i] = wood
-                # board[size - i - 1, 1] = wood
-                # board[size - 2, size - i - 1] = wood
-                # board[size - i - 1, size - 2] = wood
+                board[1, i] = wood
+                board[size - i - 1, 1] = wood
+                board[size - 2, size - i - 1] = wood
+                board[size - i - 1, size - 2] = wood
                 coordinates.remove((1, i))
                 coordinates.remove((size - i - 1, 1))
                 coordinates.remove((size - 2, size - i - 1))
