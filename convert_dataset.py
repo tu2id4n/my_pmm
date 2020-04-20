@@ -4,7 +4,7 @@ import numpy as np
 import time
 from tqdm import tqdm
 from my_common import get_act_abs, featurize
-import _thread
+import threading
 import os
 
 
@@ -17,7 +17,7 @@ def _convert_dataset(f_name):
     actions = sub_data['actions']
     del sub_data
     end = time.time()
-    print('read file', args.expert_path, end - start)
+    print('read file', f_path, end - start)
 
     start = time.time()
     print("get act_abs")
@@ -48,12 +48,13 @@ def _convert_dataset(f_name):
         'actions': actions
     }
 
-    np.savez('dataset/hako_v2/' + f_name, **numpy_dict)
+    np.savez('dataset/hako_v3/' + f_name, **numpy_dict)
 
 
 if __name__ == '__main__':
     arg_parser = arg_parser()
     args, unknown_args = arg_parser.parse_known_args(sys.argv)
-    files_list = os.listdir(args.expert_path)
-    for f_name in files_list:
-        _thread.start_new_thread(_convert_dataset, f_name)
+    # files_list = os.listdir(args.expert_path)
+    # for f_name in files_list:
+    #     threading.Thread(target=_convert_dataset, args=(f_name,)).start()
+    _convert_dataset(args.expert_path)

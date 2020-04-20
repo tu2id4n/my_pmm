@@ -317,7 +317,7 @@ class PPO2(ActorCriticRLModel):
         return policy_loss, value_loss, policy_entropy, approxkl, clipfrac
 
     def learn(self, total_timesteps, callback=None, seed=None, log_interval=1, tb_log_name="PPO2",
-              reset_num_timesteps=True, save_interval=None, save_path=None):
+              reset_num_timesteps=True, save_interval=None, save_path=None, gamma=0.99, n_steps=128):
         print('----------------------------------------------')
         print('|                 L E A R N                  |')
         print('----------------------------------------------')
@@ -327,7 +327,8 @@ class PPO2(ActorCriticRLModel):
         print("save_interval = " + str(int(save_interval/1000)) + 'k')
         print()
         save_interval_st = save_interval
-
+        self.gamma = gamma
+        self.n_steps = n_steps
         # Transform to callable if needed
         self.learning_rate = get_schedule_fn(self.learning_rate)
         self.cliprange = get_schedule_fn(self.cliprange)
@@ -484,9 +485,9 @@ class PPO2(ActorCriticRLModel):
         model.__dict__.update(data)
         model.__dict__.update(kwargs)
         model.set_env(env)
+        model.tensorboard_log = tensorboard_log
         model.setup_model()
         model.load_parameters(params)
-        model.tensorboard_log = tensorboard_log
 
         # PGN MOD: Use new policy
         print("using_pgn = ", using_pgn)
@@ -497,7 +498,7 @@ class PPO2(ActorCriticRLModel):
             for _ in range(len_parm):
                 key, val = params_to_old.popitem()
                 key = key[6:-2]
-                # print(key)
+                print(key)
                 old[key] = val
                 # print(key,val.shape)
             model.old_params.append(old)

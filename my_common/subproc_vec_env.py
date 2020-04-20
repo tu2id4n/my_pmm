@@ -23,13 +23,14 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                 whole_obs = env.get_observations()
                 all_actions = env.act(whole_obs)  # 得到所有智能体的 actions
 
-                # 如果其他智能体动作不是元组（只有单一动作），改成元组
-                for i in range(3):
-                    if not isinstance(all_actions[i], tuple):
-                        all_actions[i] = (all_actions[i], 0, 0)
+                # 如果其他智能体动作不是元组（只有单一动作），改成list
+                for i in range(4):
+                    if not isinstance(all_actions[i], list):
+                        all_actions[i] = [all_actions[i], 0, 0]
 
-                data = _djikstra_act(whole_obs[train_idx], data)
-                data = (data, 0, 0)
+                # data = _djikstra_act(whole_obs[train_idx], data)  # v4 则取消_djikstra
+                # data = all_actions[i] = get_modify_act(whole_obs[train_idx], data)
+                data = [data, 0, 0]
                 all_actions[train_idx] = data  # 当前训练的 agent 的动作也加进来
                 whole_obs, whole_rew, done, info = env.step(all_actions)  # 得到所有 agent 的四元组
                 rew = whole_rew[train_idx]  # 得到训练智能体的当前步的 reward
@@ -37,7 +38,7 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                 # 判断智能体是否死亡, 死亡则结束，并将奖励设置为-1
                 if not done and not env._agents[train_idx].is_alive:
                     done = True
-                    rew = -1
+                    rew = rew - 1
 
                 if done:  # 如果结束, 重新开一把
                     info['terminal_observation'] = whole_obs  # 保存终结的 observation，否则 reset 后将丢失

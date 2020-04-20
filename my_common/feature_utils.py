@@ -32,6 +32,37 @@ def extra_goal(goal_abs, obs=None):
                 return (r, c)
 
 
+def extra_position(item, board):
+    for r in range(0, 11):
+        for c in range(0, 11):
+            if board[(r, c)] == item:
+                return (r, c)
+    return None
+
+
+# up, down, left, right
+# [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+def get_my_bomb_life(bomb_life, my_position):
+    q = queue.Queue()
+    q.put(my_position)
+    used_position = []
+    my_bomb_life = np.zeros(shape=(11, 11))
+    current_bomb_life = bomb_life[my_position]
+    if current_bomb_life > 0:
+        while not q.empty():
+            position = q.get()
+            my_r, my_c = position
+            for act in [(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)]:
+                r = act[0] + my_r
+                c = act[1] + my_c
+                if 0 <= r <= 10 and 0 <= c <= 10 and (r, c) not in used_position:
+                    if bomb_life[(r, c)] == current_bomb_life:
+                        q.put((r, c))
+                        my_bomb_life[(r, c)] = bomb_life[(r, c)]
+                        used_position.append((r, c))
+    return my_bomb_life
+
+
 def _djikstra_act(obs_nf, goal_abs, exclude=None):
     if goal_abs == 121:
         return 5
@@ -101,21 +132,21 @@ def _djikstra_act(obs_nf, goal_abs, exclude=None):
 
 
 def get_act_abs(obs, action):
-    count = 1000
     if action == 5:
         return 121
+
+    r, c = obs['position']
+    act_abs = r * 11 + c
+    if action == 0:
+        return act_abs
+
+    count = 1000
     while count > 0:
         rand_act_obs = random.randint(0, 120)
         if _djikstra_act(obs_nf=obs, goal_abs=rand_act_obs) == action:
             return rand_act_obs
         count -= 1
-    print()
-    print('*******Problem')
-    print('action', action)
-    print(obs['board'])
-    r, c = obs['position']
-    act_abs = r * 11 + c
-    print('act_abs', act_abs)
+
     return act_abs
 
 
@@ -332,7 +363,7 @@ def get_bomb_life(obs_nf):
     return bomb_life
 
 
-def get_modify_act(obs, act, prev, info=False, nokick=True):
+def get_modify_act(obs, act, prev=[None, None], info=False, nokick=True):
     valid_actions = get_filtered_actions(obs.copy(), prev_two_obs=prev, nokick=nokick)
     if act not in valid_actions:
         if info:

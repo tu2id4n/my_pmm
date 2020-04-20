@@ -8,26 +8,28 @@ def _play():
     print('----------------------------------------------')
     print('|                  P L A Y                   |')
     print('----------------------------------------------')
-    env_id = 'PommeRadioCompetition-v3'
+    env_id = 'PommeRadioCompetition-v4'
     env = make_env(env_id)
-    using_prune = False
-
-    if using_prune:
-        prune_agnets = [0, 1, 2, 3]  # 哪些智能体使用剪枝
-        nokicks = [False, False, False, False]  # 调整是否使用kick
-        print('prune_agents = ', prune_agnets)
-        print('nokicks', nokicks)
 
     model_type = 'ppo'
-    vb = True
+    vb = False
     pretrain = False
-    # model_path0 = 'models/test/pgn_v1_simple_0k.zip'
-    model_path0 = 'models/pretrain_v2/pgn_v2_e1.zip'
+    model_path0 = 'models/test/v4_stop_230k.zip'
+    # model_path0 = 'models/pretrain_v3/pgn_v3_e79.zip'
+    # model_path0 = None
     model_path1 = None
+    # model_path2 = 'models/pretrain_v3/pgn_v3_e79.zip'
     model_path2 = None
     model_path3 = None
     model_paths = [model_path0, model_path1, model_path2, model_path3]
     models = get_load_models(model_type, model_paths)
+
+    using_prune = False
+    if using_prune:
+        prune_agnets = [0, 1, 2, 3]  # 哪些智能体使用剪枝
+        nokicks = [True, True, True, True]  # 调整是否使用kick
+        print('prune_agents = ', prune_agnets)
+        print('nokicks', nokicks)
 
     for episode in range(100):
         obs = env.reset()
@@ -48,7 +50,8 @@ def _play():
                         goal_abs = extra_goal(action_abs, obs[i])
                         print_info('action_obs', action_abs, vb)
                         print_info('goal_obs', goal_abs, vb)
-                        action = _djikstra_act(obs[i], action_abs)
+                        # action = _djikstra_act(obs[i], action_abs)
+                        action = action_abs
                     if type(action) == list:
                         action = action[0]
                     print_info('action', action, vb)
@@ -61,7 +64,7 @@ def _play():
             # Use prune
             if using_prune:
                 for i in prune_agnets:
-                    all_actions[i] = get_modify_act(obs[i], all_actions[i], prev2s[i], nokick=nokicks[i])
+                    all_actions[i] = get_modify_act(obs[i], all_actions[i]) #, prev2s[i], nokick=nokicks[i])
                     prev2s[i] = get_prev2obs(prev2s[i], obs[i])
 
             # 修正为适应通信的动作

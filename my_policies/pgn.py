@@ -111,7 +111,8 @@ class PGNPolicy(ActorCriticPolicy):
             print('----------------------------------------------')
             # print("No old networks")
             """CNN提取后的特征"""
-            if old_params:
+            using_pgn = True
+            if using_pgn and old_params:
                 print('Num of pre networks:', len(old_params))
                 extracted_features, sum_fc1 = custom_cnn_pgn(self.processed_obs, old_params=old_params, **kwargs)
                 extracted_features = tf.layers.flatten(extracted_features)

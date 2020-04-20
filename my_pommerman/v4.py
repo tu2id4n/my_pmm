@@ -14,6 +14,7 @@ from pommerman.envs import v0
 from my_pommerman import make_board_v3, make_items_v3
 from my_pommerman import reward_shaping
 import copy
+from my_common import feature_utils
 
 
 class Pomme(v0.Pomme):
@@ -89,8 +90,7 @@ class Pomme(v0.Pomme):
 
     def reset(self):
         assert (self._agents is not None)
-        self.position_trav = set()
-        self.acttion_pre = None
+        self.act_abs_pre = None
         if self._init_game_state is not None:
             self.set_json_info()
         else:
@@ -106,14 +106,12 @@ class Pomme(v0.Pomme):
                 col = pos[1][0]
                 agent.set_start_position((row, col))
                 agent.reset()
-        self.position_trav.add(self.get_observations()[0]['position'])
         return self.get_observations()
 
     def step(self, actions):
-        self.action_pre = actions[0][0]
+        self.act_abs_pre = actions[0][0]
         self.obs_pre = copy.deepcopy(self.get_observations())
-        # actions[0][0] = feature_utils._djikstra_act(self.obs_pre, self.act_abs_pre)
-        # print(self.position_trav)
+        actions[0][0] = feature_utils._djikstra_act(self.obs_pre[0], self.act_abs_pre)
 
         personal_actions = []
         radio_actions = []
@@ -150,7 +148,6 @@ class Pomme(v0.Pomme):
         obs = self.get_observations()
         reward = self._get_rewards()
         info = self._get_info(done, reward)
-        self.position_trav.add(obs[0]['position'])  # 添加 agent0 已访问过的位置
         if done:
             # Callback to let the agents know that the game has ended.
             for agent in self._agents:
@@ -160,7 +157,7 @@ class Pomme(v0.Pomme):
         return obs, reward, done, info
 
     def _get_rewards(self):
-        return reward_shaping.get_rewards_v3_5(self._agents, self._step_count, self._max_steps, self.obs_pre, self.get_observations(), self.position_trav, self.action_pre)
+        return reward_shaping.get_rewards_v3_6(self._agents, self._step_count, self._max_steps, self.obs_pre, self.get_observations(), self.act_abs_pre)
 
     @staticmethod
     def featurize(obs):

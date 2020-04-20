@@ -12,6 +12,7 @@ import numpy as np
 
 from pommerman import constants
 from pommerman.utility import *
+import copy
 
 
 def position_is_passable(board, position, enemies):
@@ -170,3 +171,4 @@ def make_items_v3(board, num_items):
         ]).value
         num_items -= 1
     return item_positions
+
