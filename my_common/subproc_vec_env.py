@@ -38,7 +38,7 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                 # 判断智能体是否死亡, 死亡则结束，并将奖励设置为-1
                 if not done and not env._agents[train_idx].is_alive:
                     done = True
-                    rew = rew - 1
+                    # rew = rew - 1
 
                 if done:  # 如果结束, 重新开一把
                     info['terminal_observation'] = whole_obs  # 保存终结的 observation，否则 reset 后将丢失

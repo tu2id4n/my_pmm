@@ -12,9 +12,9 @@ def _play():
     env = make_env(env_id)
 
     model_type = 'ppo'
-    vb = False
+    vb = True
     pretrain = False
-    model_path0 = 'models/test/v4_stop_230k.zip'
+    model_path0 = 'models/failure/v0_400k.zip'
     # model_path0 = 'models/pretrain_v3/pgn_v3_e79.zip'
     # model_path0 = None
     model_path1 = None
@@ -54,8 +54,8 @@ def _play():
                         action = action_abs
                     if type(action) == list:
                         action = action[0]
-                    print_info('action', action, vb)
-                    print_info('model' + str(i) + ' action: ', action, vb)
+                    # print_info('action', action, vb)
+                    # print_info('model' + str(i) + ' action: ', action, vb)
                     # if action == 3:
                     #     action = random.randint(0, 5)
                     all_actions[i] = action
