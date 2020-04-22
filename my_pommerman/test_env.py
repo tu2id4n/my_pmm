@@ -16,6 +16,7 @@ def main():
     # Create a set of agents (exactly four)
     agent_list = [
         RandAgent(),
+        # agents.SimpleAgent(),
         agents.SimpleAgent(),
         agents.SimpleAgent(),
         agents.SimpleAgent(),
@@ -32,10 +33,10 @@ def main():
         done = False
         while not done:
             actions = env.act(state)
+            print(actions[0])
             actions[0] = [actions[0], 1, 1]
             state, reward, done, info = env.step(actions)
             # bomb_life = feature_utils.get_bomb_life(state[0])
-            # print(actions[0])
             # obs = featurize(state[0], env.position_trav)
             env.render()
             # print(reward)

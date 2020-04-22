@@ -16,6 +16,8 @@ def _worker(remote, parent_remote, env_fn_wrapper):
     env = env_fn_wrapper.var()
     # TODO:记得设置训练智能体的 index
     train_idx = 0  # 设置训练的 agent 的 index
+    enemies = [(train_idx + 1) % 4, (train_idx + 3) % 4]
+    enemies.sort()
     while True:
         try:
             cmd, data = remote.recv()
@@ -38,10 +40,14 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                 # 判断智能体是否死亡, 死亡则结束，并将奖励设置为-1
                 if not done and not env._agents[train_idx].is_alive:
                     done = True
+                    info['result'] = constants.Result.Loss
+                    info['winners'] = enemies
                     # rew = rew - 1
 
                 if done:  # 如果结束, 重新开一把
                     info['terminal_observation'] = whole_obs  # 保存终结的 observation，否则 reset 后将丢失
+                    if info['winners'] == enemies:
+                        info = constants.Result.Loss
                     whole_obs = env.reset()  # 重新开一把
 
                 obs = featurize(whole_obs[train_idx])

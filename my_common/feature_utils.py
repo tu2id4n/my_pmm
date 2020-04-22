@@ -9,6 +9,11 @@ import queue
 from my_pommerman import position_is_passable
 
 
+def print_info(info, vb=True):
+    if vb:
+        print(info)
+
+
 def get_observertion_space():
     return spaces.Box(low=0, high=1, shape=(11, 11, 30))
 
@@ -63,7 +68,12 @@ def get_my_bomb_life(bomb_life, my_position):
     return my_bomb_life
 
 
-def _djikstra_act(obs_nf, goal_abs, exclude=None):
+def _djikstra_act(obs_nf, goal_abs):
+    return _djikstra_act_v1(obs_nf, goal_abs)
+    # return _djikstra_act_v2(obs_nf, goal_abs)
+
+
+def _djikstra_act_v1(obs_nf, goal_abs, exclude=None):
     if goal_abs == 121:
         return 5
 
@@ -129,6 +139,120 @@ def _djikstra_act(obs_nf, goal_abs, exclude=None):
             return count
         count += 1
     return 0
+
+
+def _djikstra_act_v2(obs_nf, goal_abs, exclude=None):
+    # 放炸弹
+    if goal_abs == 121:
+        print_info('释放炸弹')
+        return 5
+
+    # 停止在原地
+    my_position = tuple(obs_nf['position'])
+    goal = extra_goal(goal_abs)
+    if goal == my_position:
+        print_info('停在原地')
+        return 0
+
+    board = np.array(obs_nf['board'])
+    enemies = [constants.Item(e) for e in obs_nf['enemies']]
+
+    if exclude is None:
+        exclude = [
+            constants.Item.Rigid,
+            constants.Item.Wood,
+        ]
+
+    dist = {}
+    prev = {}
+    Q = queue.Queue()
+
+    # my_x, my_y = my_position
+    for r in range(0, 11):
+        for c in range(0, 11):
+            position = (r, c)
+
+            if any([utility.position_in_items(board, position, exclude)]):
+                continue
+
+            prev[position] = None
+
+            if position == my_position:
+                Q.put(position)
+                dist[position] = 0
+            else:
+                dist[position] = np.inf
+
+    while not Q.empty():
+        position = Q.get()
+
+        if position_is_passable(board, position, enemies):
+            x, y = position
+            val = dist[(x, y)] + 1
+            for row, col in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                new_position = (row + x, col + y)
+                if new_position not in dist:
+                    continue
+
+                if val < dist[new_position]:
+                    dist[new_position] = val
+                    prev[new_position] = position
+                    Q.put(new_position)
+                elif val == dist[new_position] and random.random() < .5:
+                    dist[new_position] = val
+                    prev[new_position] = position
+
+    row_g, col_g = goal
+    my_x, my_y = my_position
+    up = (-1, 0)
+    down = (1, 0)
+    left = (0, -1)
+    right = (0, 1)
+    # 判断goal是否可以达到
+    while goal in dist and prev[goal] != my_position:
+        goal = prev[goal]
+
+    legal_act = []
+    # 无法到达有效目的
+    if goal not in dist:
+        # 可以向下行走
+        if row_g > my_x:
+            if isLegal_act(obs_nf, down): legal_act.append(2)
+        elif row_g < my_x:
+            if isLegal_act(obs_nf, up): legal_act.append(1)
+        # 可以向右行走
+        if col_g > my_x:
+            if isLegal_act(obs_nf, right): legal_act.append(4)
+        elif col_g < my_x:
+            if isLegal_act(obs_nf, left): legal_act.append(3)
+        if legal_act:
+            print_info('无法到达目的地，但是向此方向移动')
+            return random.choice(legal_act)
+    # 可以达到的目的
+    else:
+        count = 1
+        for act_to in [up, down, left, right]:
+            row, col = act_to
+            if goal == (my_x + row, my_y + col):
+                print_info('向目的地移动')
+                return count
+            count += 1
+    print_info('非法的移动动作')
+    return 0
+
+
+def isLegal_act(obs_nf, act_to):
+    my_x, my_y = obs_nf['position']
+    row, col = act_to
+    passage = constants.Item.Passage.value
+    bomb = constants.Item.Passage.value
+    if obs_nf['can_kick']:
+        return obs_nf['board'][(my_x + row, my_y + col)] in [bomb, passage]
+    else:
+        # print(obs_nf['board'][(my_x + row, my_y + col)])
+        # print(passage)
+        # print(obs_nf['board'][(my_x + row, my_y + col)] == passage)
+        return obs_nf['board'][(my_x + row, my_y + col)] == passage
 
 
 def get_act_abs(obs, action):
