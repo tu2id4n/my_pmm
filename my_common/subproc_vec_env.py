@@ -49,7 +49,7 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                     info['terminal_observation'] = whole_obs  # 保存终结的 observation，否则 reset 后将丢失
                     # if info['winners'] == enemies:
                     #     info = constants.Result.Loss
-                    if info['winners'] == teammates:
+                    if info['result'] == constants.Result.Win and info['winners'] == teammates:
                         win_rate = 1
                     whole_obs = env.reset()  # 重新开一把
 
