@@ -17,6 +17,7 @@ from my_common import get_observertion_space, get_action_space
 # from my_common import get_modify_act, get_prev2obs
 # import random
 from my_baselines import ActorCriticRLModel, SetVerbosity, TensorboardWriter
+from my_common import total_win_rate_logger
 
 
 class PPO2(ActorCriticRLModel):
@@ -105,6 +106,7 @@ class PPO2(ActorCriticRLModel):
         self.observation_space = get_observertion_space()
         self.action_space = get_action_space()
         self.old_params = []
+        self.win_rate = None
         # self.pre_action_ph = tf.placeholder(dtype=tf.int32, shape=[None]+[], name='pre_action_ph')
 
         if _init_setup_model:
@@ -324,7 +326,7 @@ class PPO2(ActorCriticRLModel):
 
         print("num timesteps = " + str(int(total_timesteps / 1000000)) + 'm')
         # print("num_envs = ", self.num_envs)
-        print("save_interval = " + str(int(save_interval/1000)) + 'k')
+        print("save_interval = " + str(int(save_interval / 1000)) + 'k')
         print()
         save_interval_st = save_interval
         self.gamma = gamma
@@ -342,6 +344,7 @@ class PPO2(ActorCriticRLModel):
 
             runner = Runner(env=self.env, model=self, n_steps=self.n_steps, gamma=self.gamma, lam=self.lam)
             self.episode_reward = np.zeros((self.n_envs,))
+            self.win_rate = np.zeros((self.n_envs,))
 
             ep_info_buf = deque(maxlen=100)
             t_first_start = time.time()
@@ -402,6 +405,10 @@ class PPO2(ActorCriticRLModel):
                                                                       true_reward.reshape((self.n_envs, self.n_steps)),
                                                                       masks.reshape((self.n_envs, self.n_steps)),
                                                                       writer, self.num_timesteps)
+                    self.win_rate = total_win_rate_logger(self.win_rate,
+                                                                ep_infos.reshape((self.n_envs, self.n_steps)),
+                                                                masks.reshape((self.n_envs, self.n_steps)),
+                                                                writer, self.num_timesteps)
 
                 if self.verbose >= 1 and (update % log_interval == 0 or update == 1):
                     explained_var = explained_variance(values, returns)
@@ -650,10 +657,11 @@ class Runner(AbstractEnvRunner):
             if isinstance(self.env.action_space, gym.spaces.Box):
                 clipped_actions = np.clip(actions, self.env.action_space.low, self.env.action_space.high)
             self.obs[:], rewards, self.dones, infos = self.env.step(clipped_actions)
-            for info in infos:
-                maybe_ep_info = info.get('episode')
-                if maybe_ep_info is not None:
-                    ep_infos.append(maybe_ep_info)
+            # for info in infos:
+            #     maybe_ep_info = info.get('episode')
+            #     if maybe_ep_info is not None:
+            #         ep_infos.append(maybe_ep_info)
+            ep_infos.append(infos)
             mb_rewards.append(rewards)
         # batch of steps to batch of rollouts
         mb_obs = np.asarray(mb_obs, dtype=self.obs.dtype)

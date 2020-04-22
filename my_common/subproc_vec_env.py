@@ -8,7 +8,6 @@ from stable_baselines.common.vec_env import VecEnv, CloudpickleWrapper
 from stable_baselines.common.tile_images import tile_images
 
 from my_common.feature_utils import *
-from my_common.feature_utils import _djikstra_act
 
 
 def _worker(remote, parent_remote, env_fn_wrapper):
@@ -16,6 +15,8 @@ def _worker(remote, parent_remote, env_fn_wrapper):
     env = env_fn_wrapper.var()
     # TODO:记得设置训练智能体的 index
     train_idx = 0  # 设置训练的 agent 的 index
+    teammates = [train_idx, (train_idx + 2) % 4]
+    teammates.sort()
     enemies = [(train_idx + 1) % 4, (train_idx + 3) % 4]
     enemies.sort()
     while True:
@@ -36,23 +37,25 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                 all_actions[train_idx] = data  # 当前训练的 agent 的动作也加进来
                 whole_obs, whole_rew, done, info = env.step(all_actions)  # 得到所有 agent 的四元组
                 rew = whole_rew[train_idx]  # 得到训练智能体的当前步的 reward
-
+                win_rate = 0  # 输出胜率
                 # 判断智能体是否死亡, 死亡则结束，并将奖励设置为-1
                 if not done and not env._agents[train_idx].is_alive:
                     done = True
-                    info['result'] = constants.Result.Loss
-                    info['winners'] = enemies
+                    # info['result'] = constants.Result.Loss
+                    # info['winners'] = enemies
                     # rew = rew - 1
 
                 if done:  # 如果结束, 重新开一把
                     info['terminal_observation'] = whole_obs  # 保存终结的 observation，否则 reset 后将丢失
-                    if info['winners'] == enemies:
-                        info = constants.Result.Loss
+                    # if info['winners'] == enemies:
+                    #     info = constants.Result.Loss
+                    if info['winners'] == teammates:
+                        win_rate = 1
                     whole_obs = env.reset()  # 重新开一把
 
                 obs = featurize(whole_obs[train_idx])
 
-                remote.send((obs, rew, done, info))
+                remote.send((obs, rew, done, win_rate))
                 # remote.send((obs, rew, done, info, whole_obs[train_idx]))
 
             elif cmd == 'reset':
@@ -149,7 +152,7 @@ class SubprocVecEnv(VecEnv):
         results = [remote.recv() for remote in self.remotes]
         self.waiting = False
         obs, rews, dones, infos = zip(*results)
-        return _flatten_obs(obs, self.observation_space), np.stack(rews), np.stack(dones), infos
+        return _flatten_obs(obs, self.observation_space), np.stack(rews), np.stack(dones), np.stack(infos)
 
     def reset(self):
         for remote in self.remotes:

@@ -1,5 +1,5 @@
 import pommerman
-from my_agents import *
+import my_agents
 from pommerman import agents
 from my_policies import PGNPolicy, ResNetPolicy
 from my_baselines import PPO2, DQN
@@ -12,13 +12,14 @@ def print_info(name, info, verbose=False):
 
 
 agent_list = [
-    StopAgent(),
+    my_agents.StopAgent(),
     agents.SimpleAgent(),
     agents.SimpleAgent(),
     agents.SimpleAgent(),
     # hit18Agent('1'),
     # hit18Agent('3')
 ]
+
 
 def make_env(env_id):
     print('env = ', env_id)
