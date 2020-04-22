@@ -432,7 +432,7 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
                             print_info('bomb波及到敌人', '+0.2')
                         if obs_pre['board'][(r, c)] in [incrrange, extrabomb, kick]:
                             reward -= 0.1
-                            print_info('bomb波及powerup')
+                            print_info('bomb波及powerup', '-0.1')
             if nothing:
                 reward -= 0.2
                 print_info('空放炸弹', '-0.2')

@@ -20,6 +20,8 @@ def main():
         agents.SimpleAgent(),
         agents.SimpleAgent(),
         agents.SimpleAgent(),
+        # agents.PlayerAgent(agent_control="arrows"),  # arrows to move, space to lay bomb
+        # agents.PlayerAgent(agent_control="wasd"),  # W,A,S,D to move, E to lay bomb
         # agents.DockerAgent("pommerman/simple-agent", port=12345),
     ]
     # Make the "Free-For-All" environment using the agent list

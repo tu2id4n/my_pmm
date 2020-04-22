@@ -157,7 +157,7 @@ class Pomme(v0.Pomme):
         return obs, reward, done, info
 
     def _get_rewards(self):
-        return reward_shaping.get_rewards_v3_6(self._agents, self._step_count, self._max_steps, self.obs_pre, self.get_observations(), self.act_abs_pre)
+        return reward_shaping.get_rewards_v3_7(self._agents, self._step_count, self._max_steps, self.obs_pre, self.get_observations(), self.act_abs_pre)
 
     @staticmethod
     def featurize(obs):

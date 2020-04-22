@@ -69,8 +69,8 @@ def get_my_bomb_life(bomb_life, my_position):
 
 
 def _djikstra_act(obs_nf, goal_abs):
-    return _djikstra_act_v1(obs_nf, goal_abs)
-    # return _djikstra_act_v2(obs_nf, goal_abs)
+    # return _djikstra_act_v1(obs_nf, goal_abs)
+    return _djikstra_act_v2(obs_nf, goal_abs)
 
 
 def _djikstra_act_v1(obs_nf, goal_abs, exclude=None):
@@ -246,13 +246,16 @@ def isLegal_act(obs_nf, act_to):
     row, col = act_to
     passage = constants.Item.Passage.value
     bomb = constants.Item.Passage.value
-    if obs_nf['can_kick']:
-        return obs_nf['board'][(my_x + row, my_y + col)] in [bomb, passage]
+    if 0 <= my_x + row <= 10 and 0 <= my_y + col <= 10:
+        if obs_nf['can_kick']:
+            return obs_nf['board'][(my_x + row, my_y + col)] in [bomb, passage]
+        else:
+            # print(obs_nf['board'][(my_x + row, my_y + col)])
+            # print(passage)
+            # print(obs_nf['board'][(my_x + row, my_y + col)] == passage)
+            return obs_nf['board'][(my_x + row, my_y + col)] == passage
     else:
-        # print(obs_nf['board'][(my_x + row, my_y + col)])
-        # print(passage)
-        # print(obs_nf['board'][(my_x + row, my_y + col)] == passage)
-        return obs_nf['board'][(my_x + row, my_y + col)] == passage
+        return False
 
 
 def get_act_abs(obs, action):

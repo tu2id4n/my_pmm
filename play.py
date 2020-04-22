@@ -48,8 +48,8 @@ def _play():
                     else:
                         action_abs, _states = models[i].predict(feature_obs)
                         goal_abs = feature_utils.extra_goal(action_abs, obs[i])
-                        utils.print_info('action_obs', action_abs, vb)
-                        utils.print_info('goal_obs', goal_abs, vb)
+                        # utils.print_info('action_obs', action_abs, vb)
+                        # utils.print_info('goal_obs', goal_abs, vb)
                         # action = _djikstra_act(obs[i], action_abs)
                         action = action_abs
                     if type(action) == list:
@@ -78,7 +78,7 @@ def _play():
                 done = True
             # print(all_actions[0])
             # print('reward', rew)
-            print()
+            # print()
         print(info)
         print('total_reward', total_reward)
     env.close()
