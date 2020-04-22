@@ -42,7 +42,7 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                 if not done and not env._agents[train_idx].is_alive:
                     done = True
                     # info['result'] = constants.Result.Loss
-                    # info['winners'] = enemies
+                    info['winners'] = enemies
                     # rew = rew - 1
 
                 if done:  # 如果结束, 重新开一把

@@ -417,9 +417,9 @@ class PPO2(ActorCriticRLModel):
                     logger.logkv("total_timesteps", self.num_timesteps)
                     logger.logkv("fps", fps)
                     logger.logkv("explained_variance", float(explained_var))
-                    if len(ep_info_buf) > 0 and len(ep_info_buf[0]) > 0:
-                        logger.logkv('ep_reward_mean', safe_mean([ep_info['r'] for ep_info in ep_info_buf]))
-                        logger.logkv('ep_len_mean', safe_mean([ep_info['l'] for ep_info in ep_info_buf]))
+                    # if len(ep_info_buf) > 0 and len(ep_info_buf[0]) > 0:
+                    #     logger.logkv('ep_reward_mean', safe_mean([ep_info['r'] for ep_info in ep_info_buf]))
+                    #     logger.logkv('ep_len_mean', safe_mean([ep_info['l'] for ep_info in ep_info_buf]))
                     logger.logkv('time_elapsed', t_start - t_first_start)
                     for (loss_val, loss_name) in zip(loss_vals, self.loss_names):
                         logger.logkv(loss_name, loss_val)
@@ -674,6 +674,7 @@ class Runner(AbstractEnvRunner):
         # discount/bootstrap off value fn
         mb_advs = np.zeros_like(mb_rewards)
         true_reward = np.copy(mb_rewards)
+        ep_infos = np.array(ep_infos)
         last_gae_lam = 0
         for step in reversed(range(self.n_steps)):
             if step == self.n_steps - 1:
@@ -686,8 +687,8 @@ class Runner(AbstractEnvRunner):
             mb_advs[step] = last_gae_lam = delta + self.gamma * self.lam * nextnonterminal * last_gae_lam
         mb_returns = mb_advs + mb_values
 
-        mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward = \
-            map(swap_and_flatten, (mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward))
+        mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward, ep_infos = \
+            map(swap_and_flatten, (mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward, ep_infos))
 
         return mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, mb_states, ep_infos, true_reward
 

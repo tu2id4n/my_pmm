@@ -11,18 +11,17 @@ def print_info(name, info, verbose=False):
         print(name, info)
 
 
-agent_list = [
-    my_agents.StopAgent(),
-    agents.SimpleAgent(),
-    agents.SimpleAgent(),
-    agents.SimpleAgent(),
-    # hit18Agent('1'),
-    # hit18Agent('3')
-]
-
 
 def make_env(env_id):
     print('env = ', env_id)
+    agent_list = [
+        my_agents.StopAgent(),
+        agents.SimpleAgent(),
+        agents.SimpleAgent(),
+        agents.SimpleAgent(),
+        # hit18Agent('1'),
+        # hit18Agent('3')
+    ]
     env = pommerman.make(env_id, agent_list)
     return env
 
@@ -31,6 +30,14 @@ def make_envs(env_id):
     print('env = ', env_id)
 
     def _thunk():
+        agent_list = [
+            my_agents.StopAgent(),
+            agents.SimpleAgent(),
+            agents.SimpleAgent(),
+            agents.SimpleAgent(),
+            # hit18Agent('1'),
+            # hit18Agent('3')
+        ]
         env = pommerman.make(env_id, agent_list)
         return env
 

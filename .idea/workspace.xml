@@ -3,13 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="a06fd0df-76e2-40ba-860c-97824a54f2d9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_agents/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_agents/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_agents/random_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_agents/random_agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_agents/stop_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_agents/stop_agent.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_baselines/ppo2.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_baselines/ppo2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_common/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_common/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_common/subproc_vec_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_common/subproc_vec_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pommerman/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pommerman/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,7 +19,7 @@
     <SUITE FILE_PATH="coverage/my_pmm$sac.coverage" NAME="sac Coverage Results" MODIFIED="1587543621114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/stable_baselines/sac" />
     <SUITE FILE_PATH="coverage/my_pmm$pretrain_v1.coverage" NAME="pretrain Coverage Results" MODIFIED="1587321607195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$pretrain.coverage" NAME="pretrain Coverage Results" MODIFIED="1574650770050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/my_pmm$run_loacl.coverage" NAME="run_loacl Coverage Results" MODIFIED="1587561146478" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/my_pmm$run_loacl.coverage" NAME="run_loacl Coverage Results" MODIFIED="1587563657306" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$run_server.coverage" NAME="run_server Coverage Results" MODIFIED="1587558425920" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$run.coverage" NAME="run_server Coverage Results" MODIFIED="1587200665693" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$play.coverage" NAME="play Coverage Results" MODIFIED="1587558045409" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -51,7 +47,7 @@
           <entry key="evaluate_hit18_prune" value="11" />
           <entry key="md" value="17" />
           <entry key="png" value="1" />
-          <entry key="py" value="677" />
+          <entry key="py" value="690" />
           <entry key="pyi" value="3" />
           <entry key="txt" value="86" />
         </counts>
@@ -61,7 +57,7 @@
           <entry key="Image" value="1" />
           <entry key="Markdown" value="17" />
           <entry key="PLAIN_TEXT" value="97" />
-          <entry key="Python" value="677" />
+          <entry key="Python" value="690" />
           <entry key="PythonStub" value="3" />
         </counts>
       </usages-collector>
@@ -70,7 +66,7 @@
           <entry key="Python Console" value="245" />
           <entry key="dummy" value="56" />
           <entry key="md" value="632" />
-          <entry key="py" value="24271" />
+          <entry key="py" value="24298" />
           <entry key="txt" value="68" />
         </counts>
       </usages-collector>
@@ -78,18 +74,30 @@
         <counts>
           <entry key="Markdown" value="632" />
           <entry key="PLAIN_TEXT" value="124" />
-          <entry key="Python" value="24516" />
+          <entry key="Python" value="24543" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/my_baselines/ppo2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="308">
+              <caret line="676" column="37" lean-forward="true" selection-start-line="676" selection-start-column="37" selection-end-line="676" selection-end-column="37" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/my_common/feature_utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-119">
-              <caret line="49" column="10" selection-start-line="49" selection-start-column="4" selection-end-line="49" selection-end-column="10" />
+            <state relative-caret-position="195">
+              <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
                 <marker date="1587529186583" expanded="true" signature="276:310" ph="..." />
@@ -104,22 +112,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/my_pommerman/reward_shaping.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6935">
-              <caret line="481" column="4" lean-forward="true" selection-start-line="481" selection-start-column="4" selection-end-line="481" selection-end-column="4" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="33" column="26" lean-forward="true" selection-start-line="33" selection-start-column="26" selection-end-line="33" selection-end-column="26" />
+            <state relative-caret-position="873">
+              <caret line="40" column="38" selection-start-line="40" selection-start-column="38" selection-end-line="40" selection-end-column="38" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
               </folding>
@@ -127,20 +123,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pommerman/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="35" column="25" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="438">
-              <caret line="22" column="20" lean-forward="true" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
+            <state relative-caret-position="342">
+              <caret line="20" column="22" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
                 <marker date="1587050814977" expanded="true" signature="183:185" ph="..." />
@@ -152,8 +139,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/my_common/subproc_vec_env.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="145">
-              <caret line="141" selection-start-line="141" selection-end-line="141" />
+            <state relative-caret-position="274">
+              <caret line="44" column="43" selection-start-line="44" selection-start-column="43" selection-end-line="44" selection-end-column="43" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -164,41 +151,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pommerman/agents/base_agent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="129">
-              <caret line="8" column="12" lean-forward="true" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/my_agents/stop_agent.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="8" selection-end-column="56" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/my_agents/random_agent.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="8" column="35" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
-              <folding>
-                <element signature="e#55#93#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/my_agents/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-              <folding>
-                <element signature="e#0#33#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="241">
+              <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -214,8 +168,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>self.act_a</find>
-      <find>self._proba_distribution</find>
       <find>se</find>
       <find>self.position</find>
       <find>get_bomb</find>
@@ -243,7 +195,9 @@
       <find>self.episode_reward</find>
       <find>ep_infos</find>
       <find>info</find>
+      <find>total_win_rate_logger</find>
       <find>get_my</find>
+      <find>true_reward</find>
     </findStrings>
     <replaceStrings>
       <replace>model3</replace>
@@ -302,14 +256,14 @@
         <option value="$PROJECT_DIR$/my_pommerman/utility.py" />
         <option value="$PROJECT_DIR$/my_pommerman/reward_shaping.py" />
         <option value="$PROJECT_DIR$/my_common/model_utils.py" />
-        <option value="$PROJECT_DIR$/my_common/__init__.py" />
-        <option value="$PROJECT_DIR$/my_baselines/ppo2.py" />
         <option value="$PROJECT_DIR$/my_agents/stop_agent.py" />
-        <option value="$PROJECT_DIR$/my_common/subproc_vec_env.py" />
         <option value="$PROJECT_DIR$/my_agents/__init__.py" />
+        <option value="$PROJECT_DIR$/pommerman/__init__.py" />
+        <option value="$PROJECT_DIR$/my_common/__init__.py" />
         <option value="$PROJECT_DIR$/my_agents/random_agent.py" />
         <option value="$PROJECT_DIR$/utils.py" />
-        <option value="$PROJECT_DIR$/pommerman/__init__.py" />
+        <option value="$PROJECT_DIR$/my_common/subproc_vec_env.py" />
+        <option value="$PROJECT_DIR$/my_baselines/ppo2.py" />
       </list>
     </option>
   </component>
@@ -338,6 +292,11 @@
             <path>
               <item name="my_pmm" type="b2602c69:ProjectViewProjectNode" />
               <item name="my_pmm" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="my_pmm" type="b2602c69:ProjectViewProjectNode" />
+              <item name="my_pmm" type="462c0819:PsiDirectoryNode" />
+              <item name="logs" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="my_pmm" type="b2602c69:ProjectViewProjectNode" />
@@ -470,7 +429,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run.py" />
-      <option name="PARAMETERS" value="--env=PommeRadioCompetition-v2 --model_type=ppo --policy_type=pgn --num_timesteps=1e8 --log_path=logs/ --save_path=models/test/test --save_interval=1e5" />
+      <option name="PARAMETERS" value="--env=PommeRadioCompetition-v4 --model_type=ppo --policy_type=pgn --num_timesteps=1e8 --log_path=logs/ --save_path=models/test/test --save_interval=1e5" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -556,14 +515,14 @@
     <frame x="-282" y="-1080" width="1920" height="1080" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24197002" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.24197002" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info active="true" anchor="bottom" id="Concurrent Activities Diagram" weight="0.32920536" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32953104" />
-      <window_info active="true" anchor="bottom" content_ui="combo" id="Run" order="2" sideWeight="0.49927953" visible="true" weight="0.49329206" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3979721" />
+      <window_info active="true" anchor="bottom" content_ui="combo" id="Run" order="2" sideWeight="0.49892932" visible="true" weight="0.40763673" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3973168" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -572,7 +531,7 @@
       <window_info anchor="bottom" id="File Transfer" order="9" weight="0.13561471" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3282636" />
-      <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.50072044" side_tool="true" weight="0.46514577" />
+      <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5010707" side_tool="true" weight="0.40763673" />
       <window_info anchor="bottom" id="Python Console" order="13" weight="0.32953104" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -641,16 +600,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="39">
-            <caret line="11" column="47" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/convert_dataset.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-73">
@@ -892,20 +841,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/pommerman/lib/python3.6/multiprocessing/connection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="406" selection-start-line="406" selection-end-line="406" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pommerman/agents/simple_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-9">
-          <caret line="25" column="19" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/my_pommerman/test_env.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -913,13 +848,6 @@
           <folding>
             <element signature="e#74#90#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Caches/PyCharm2018.2/python_stubs/1830262374/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="55">
-          <caret line="169" column="4" selection-start-line="169" selection-start-column="4" selection-end-line="169" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -939,29 +867,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my_common/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" column="34" lean-forward="true" selection-start-line="4" selection-start-column="34" selection-end-line="4" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/my_common/model_utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="621">
           <caret line="23" column="30" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
           <folding>
             <element signature="e#2#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/my_baselines/ppo2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="663" column="34" lean-forward="true" selection-start-line="663" selection-start-column="34" selection-end-line="663" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -994,16 +905,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my_common/subproc_vec_env.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="141" selection-start-line="141" selection-end-line="141" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/my_pommerman/reward_shaping.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6935">
@@ -1014,14 +915,67 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run.py">
+    <entry file="file://$PROJECT_DIR$/pommerman/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="438">
-          <caret line="22" column="20" lean-forward="true" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
+        <state relative-caret-position="771">
+          <caret line="35" column="4" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="4" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
-            <marker date="1587050814977" expanded="true" signature="183:185" ph="..." />
+            <element signature="e#44#54#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_common/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+          <folding>
+            <element signature="e#0#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_common/feature_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <marker date="1587529186583" expanded="true" signature="276:310" ph="..." />
+            <marker date="1587529186583" expanded="true" signature="454:2040" ph="..." />
+            <marker date="1587529186583" expanded="true" signature="517:522" ph="..." />
+            <marker date="1587529186583" expanded="true" signature="1161:2040" ph="..." />
+            <marker date="1587529186583" expanded="true" signature="1943:2040" ph="..." />
+            <marker date="1587529186583" expanded="true" signature="6769:7248" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pommerman/agents/random_agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="7" column="37" lean-forward="true" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pommerman/agents/simple_agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/pommerman/lib/python3.6/multiprocessing/connection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="367" selection-start-line="367" selection-end-line="367" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_agents/stop_agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="8" selection-end-column="56" />
         </state>
       </provider>
     </entry>
@@ -1035,60 +989,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my_common/feature_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-119">
-          <caret line="49" column="10" selection-start-line="49" selection-start-column="4" selection-end-line="49" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <marker date="1587529186583" expanded="true" signature="276:310" ph="..." />
-            <marker date="1587529186583" expanded="true" signature="454:2040" ph="..." />
-            <marker date="1587529186583" expanded="true" signature="517:522" ph="..." />
-            <marker date="1587529186583" expanded="true" signature="1161:2040" ph="..." />
-            <marker date="1587529186583" expanded="true" signature="1943:2040" ph="..." />
-            <marker date="1587529186583" expanded="true" signature="6769:7248" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pommerman/agents/base_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="8" column="12" lean-forward="true" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/my_agents/stop_agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="8" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/my_agents/random_agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="35" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
+        <state relative-caret-position="162">
+          <caret line="6" column="77" selection-start-line="6" selection-start-column="77" selection-end-line="6" selection-end-column="77" />
           <folding>
             <element signature="e#55#93#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/PyCharm2018.2/python_stubs/1830262374/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="173" column="39" selection-start-line="173" selection-start-column="39" selection-end-line="173" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pommerman/agents/base_agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="20" column="22" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+            <marker date="1587050814977" expanded="true" signature="183:185" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="33" column="26" lean-forward="true" selection-start-line="33" selection-start-column="26" selection-end-line="33" selection-end-column="26" />
+        <state relative-caret-position="873">
+          <caret line="40" column="38" selection-start-line="40" selection-start-column="38" selection-end-line="40" selection-end-column="38" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pommerman/__init__.py">
+    <entry file="file://$PROJECT_DIR$/my_common/subproc_vec_env.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="35" column="25" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="25" />
+        <state relative-caret-position="274">
+          <caret line="44" column="43" selection-start-line="44" selection-start-column="43" selection-end-line="44" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_baselines/ppo2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="676" column="37" lean-forward="true" selection-start-line="676" selection-start-column="37" selection-end-line="676" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
