@@ -7,3 +7,4 @@ from .subproc_vec_env import SubprocVecEnv
 from .dataset import ExpertDataset
 from .model_utils import total_rate_logger
 from .runners import AbstractEnvRunner
+from .hindsight import HindSightBuffer

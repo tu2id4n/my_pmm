@@ -19,6 +19,7 @@ from my_common import get_observertion_space, get_action_space
 from my_baselines import ActorCriticRLModel, SetVerbosity, TensorboardWriter
 from my_common import total_rate_logger
 from my_common import AbstractEnvRunner
+from my_common import HindSightBuffer
 import copy
 
 
@@ -321,7 +322,7 @@ class PPO2(ActorCriticRLModel):
         return policy_loss, value_loss, policy_entropy, approxkl, clipfrac
 
     def learn(self, total_timesteps, callback=None, seed=None, log_interval=1, tb_log_name="PPO2",
-              reset_num_timesteps=True, save_interval=None, save_path=None, gamma=0.99, n_steps=128):
+              reset_num_timesteps=True, save_interval=None, save_path=None, gamma=0.99, n_steps=128, hindsight=True):
         print('----------------------------------------------')
         print('|                 L E A R N                  |')
         print('----------------------------------------------')
@@ -345,13 +346,14 @@ class PPO2(ActorCriticRLModel):
             self._setup_learn()  # 去掉参数 seed ?
 
             runner = Runner(env=self.env, model=self, n_steps=self.n_steps, gamma=self.gamma, lam=self.lam)
+            hindsight_buffer = HindSightBuffer(self.n_steps, self.gamma, self.lam)
             self.episode_reward = np.zeros((self.n_envs,))
             self.win_rate = np.zeros((self.n_envs,))
             self.tie_rate = np.zeros((self.n_envs,))
             self.loss_rate = np.zeros((self.n_envs,))
             self.first_dead_rate = np.zeros((self.n_envs,))
 
-            ep_info_buf = deque(maxlen=100)
+            # ep_info_buf = deque(maxlen=100)
             t_first_start = time.time()
 
             n_updates = total_timesteps // self.n_batch  # self.n_batch = self.n_envs(8) * self.n_steps(128)
@@ -364,8 +366,13 @@ class PPO2(ActorCriticRLModel):
                 cliprange_now = self.cliprange(frac)
                 cliprange_vf_now = cliprange_vf(frac)
                 # true_reward is the reward without discount
-                obs, returns, masks, actions, values, neglogpacs, states, true_reward, \
-                win_rates, tie_rates, loss_rates, first_dead_rates = runner.run()
+                if hindsight:
+                    obs, returns, masks, actions, values, neglogpacs, states, true_reward, \
+                    win_rates, tie_rates, loss_rates, first_dead_rates, obs_nf = runner.run(
+                        hindsight_buffer=hindsight_buffer)
+                else:
+                    obs, returns, masks, actions, values, neglogpacs, states, true_reward, \
+                    win_rates, tie_rates, loss_rates, first_dead_rates, obs_nf = runner.run()
                 self.num_timesteps += self.n_batch
                 # ep_info_buf.extend(ep_infos)
                 mb_loss_vals = []
@@ -422,15 +429,15 @@ class PPO2(ActorCriticRLModel):
                                                       writer, self.num_timesteps,
                                                       name='tie_rate')
                     self.loss_rate = total_rate_logger(self.loss_rate,
-                                                      loss_rates.reshape((self.n_envs, self.n_steps)),
-                                                      masks.reshape((self.n_envs, self.n_steps)),
-                                                      writer, self.num_timesteps,
-                                                      name='loss_rate')
+                                                       loss_rates.reshape((self.n_envs, self.n_steps)),
+                                                       masks.reshape((self.n_envs, self.n_steps)),
+                                                       writer, self.num_timesteps,
+                                                       name='loss_rate')
                     self.first_dead_rate = total_rate_logger(self.first_dead_rate,
-                                                      first_dead_rates.reshape((self.n_envs, self.n_steps)),
-                                                      masks.reshape((self.n_envs, self.n_steps)),
-                                                      writer, self.num_timesteps,
-                                                      name='first_dead_rate')
+                                                             first_dead_rates.reshape((self.n_envs, self.n_steps)),
+                                                             masks.reshape((self.n_envs, self.n_steps)),
+                                                             writer, self.num_timesteps,
+                                                             name='first_dead_rate')
 
                 if self.verbose >= 1 and (update % log_interval == 0 or update == 1):
                     explained_var = explained_variance(values, returns)
@@ -446,6 +453,51 @@ class PPO2(ActorCriticRLModel):
                     for (loss_val, loss_name) in zip(loss_vals, self.loss_names):
                         logger.logkv(loss_name, loss_val)
                     logger.dumpkvs()
+
+                '''
+                HindSight
+                1: 连续做一个动作获得越来越多reward
+                2: 做一个动作看之后有没有达到这个位置
+                '''
+                if hindsight:
+                    print('-------------｜ hindsigt ｜-------------')
+                    t_start = time.time()
+                    obs, returns, masks, actions, values, neglogpacs = hindsight_buffer.run()
+                    self.num_timesteps += self.n_batch
+                    mb_loss_vals = []
+                    if states is None:  # nonrecurrent version
+                        update_fac = self.n_batch // self.nminibatches // self.noptepochs + 1
+                        inds = np.arange(self.n_batch)
+                        for epoch_num in range(self.noptepochs):
+                            np.random.shuffle(inds)
+                            for start in range(0, self.n_batch, batch_size):
+                                timestep = self.num_timesteps // update_fac + (
+                                        (self.noptepochs * self.n_batch + epoch_num *
+                                         self.n_batch + start) // batch_size)
+                                end = start + batch_size
+                                mbinds = inds[start:end]
+                                slices = (arr[mbinds] for arr in (obs, returns, masks, actions, values, neglogpacs))
+                                mb_loss_vals.append(self._train_step(lr_now, cliprange_now, *slices, writer=writer,
+                                                                     update=timestep, cliprange_vf=cliprange_vf_now))
+
+                    loss_vals = np.mean(mb_loss_vals, axis=0)
+                    t_now = time.time()
+                    fps = int(self.n_batch / (t_now - t_start))
+
+                    if self.verbose >= 1 and (update % log_interval == 0 or update == 1):
+                        explained_var = explained_variance(values, returns)
+                        logger.logkv("serial_timesteps", update * self.n_steps)
+                        logger.logkv("n_updates", update)
+                        logger.logkv("total_timesteps", self.num_timesteps)
+                        logger.logkv("fps", fps)
+                        logger.logkv("explained_variance", float(explained_var))
+                        # if len(ep_info_buf) > 0 and len(ep_info_buf[0]) > 0:
+                        #     logger.logkv('ep_reward_mean', safe_mean([ep_info['r'] for ep_info in ep_info_buf]))
+                        #     logger.logkv('ep_len_mean', safe_mean([ep_info['l'] for ep_info in ep_info_buf]))
+                        logger.logkv('time_elapsed', t_start - t_first_start)
+                        for (loss_val, loss_name) in zip(loss_vals, self.loss_names):
+                            logger.logkv(loss_name, loss_val)
+                        logger.dumpkvs()
 
                 if callback is not None:
                     # Only stop training if return value is False, not when it is None. This is for backwards
@@ -649,7 +701,7 @@ class Runner(AbstractEnvRunner):
         self.lam = lam
         self.gamma = gamma
 
-    def run(self):
+    def run(self, hindsight_buffer=None):
         """
         Run a learning step of the model
 
@@ -694,6 +746,7 @@ class Runner(AbstractEnvRunner):
             mb_rewards.append(rewards)
         # batch of steps to batch of rollouts
         mb_obs = np.asarray(mb_obs, dtype=self.obs.dtype)
+        mb_obs_nf = np.array(mb_obs_nf)
         mb_rewards = np.asarray(mb_rewards, dtype=np.float32)
         mb_actions = np.asarray(mb_actions)
         mb_values = np.asarray(mb_values, dtype=np.float32)
@@ -709,6 +762,10 @@ class Runner(AbstractEnvRunner):
         loss_rates = np.array(loss_rates)
         first_dead_rates = np.array(first_dead_rates)
         last_gae_lam = 0
+
+        if hindsight_buffer is not None:
+            hindsight_buffer.add(mb_obs, mb_dones, mb_actions, mb_values, mb_neglogpacs, mb_rewards, mb_obs_nf,
+                                 last_values, self.dones)
         for step in reversed(range(self.n_steps)):
             if step == self.n_steps - 1:
                 nextnonterminal = 1.0 - self.dones
@@ -716,16 +773,18 @@ class Runner(AbstractEnvRunner):
             else:
                 nextnonterminal = 1.0 - mb_dones[step + 1]
                 nextvalues = mb_values[step + 1]
+            # ∆ = r + 𝛄 * v' - v
             delta = mb_rewards[step] + self.gamma * nextvalues * nextnonterminal - mb_values[step]
+            # adv = ∆ + 𝛄 * lam * adv-pre
             mb_advs[step] = last_gae_lam = delta + self.gamma * self.lam * nextnonterminal * last_gae_lam
         mb_returns = mb_advs + mb_values
         mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward, \
-        win_rates, tie_rates, loss_rates, first_dead_rates = \
+        win_rates, tie_rates, loss_rates, first_dead_rates, mb_obs_nf = \
             map(swap_and_flatten,
                 (mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward, win_rates, tie_rates,
-                 loss_rates, first_dead_rates))
+                 loss_rates, first_dead_rates, mb_obs_nf))
         return mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, mb_states, true_reward, \
-               win_rates, tie_rates, loss_rates, first_dead_rates
+               win_rates, tie_rates, loss_rates, first_dead_rates, mb_obs_nf
 
 
 def get_schedule_fn(value_schedule):
