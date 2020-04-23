@@ -390,6 +390,8 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
     wood = constants.Item.Wood.value
     agent1 = constants.Item.Agent1.value
     agent3 = constants.Item.Agent3.value
+    e11_pre = feature_utils.extra_position(11, obs_pre['board'])
+    e13_pre = feature_utils.extra_position(13, obs_pre['board'])
     e11_now = feature_utils.extra_position(11, obs_now['board'])
     e13_now = feature_utils.extra_position(13, obs_now['board'])
 
@@ -401,6 +403,14 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
     # if e13 is not None and 0 < bomb_life[e13] < 4:
     #     reward += 0.5
     #     print_info('e13被炸死', '+0.5')
+
+    # 敌人从视野中消失:
+    if e11_now is None and e11_pre is not None:
+        reward -= 0.025
+        print_info('敌人e11从视野中消失', '-0.025')
+    if e13_now is None and e13_pre is not None:
+        reward -= 0.025
+        print_info('敌人e13从视野中消失', '-0.025')
 
     # 自己被炸死
     if 0 < bomb_life_now[position_now] < 4:
@@ -439,8 +449,8 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
     # 没有动
     elif act_pre == 0:
         if obs_pre['position'] != goal_pre:
-            reward -= 0.01
-            print_info('无效移动', '-0.01')
+            reward -= 0.05
+            print_info('无效移动', '-0.05')
     # 如果是移动
     else:
         # 有效的移动
@@ -451,6 +461,10 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
             if obs_pre['board'][goal_pre] == bomb:
                 reward += 0.02
                 print_info('踢bomb', '+0.02')
+        # 从安全位置进入到被炸弹波及之中
+        if bomb_life_pre[position_pre] == 0 and bomb_life_now[position_now] > 0:
+            reward -= 0.05
+            print_info('从安全位置进入到bomb波及范围', '-0.05')
         # 被炸弹波及但是在向安全的位置移动
         if bomb_life_pre[position_pre] > 0 and bomb_life_pre[goal_pre] == 0:
             reward += 0.05
