@@ -38,11 +38,16 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                 whole_obs, whole_rew, done, info = env.step(all_actions)  # 得到所有 agent 的四元组
                 rew = whole_rew[train_idx]  # 得到训练智能体的当前步的 reward
                 win_rate = 0  # 输出胜率
+                tie_rate = 0  # 输出平局
+                loss_rate = 0  # 输出输率
+                first_dead_rate = 0
                 # 判断智能体是否死亡, 死亡则结束，并将奖励设置为-1
                 if not done and not env._agents[train_idx].is_alive:
                     done = True
-                    # info['result'] = constants.Result.Loss
+                    info['result'] = constants.Result.Win
                     info['winners'] = enemies
+                    # 如果先死则增加死亡几率
+                    first_dead_rate = 1
                     # rew = rew - 1
 
                 if done:  # 如果结束, 重新开一把
@@ -51,19 +56,22 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                     #     info = constants.Result.Loss
                     if info['result'] == constants.Result.Win and info['winners'] == teammates:
                         win_rate = 1
+                    elif info['result'] == constants.Result.Win and info['winners'] == enemies:
+                        loss_rate = 1
+                    elif info['result'] == constants.Result.Tie:
+                        tie_rate += 1
                     whole_obs = env.reset()  # 重新开一把
 
                 obs = featurize(whole_obs[train_idx])
-
-                remote.send((obs, rew, done, win_rate))
-                # remote.send((obs, rew, done, info, whole_obs[train_idx]))
+                # remote.send((obs, rew, done, win_rate))
+                remote.send((obs, rew, done, win_rate, tie_rate, loss_rate, first_dead_rate, whole_obs[train_idx]))
 
             elif cmd == 'reset':
                 whole_obs = env.reset()
                 obs = featurize(whole_obs[train_idx])
 
-                remote.send(obs)
-                # remote.send((obs, whole_obs[train_idx]))
+                # remote.send(obs)
+                remote.send((obs, whole_obs[train_idx]))
 
             elif cmd == 'render':
                 remote.send(env.render(*data[0], **data[1]))
@@ -151,14 +159,16 @@ class SubprocVecEnv(VecEnv):
     def step_wait(self):
         results = [remote.recv() for remote in self.remotes]
         self.waiting = False
-        obs, rews, dones, infos = zip(*results)
-        return _flatten_obs(obs, self.observation_space), np.stack(rews), np.stack(dones), np.stack(infos)
+        obs, rews, dones, win_rate, tie_rate, loss_rate, first_dead_rate, obs_nf = zip(*results)
+        return _flatten_obs(obs, self.observation_space), np.stack(rews), np.stack(dones), np.stack(win_rate), np.stack(
+            tie_rate), np.stack(loss_rate), np.stack(first_dead_rate), obs_nf
 
     def reset(self):
         for remote in self.remotes:
             remote.send(('reset', None))
-        obs = [remote.recv() for remote in self.remotes]
-        return _flatten_obs(obs, self.observation_space)
+        results = [remote.recv() for remote in self.remotes]
+        obs, obs_nf = zip(*results)
+        return _flatten_obs(obs, self.observation_space), obs_nf
 
     def close(self):
         if self.closed:

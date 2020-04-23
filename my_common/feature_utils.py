@@ -9,7 +9,7 @@ import queue
 from my_pommerman import position_is_passable
 
 
-def print_info(info, vb=True):
+def print_info(info, vb=False):
     if vb:
         print(info)
 

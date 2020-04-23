@@ -10,14 +10,16 @@ import tensorflow as tf
 from stable_baselines import logger
 from stable_baselines.common import explained_variance, \
     tf_util  # ActorCriticRLModel, tf_util, SetVerbosity, TensorboardWriter
-from stable_baselines.common.runners import AbstractEnvRunner
+# from stable_baselines.common.runners import AbstractEnvRunner
 from stable_baselines.common.policies import ActorCriticPolicy, RecurrentActorCriticPolicy
 from stable_baselines.a2c.utils import total_episode_reward_logger
 from my_common import get_observertion_space, get_action_space
 # from my_common import get_modify_act, get_prev2obs
 # import random
 from my_baselines import ActorCriticRLModel, SetVerbosity, TensorboardWriter
-from my_common import total_win_rate_logger
+from my_common import total_rate_logger
+from my_common import AbstractEnvRunner
+import copy
 
 
 class PPO2(ActorCriticRLModel):
@@ -345,6 +347,9 @@ class PPO2(ActorCriticRLModel):
             runner = Runner(env=self.env, model=self, n_steps=self.n_steps, gamma=self.gamma, lam=self.lam)
             self.episode_reward = np.zeros((self.n_envs,))
             self.win_rate = np.zeros((self.n_envs,))
+            self.tie_rate = np.zeros((self.n_envs,))
+            self.loss_rate = np.zeros((self.n_envs,))
+            self.first_dead_rate = np.zeros((self.n_envs,))
 
             ep_info_buf = deque(maxlen=100)
             t_first_start = time.time()
@@ -359,9 +364,10 @@ class PPO2(ActorCriticRLModel):
                 cliprange_now = self.cliprange(frac)
                 cliprange_vf_now = cliprange_vf(frac)
                 # true_reward is the reward without discount
-                obs, returns, masks, actions, values, neglogpacs, states, ep_infos, true_reward = runner.run()
+                obs, returns, masks, actions, values, neglogpacs, states, true_reward, \
+                win_rates, tie_rates, loss_rates, first_dead_rates = runner.run()
                 self.num_timesteps += self.n_batch
-                ep_info_buf.extend(ep_infos)
+                # ep_info_buf.extend(ep_infos)
                 mb_loss_vals = []
                 if states is None:  # nonrecurrent version
                     update_fac = self.n_batch // self.nminibatches // self.noptepochs + 1
@@ -405,10 +411,26 @@ class PPO2(ActorCriticRLModel):
                                                                       true_reward.reshape((self.n_envs, self.n_steps)),
                                                                       masks.reshape((self.n_envs, self.n_steps)),
                                                                       writer, self.num_timesteps)
-                    self.win_rate = total_win_rate_logger(self.win_rate,
-                                                                ep_infos.reshape((self.n_envs, self.n_steps)),
-                                                                masks.reshape((self.n_envs, self.n_steps)),
-                                                                writer, self.num_timesteps)
+                    self.win_rate = total_rate_logger(self.win_rate,
+                                                      win_rates.reshape((self.n_envs, self.n_steps)),
+                                                      masks.reshape((self.n_envs, self.n_steps)),
+                                                      writer, self.num_timesteps,
+                                                      name='win_rate')
+                    self.tie_rate = total_rate_logger(self.tie_rate,
+                                                      tie_rates.reshape((self.n_envs, self.n_steps)),
+                                                      masks.reshape((self.n_envs, self.n_steps)),
+                                                      writer, self.num_timesteps,
+                                                      name='tie_rate')
+                    self.loss_rate = total_rate_logger(self.loss_rate,
+                                                      loss_rates.reshape((self.n_envs, self.n_steps)),
+                                                      masks.reshape((self.n_envs, self.n_steps)),
+                                                      writer, self.num_timesteps,
+                                                      name='loss_rate')
+                    self.first_dead_rate = total_rate_logger(self.first_dead_rate,
+                                                      first_dead_rates.reshape((self.n_envs, self.n_steps)),
+                                                      masks.reshape((self.n_envs, self.n_steps)),
+                                                      writer, self.num_timesteps,
+                                                      name='first_dead_rate')
 
                 if self.verbose >= 1 and (update % log_interval == 0 or update == 1):
                     explained_var = explained_variance(values, returns)
@@ -644,7 +666,8 @@ class Runner(AbstractEnvRunner):
         # mb stands for minibatch
         mb_obs, mb_rewards, mb_actions, mb_values, mb_dones, mb_neglogpacs = [], [], [], [], [], []
         mb_states = self.states
-        ep_infos = []
+        win_rates, tie_rates, loss_rates, first_dead_rates = [], [], [], []
+        mb_obs_nf = []
         for _ in range(self.n_steps):
             actions, values, self.states, neglogpacs = self.model.step(self.obs, self.states, self.dones)
             mb_obs.append(self.obs.copy())
@@ -652,16 +675,22 @@ class Runner(AbstractEnvRunner):
             mb_values.append(values)
             mb_neglogpacs.append(neglogpacs)
             mb_dones.append(self.dones)
+            mb_obs_nf.append(copy.deepcopy(self.obs_nf))
             clipped_actions = actions
             # Clip the actions to avoid out of bound error
             if isinstance(self.env.action_space, gym.spaces.Box):
                 clipped_actions = np.clip(actions, self.env.action_space.low, self.env.action_space.high)
-            self.obs[:], rewards, self.dones, infos = self.env.step(clipped_actions)
+            self.obs[:], rewards, self.dones, win_rate, tie_rate, loss_rate, first_dead_rate, self.obs_nf[:] = \
+                self.env.step(clipped_actions)
             # for info in infos:
             #     maybe_ep_info = info.get('episode')
             #     if maybe_ep_info is not None:
             #         ep_infos.append(maybe_ep_info)
-            ep_infos.append(infos)
+            # ep_infos.append(infos)
+            win_rates.append(win_rate)
+            tie_rates.append(tie_rate)
+            loss_rates.append(loss_rate)
+            first_dead_rates.append(first_dead_rate)
             mb_rewards.append(rewards)
         # batch of steps to batch of rollouts
         mb_obs = np.asarray(mb_obs, dtype=self.obs.dtype)
@@ -674,7 +703,11 @@ class Runner(AbstractEnvRunner):
         # discount/bootstrap off value fn
         mb_advs = np.zeros_like(mb_rewards)
         true_reward = np.copy(mb_rewards)
-        ep_infos = np.array(ep_infos)
+        # ep_infos = np.array(ep_infos)
+        win_rates = np.array(win_rates)
+        tie_rates = np.array(tie_rates)
+        loss_rates = np.array(loss_rates)
+        first_dead_rates = np.array(first_dead_rates)
         last_gae_lam = 0
         for step in reversed(range(self.n_steps)):
             if step == self.n_steps - 1:
@@ -686,11 +719,13 @@ class Runner(AbstractEnvRunner):
             delta = mb_rewards[step] + self.gamma * nextvalues * nextnonterminal - mb_values[step]
             mb_advs[step] = last_gae_lam = delta + self.gamma * self.lam * nextnonterminal * last_gae_lam
         mb_returns = mb_advs + mb_values
-
-        mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward, ep_infos = \
-            map(swap_and_flatten, (mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward, ep_infos))
-
-        return mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, mb_states, ep_infos, true_reward
+        mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward, \
+        win_rates, tie_rates, loss_rates, first_dead_rates = \
+            map(swap_and_flatten,
+                (mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward, win_rates, tie_rates,
+                 loss_rates, first_dead_rates))
+        return mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, mb_states, true_reward, \
+               win_rates, tie_rates, loss_rates, first_dead_rates
 
 
 def get_schedule_fn(value_schedule):

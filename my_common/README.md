@@ -1,0 +1,1 @@
+如果使用hindsight, 则需要更改runners部分, 以及subproc_vec_env.py: reset 和 step部分, 以及base_class部分

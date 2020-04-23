@@ -16,7 +16,8 @@ class AbstractEnvRunner(ABC):
         n_env = env.num_envs
         self.batch_ob_shape = (n_env * n_steps,) + env.observation_space.shape
         self.obs = np.zeros((n_env,) + env.observation_space.shape, dtype=env.observation_space.dtype.name)
-        self.obs[:] = env.reset()
+        self.obs_nf = []
+        self.obs[:], self.obs_nf[:] = env.reset()
         self.n_steps = n_steps
         self.states = model.initial_state
         self.dones = [False for _ in range(n_env)]

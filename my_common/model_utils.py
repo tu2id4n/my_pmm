@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 
 
-def total_win_rate_logger(rew_acc, rewards, masks, writer, steps):
+def total_rate_logger(rew_acc, rewards, masks, writer, steps, name):
     """
     calculates the cumulated episode reward, and prints to tensorflow log the output
 
@@ -22,11 +22,11 @@ def total_win_rate_logger(rew_acc, rewards, masks, writer, steps):
                 rew_acc[env_idx] += sum(rewards[env_idx])
             else:
                 rew_acc[env_idx] += sum(rewards[env_idx, :dones_idx[0, 0]])
-                summary = tf.Summary(value=[tf.Summary.Value(tag="win_rate", simple_value=rew_acc[env_idx])])
+                summary = tf.Summary(value=[tf.Summary.Value(tag=name, simple_value=rew_acc[env_idx])])
                 writer.add_summary(summary, steps + dones_idx[0, 0])
                 for k in range(1, len(dones_idx[:, 0])):
                     rew_acc[env_idx] = sum(rewards[env_idx, dones_idx[k - 1, 0]:dones_idx[k, 0]])
-                    summary = tf.Summary(value=[tf.Summary.Value(tag="win_rate", simple_value=rew_acc[env_idx])])
+                    summary = tf.Summary(value=[tf.Summary.Value(tag=name, simple_value=rew_acc[env_idx])])
                     writer.add_summary(summary, steps + dones_idx[k, 0])
                 rew_acc[env_idx] = sum(rewards[env_idx, dones_idx[-1, 0]:])
 
