@@ -44,8 +44,6 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                 # 判断智能体是否死亡, 死亡则结束，并将奖励设置为-1
                 if not done and not env._agents[train_idx].is_alive:
                     done = True
-                    info['result'] = constants.Result.Win
-                    info['winners'] = enemies
                     # 如果先死则增加死亡几率
                     first_dead_rate = 1
                     # rew = rew - 1
@@ -54,9 +52,9 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                     info['terminal_observation'] = whole_obs  # 保存终结的 observation，否则 reset 后将丢失
                     # if info['winners'] == enemies:
                     #     info = constants.Result.Loss
-                    if info['result'] == constants.Result.Win and info['winners'] == teammates:
+                    if info['result'] == constants.Result.Win:
                         win_rate = 1
-                    elif info['result'] == constants.Result.Win and info['winners'] == enemies:
+                    elif info['result'] == constants.Result.Loss:
                         loss_rate = 1
                     elif info['result'] == constants.Result.Tie:
                         tie_rate += 1

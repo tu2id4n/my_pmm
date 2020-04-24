@@ -147,7 +147,7 @@ class Pomme(v0.Pomme):
         done = self._get_done()
         obs = self.get_observations()
         reward = self._get_rewards()
-        info = self._get_info(done, reward)
+        info = self.get_info()
         if done:
             # Callback to let the agents know that the game has ended.
             for agent in self._agents:
@@ -159,6 +159,35 @@ class Pomme(v0.Pomme):
     def _get_rewards(self):
         return reward_shaping.get_rewards_v3_7(self._agents, self._step_count, self._max_steps, self.obs_pre, self.get_observations(), self.act_abs_pre)
 
+    def get_info(self):
+        def any_lst_equal(lst, values):
+            """Checks if list are equal"""
+            return any([lst == v for v in values])
+
+        alive_agents = [num for num, agent in enumerate(self._agents) \
+                        if agent.is_alive]
+        if any_lst_equal(alive_agents, [[1], [2], [3], [1,2,3], [1,3], [2,3]]):
+            return {
+                    'result': constants.Result.Loss,
+                    'winners': [1,3]
+            }
+        elif any_lst_equal(alive_agents, [[0, 2], [0]]):
+            return {
+                    'result': constants.Result.Win,
+                    'winners': [0,2]
+            }
+        elif self._step_count >= self._max_steps:
+            return {
+                'result': constants.Result.Tie,
+            }
+        elif len(alive_agents) == 0:
+            return {
+                'result': constants.Result.Tie,
+            }
+        else:
+            return {
+                'result': constants.Result.Incomplete,
+            }
     @staticmethod
     def featurize(obs):
         ret = super().featurize(obs)

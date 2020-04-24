@@ -5,7 +5,7 @@ import copy
 import queue
 
 
-def print_info(name, info, Visualize=True):
+def print_info(name, info, Visualize=False):
     if Visualize:
         print(name, info)
 
@@ -407,17 +407,17 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
 
     # 敌人从视野中消失:
     if e11_now is None and e11_pre is not None:
-        reward -= 0.02
-        print_info('敌人e11消失', '-0.02')
+        reward -= 0.01
+        print_info('敌人e11消失', '-0.01')
     if e13_now is None and e13_pre is not None:
-        reward -= 0.02
-        print_info('敌人e13消失', '-0.02')
+        reward -= 0.01
+        print_info('敌人e13消失', '-0.01')
     if e11_pre is None and e11_now is not None:
-        reward += 0.02
-        print_info('敌人e11出现', '+0.02')
+        reward += 0.01
+        print_info('敌人e11出现', '+0.01')
     if e13_pre is None and e13_now is not None:
-        reward += 0.02
-        print_info('敌人e13出现', '+0.02')
+        reward += 0.01
+        print_info('敌人e13出现', '+0.01')
 
     # 自己被炸死
     if 0 < bomb_life_now[position_now] < 4:
@@ -459,8 +459,8 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
     # 没有动
     elif act_pre == 0:
         if obs_pre['position'] != goal_pre:
-            reward -= 0.05
-            print_info('无效移动', '-0.05')
+            reward -= 0.1
+            print_info('无效移动', '-0.1')
     # 如果是移动
     else:
         # r_pre, c_pre = position_pre

@@ -11,10 +11,10 @@ def _play():
     env = utils.make_env(env_id)
 
     model_type = 'ppo'
-    vb = True
+    vb = False
     pretrain = False
     # model_path0 = 'models/failure/v0_400k.zip'
-    model_path0 = 'models/test/v3_2400k.zip'
+    model_path0 = 'models/test/v4_100k.zip'
     # model_path0 = 'models/pretrain_v3/pgn_v3_e79.zip'
     # model_path0 = None
     model_path1 = None

@@ -368,11 +368,11 @@ class PPO2(ActorCriticRLModel):
                 # true_reward is the reward without discount
                 if hindsight:
                     obs, returns, masks, actions, values, neglogpacs, states, true_reward, \
-                    win_rates, tie_rates, loss_rates, first_dead_rates, obs_nf = runner.run(
+                        win_rates, tie_rates, loss_rates, first_dead_rates, obs_nf = runner.run(
                         hindsight_buffer=hindsight_buffer)
                 else:
                     obs, returns, masks, actions, values, neglogpacs, states, true_reward, \
-                    win_rates, tie_rates, loss_rates, first_dead_rates, obs_nf = runner.run()
+                        win_rates, tie_rates, loss_rates, first_dead_rates, obs_nf = runner.run()
                 self.num_timesteps += self.n_batch
                 # ep_info_buf.extend(ep_infos)
                 mb_loss_vals = []

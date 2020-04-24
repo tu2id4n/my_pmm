@@ -34,6 +34,7 @@ class HindSightBuffer(object):
     HindSight
     1: 连续做一个动作获得越来越多reward
     2: 做一个动作看之后有没有达到这个位置
+    3: 连续做同一个动作最终达到这个位置
     '''
 
     def run(self):
@@ -59,7 +60,7 @@ class HindSightBuffer(object):
                     goal = feature_utils.extra_goal(act_abs, self.obs_nf[rand][i])
                     for j in range(rand, ed):
                         if self.obs_nf[j][i]['position'] == goal:
-                            self.rewards[j][i] += 0.2
+                            self.rewards[j][i] += 0.05
                             feature_utils.print_info('hindsight: 到达之前制定的goal, +0.2', vb=True)
         mb_advs = np.zeros_like(self.rewards)
         last_gae_lam = 0
