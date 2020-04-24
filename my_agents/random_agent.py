@@ -8,3 +8,4 @@ class RandAgent(BaseAgent):
 
     def act(self, obs, action_space):
         return random.randint(0, 120)
+        # return 121

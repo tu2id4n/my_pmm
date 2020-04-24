@@ -32,9 +32,8 @@ class HindSightBuffer(object):
 
     '''
     HindSight
-    1: 连续做一个动作获得越来越多reward
-    2: 做一个动作看之后有没有达到这个位置
-    3: 连续做同一个动作最终达到这个位置
+    1: 继续向之前的goal移动获得奖励
+    2: 连续移动一直到达位置获得奖励
     '''
 
     def run(self):
@@ -58,10 +57,23 @@ class HindSightBuffer(object):
                     rand = random.randint(st, ed - 1)
                     act_abs = self.actions[rand][i]
                     goal = feature_utils.extra_goal(act_abs, self.obs_nf[rand][i])
-                    for j in range(rand, ed):
-                        if self.obs_nf[j][i]['position'] == goal:
+                    # 如果不是停留在原地
+                    if goal != self.obs_nf[rand][i]['position']:
+                        for j in range(rand+1, ed):
+                            act_abs_next = self.actions[j][i]
+                            goal_next = feature_utils.extra_goal(act_abs_next, self.obs_nf[j][i])
+                            # 下一个目标和基础目标不同，跳出
+                            if goal_next != goal:
+                                break
+                            # 开始无效移动，跳出
+                            if self.obs_nf[j-1][i]['position'] == self.obs_nf[j][i]['position']:
+                                break
                             self.rewards[j][i] += 0.05
-                            feature_utils.print_info('hindsight: 到达之前制定的goal, +0.2', vb=True)
+                            feature_utils.print_info('hindsight: 继续向之前的goal移动, +0.05', vb=True)
+                            if self.obs_nf[j][i]['position'] == goal:
+                                self.rewards[j][i] += 0.05
+                                feature_utils.print_info('hindsight: 到达之前制定的goal, +0.05', vb=True)
+                                break
         mb_advs = np.zeros_like(self.rewards)
         last_gae_lam = 0
         for step in reversed(range(self.n_steps)):

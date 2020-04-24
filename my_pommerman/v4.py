@@ -112,6 +112,8 @@ class Pomme(v0.Pomme):
         self.act_abs_pre = actions[0][0]
         self.obs_pre = copy.deepcopy(self.get_observations())
         actions[0][0] = feature_utils._djikstra_act(self.obs_pre[0], self.act_abs_pre)
+        act_abs_pre2 = actions[2][0]
+        actions[2][0] = feature_utils._djikstra_act(self.obs_pre[2], act_abs_pre2)
 
         personal_actions = []
         radio_actions = []

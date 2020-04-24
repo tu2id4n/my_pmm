@@ -5,7 +5,7 @@ import copy
 import queue
 
 
-def print_info(name, info, Visualize=False):
+def print_info(name, info, Visualize=True):
     if Visualize:
         print(name, info)
 
@@ -451,8 +451,8 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
                             reward -= 0.1
                             print_info('bomb波及powerup', '-0.1')
                         if obs_pre['board'][(r, c)] in [agent2]:
-                            reward -= 0.2
-                            print_info('bomb波及teammates', '-0.2')
+                            reward -= 0.1
+                            print_info('bomb波及teammates', '-0.1')
             if nothing:
                 reward -= 0.2
                 print_info('空放bomb', '-0.2')
@@ -514,12 +514,12 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
         return [reward - 1, 1, -1, 1]
     elif any_lst_equal(alive_agents, [[1], [3]]):
         # Team [1, 3] wins and one enemy dead.
-        print_info('Team [1, 3] wins and one enemy dead.', reward - 1)
-        return [reward - 1, 1, -1, 1]
+        print_info('Team [1, 3] wins and one enemy dead.', reward - 0.7)
+        return [reward - 0.7, 1, -1, 1]
     elif step_count >= max_steps and any_lst_equal(alive_agents, [[0, 1], [0, 1, 2], [0, 3], [0, 2, 3]]):
         # tie and one enemy dead.
-        print_info('tie and one enemy dead.', reward - 1)
-        return [reward - 1, 1, -1, 1]
+        print_info('tie and one enemy dead.', reward - 0.7)
+        return [reward - 0.7, 1, -1, 1]
     elif step_count >= max_steps:
         # Game is over by max_steps. All agents tie.
         print_info('Game is over by max_steps. All agents tie.', reward - 1)
