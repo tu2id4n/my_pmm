@@ -19,6 +19,7 @@ def arg_parser():
     parser.add_argument('--num_timesteps', help='强化学习算法训练所用步数', type=float, default=1e6)
     parser.add_argument('--nsteps', type=int, default=128)
     parser.add_argument('--save_interval', help='保存间隔', type=float, default=1e5)
+    parser.add_argument('--hindsight', help='是否使用hindsight', default=False, action='store_true')
 
     # evaluate
     parser.add_argument('--model0_path', help='加载model0', default=None, type=str)

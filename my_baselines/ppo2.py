@@ -322,7 +322,7 @@ class PPO2(ActorCriticRLModel):
         return policy_loss, value_loss, policy_entropy, approxkl, clipfrac
 
     def learn(self, total_timesteps, callback=None, seed=None, log_interval=1, tb_log_name="PPO2",
-              reset_num_timesteps=True, save_interval=None, save_path=None, gamma=0.99, n_steps=128, hindsight=True):
+              reset_num_timesteps=True, save_interval=None, save_path=None, gamma=0.99, n_steps=128, hindsight=False):
         print('----------------------------------------------')
         print('|                 L E A R N                  |')
         print('----------------------------------------------')

@@ -27,7 +27,7 @@ def _learn():
     else:
         model = get_init_model(env, args.model_type, my_policy, args.log_path)
 
-    model.learn(total_timesteps=total_timesteps, save_path=args.save_path, save_interval=args.save_interval)
+    model.learn(total_timesteps=total_timesteps, save_path=args.save_path, save_interval=args.save_interval, hindsight=args.hindsight)
     env.close()
 
 
