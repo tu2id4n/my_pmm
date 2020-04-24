@@ -56,7 +56,7 @@ class HindSightBuffer(object):
                     # 在一个episode中随机取出一帧画面
                     rand = random.randint(st, ed - 1)
                     act_abs = self.actions[rand][i]
-                    goal = feature_utils.extra_goal(act_abs)
+                    goal = feature_utils.extra_goal(act_abs, self.obs_nf[rand][i])
                     for j in range(rand, ed):
                         if self.obs_nf[j][i]['position'] == goal:
                             self.rewards[j][i] += 0.2

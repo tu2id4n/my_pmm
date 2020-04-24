@@ -14,7 +14,7 @@ def _play():
     vb = True
     pretrain = False
     # model_path0 = 'models/failure/v0_400k.zip'
-    model_path0 = 'models/test/v3_1020k.zip'
+    model_path0 = 'models/test/v3_2400k.zip'
     # model_path0 = 'models/pretrain_v3/pgn_v3_e79.zip'
     # model_path0 = None
     model_path1 = None
@@ -48,8 +48,8 @@ def _play():
                     else:
                         action_abs, _states = models[i].predict(feature_obs)
                         goal_abs = feature_utils.extra_goal(action_abs, obs[i])
-                        # utils.print_info('action_obs', action_abs, vb)
-                        # utils.print_info('goal_obs', goal_abs, vb)
+                        utils.print_info('action_obs', action_abs, vb)
+                        utils.print_info('goal_obs', goal_abs, vb)
                         # action = _djikstra_act(obs[i], action_abs)
                         action = action_abs
                     if type(action) == list:
