@@ -40,6 +40,7 @@ class HindSightBuffer(object):
         # 记录所有dones的位置
         start = 0
         frac = []
+        reward_change = False
         for j in range(len(self.dones)):
             temp_frac = []
             for i in range(len(self.masks)):
@@ -69,10 +70,12 @@ class HindSightBuffer(object):
                             if self.obs_nf[j-1][i]['position'] == self.obs_nf[j][i]['position']:
                                 break
                             self.rewards[j][i] += 0.05
+                            reward_change = True
                             feature_utils.print_info('hindsight: 继续向之前的goal移动, +0.05', vb=True)
                             if self.obs_nf[j][i]['position'] == goal:
                                 self.rewards[j][i] += 0.05
                                 feature_utils.print_info('hindsight: 到达之前制定的goal, +0.05', vb=True)
+                                reward_change = True
                                 break
         mb_advs = np.zeros_like(self.rewards)
         last_gae_lam = 0
@@ -90,7 +93,7 @@ class HindSightBuffer(object):
         mb_returns = mb_advs + self.values
         mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs = map(self.swap_and_flatten, (
             self.obs, mb_returns, self.masks, self.actions, self.values, self.neglogpaces))
-        return mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs
+        return mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, reward_change
 
     def swap_and_flatten(self, arr):
         """

@@ -406,18 +406,18 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
     #     print_info('e13被炸死', '+0.5')
 
     # 敌人从视野中消失:
-    if e11_now is None and e11_pre is not None:
-        reward -= 0.01
-        print_info('敌人e11消失', '-0.01')
-    if e13_now is None and e13_pre is not None:
-        reward -= 0.01
-        print_info('敌人e13消失', '-0.01')
-    if e11_pre is None and e11_now is not None:
-        reward += 0.01
-        print_info('敌人e11出现', '+0.01')
-    if e13_pre is None and e13_now is not None:
-        reward += 0.01
-        print_info('敌人e13出现', '+0.01')
+    # if e11_now is None and e11_pre is not None:
+    #     reward -= 0.02
+    #     print_info('敌人e11消失', '-0.01')
+    # if e13_now is None and e13_pre is not None:
+    #     reward -= 0.02
+    #     print_info('敌人e13消失', '-0.01')
+    # if e11_pre is None and e11_now is not None:
+    #     reward += 0.01
+    #     print_info('敌人e11出现', '+0.01')
+    # if e13_pre is None and e13_now is not None:
+    #     reward += 0.01
+    #     print_info('敌人e13出现', '+0.01')
 
     # 自己被炸死
     if 0 < bomb_life_now[position_now] < 4:
@@ -440,13 +440,13 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
                 for c in range(11):
                     if my_bomb_life_now[(r, c)] > 0:
                         if obs_pre['board'][(r, c)] in [wood]:
-                            reward += 0.1
-                            nothing = False
-                            print_info('bomb波及到wood', '+0.1')
-                        if obs_pre['board'][(r, c)] in [agent1, agent3]:
                             reward += 0.2
                             nothing = False
-                            print_info('bomb波及到enemy', '+0.2')
+                            print_info('bomb波及到wood', '+0.2')
+                        if obs_pre['board'][(r, c)] in [agent1, agent3]:
+                            reward += 0.3
+                            nothing = False
+                            print_info('bomb波及到enemy', '+0.3')
                         if obs_pre['board'][(r, c)] in [incrrange, extrabomb, kick]:
                             reward -= 0.1
                             print_info('bomb波及powerup', '-0.1')
@@ -484,8 +484,8 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
                 print_info('踢到炸弹', '+0.05')
         # 从安全位置进入到被炸弹波及之中
         if bomb_life_pre[position_pre] == 0 and bomb_life_now[position_now] > 0:
-            reward -= 0.1
-            print_info('从安全位置进入到bomb波及范围', '-0.05')
+            reward -= 0.12
+            print_info('从安全位置进入到bomb波及范围', '-0.12')
         # 被炸弹波及但是在向安全的位置移动
         if bomb_life_pre[position_pre] > 0 and bomb_life_pre[goal_pre] == 0:
             reward += 0.05
@@ -514,12 +514,12 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
         return [reward - 1, 1, -1, 1]
     elif any_lst_equal(alive_agents, [[1], [3]]):
         # Team [1, 3] wins and one enemy dead.
-        print_info('Team [1, 3] wins and one enemy dead.', reward - 0.7)
-        return [reward - 0.7, 1, -1, 1]
+        print_info('Team [1, 3] wins and one enemy dead.', reward - 0.6)
+        return [reward - 0.6, 1, -1, 1]
     elif step_count >= max_steps and any_lst_equal(alive_agents, [[0, 1], [0, 1, 2], [0, 3], [0, 2, 3]]):
         # tie and one enemy dead.
-        print_info('tie and one enemy dead.', reward - 0.7)
-        return [reward - 0.7, 1, -1, 1]
+        print_info('tie and one enemy dead.', reward - 0.6)
+        return [reward - 0.6, 1, -1, 1]
     elif step_count >= max_steps:
         # Game is over by max_steps. All agents tie.
         print_info('Game is over by max_steps. All agents tie.', reward - 1)

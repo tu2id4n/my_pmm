@@ -460,12 +460,13 @@ class PPO2(ActorCriticRLModel):
                 2: 做一个动作看之后有没有达到这个位置
                 '''
                 if hindsight:
-                    print('-------------｜ hindsigt ｜-------------')
                     t_start = time.time()
-                    obs, returns, masks, actions, values, neglogpacs = hindsight_buffer.run()
-                    self.num_timesteps += self.n_batch
-                    mb_loss_vals = []
-                    if states is None:  # nonrecurrent version
+                    obs, returns, masks, actions, values, neglogpacs, reward_change = hindsight_buffer.run()
+                    if reward_change:
+                        print('-------------｜ hindsigt ｜-------------')
+                        self.num_timesteps += self.n_batch
+                        mb_loss_vals = []
+
                         update_fac = self.n_batch // self.nminibatches // self.noptepochs + 1
                         inds = np.arange(self.n_batch)
                         for epoch_num in range(self.noptepochs):
@@ -480,24 +481,21 @@ class PPO2(ActorCriticRLModel):
                                 mb_loss_vals.append(self._train_step(lr_now, cliprange_now, *slices, writer=writer,
                                                                      update=timestep, cliprange_vf=cliprange_vf_now))
 
-                    loss_vals = np.mean(mb_loss_vals, axis=0)
-                    t_now = time.time()
-                    fps = int(self.n_batch / (t_now - t_start))
+                        loss_vals = np.mean(mb_loss_vals, axis=0)
+                        t_now = time.time()
+                        fps = int(self.n_batch / (t_now - t_start))
 
-                    if self.verbose >= 1 and (update % log_interval == 0 or update == 1):
-                        explained_var = explained_variance(values, returns)
-                        logger.logkv("serial_timesteps", update * self.n_steps)
-                        logger.logkv("n_updates", update)
-                        logger.logkv("total_timesteps", self.num_timesteps)
-                        logger.logkv("fps", fps)
-                        logger.logkv("explained_variance", float(explained_var))
-                        # if len(ep_info_buf) > 0 and len(ep_info_buf[0]) > 0:
-                        #     logger.logkv('ep_reward_mean', safe_mean([ep_info['r'] for ep_info in ep_info_buf]))
-                        #     logger.logkv('ep_len_mean', safe_mean([ep_info['l'] for ep_info in ep_info_buf]))
-                        logger.logkv('time_elapsed', t_start - t_first_start)
-                        for (loss_val, loss_name) in zip(loss_vals, self.loss_names):
-                            logger.logkv(loss_name, loss_val)
-                        logger.dumpkvs()
+                        if self.verbose >= 1 and (update % log_interval == 0 or update == 1):
+                            explained_var = explained_variance(values, returns)
+                            logger.logkv("serial_timesteps", update * self.n_steps)
+                            logger.logkv("n_updates", update)
+                            logger.logkv("total_timesteps", self.num_timesteps)
+                            logger.logkv("fps", fps)
+                            logger.logkv("explained_variance", float(explained_var))
+                            logger.logkv('time_elapsed', t_start - t_first_start)
+                            for (loss_val, loss_name) in zip(loss_vals, self.loss_names):
+                                logger.logkv(loss_name, loss_val)
+                            logger.dumpkvs()
 
                 if callback is not None:
                     # Only stop training if return value is False, not when it is None. This is for backwards
@@ -583,6 +581,7 @@ class PPO2(ActorCriticRLModel):
                 old[key] = val
                 # print(key,val.shape)
             model.old_params.append(old)
+            # print(model.old_params)
             print("**************** Save the old learned params")
             print("num of old networks = ", len(model.old_params))
             print("len_parm = ", len_parm)

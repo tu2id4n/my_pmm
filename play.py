@@ -13,7 +13,7 @@ def _play():
     model_type = 'ppo'
     vb = False
     pretrain = False
-    model_path0 = 'models/test/v6_30k.zip'
+    model_path0 = 'models/test/v8_70k.zip'
     # model_path0 = 'models/pretrain_v3/pgn_v3_e79.zip'
     model_path1 = None
     model_path2 = None
