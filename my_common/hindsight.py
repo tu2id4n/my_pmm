@@ -71,10 +71,10 @@ class HindSightBuffer(object):
                                 break
                             self.rewards[j][i] += 0.05
                             reward_change = True
-                            feature_utils.print_info('hindsight: 继续向之前的goal移动, +0.05', vb=True)
+                            feature_utils.print_info('hindsight: to goal, +0.05', vb=True)
                             if self.obs_nf[j][i]['position'] == goal:
                                 self.rewards[j][i] += 0.05
-                                feature_utils.print_info('hindsight: 到达之前制定的goal, +0.05', vb=True)
+                                feature_utils.print_info('hindsight: arrive goal, +0.05', vb=True)
                                 reward_change = True
                                 break
         mb_advs = np.zeros_like(self.rewards)

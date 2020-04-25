@@ -15,13 +15,13 @@ def compute_old_conv(input=None, old_params=None, scop=None, n_fil=None, **kwarg
             pgn_conv(input[n], 'old_' + scop + str(n), n_filters=n_fil, stride=1,
                      ww=param[scop + '/w'], bb=param[scop + '/b'], pad='SAME', **kwargs))
         if n == 0:
-            u = conv(old_c, 'u_' + scop + str(n), n_filters=n_fil, filter_size=1, stride=1, init_scale=np.sqrt(2),
-                     pad='SAME', **kwargs)
-            sumc = u
+            # u = conv(old_c, 'u_' + scop + str(n), n_filters=n_fil, filter_size=1, stride=1, init_scale=np.sqrt(2),
+            #          pad='SAME', **kwargs)
+            sumc = old_c
         else:
-            u = conv(old_c, 'u_' + scop + str(n), n_filters=n_fil, filter_size=1, stride=1, init_scale=np.sqrt(2),
-                     pad='SAME', **kwargs)
-            sumc = tf.add(sumc, u)
+            # u = conv(old_c, 'u_' + scop + str(n), n_filters=n_fil, filter_size=1, stride=1, init_scale=np.sqrt(2),
+            #          pad='SAME', **kwargs)
+            sumc = tf.add(sumc, old_c)
         old_conv.append(sumc)
     return old_conv, sumc
 
@@ -35,11 +35,11 @@ def compute_old_linear(input=None, old_params=None, scop=None):
         old_l = activ(pgn_linear(input[n], 'old_' + scop + str(n),
                                  ww=param[scop + '/w'], bb=param[scop + '/b']))
         if n == 0:
-            u = linear(old_l, 'u_' + scop + str(n), n_hidden=256, init_scale=np.sqrt(2))
-            suml = u
+            # u = linear(old_l, 'u_' + scop + str(n), n_hidden=256, init_scale=np.sqrt(2))
+            suml = old_l
         else:
-            u = linear(old_l, 'u_' + scop + str(n), n_hidden=256, init_scale=np.sqrt(2))
-            suml = tf.add(suml, u)
+            # u = linear(old_l, 'u_' + scop + str(n), n_hidden=256, init_scale=np.sqrt(2))
+            suml = tf.add(suml, old_l)
         old_linear.append(suml)
     return old_linear, suml
 
@@ -56,12 +56,12 @@ def custom_cnn_pgn(scaled_images, old_params=None, **kwargs):
             pgn_conv(scaled_images, 'old_c1' + str(n), n_filters=256, stride=1,
                      ww=param['c1/w'], bb=param['c1/b'], pad='SAME', **kwargs))
         if n == 0:
-            u = conv(old_c, 'u_c1' + str(n), n_filters=256, filter_size=1, stride=1, init_scale=np.sqrt(2),
-                     pad='SAME', **kwargs)
-            sumc = u
+            # u = conv(old_c, 'u_c1' + str(n), n_filters=256, filter_size=1, stride=1, init_scale=np.sqrt(2),
+            #          pad='SAME', **kwargs)
+            sumc = old_c
         else:
-            u = conv(old_c, 'u_c1' + str(n), n_filters=256, filter_size=1, stride=1, init_scale=np.sqrt(2),
-                     pad='SAME', **kwargs)
+            # u = conv(old_c, 'u_c1' + str(n), n_filters=256, filter_size=1, stride=1, init_scale=np.sqrt(2),
+            #          pad='SAME', **kwargs)
             sumc = tf.add(sumc, old_c)
         old_conv.append(sumc)
 

@@ -9,6 +9,7 @@ from my_common import get_prev2obs
 import time
 from pommerman import constants
 from my_agents import *
+import utils
 
 
 def make_env(env_id):
@@ -23,27 +24,32 @@ def make_env(env_id):
 
 
 def _evaluate():
-    env = make_env(args.env)
-    models = load_models()
-    print()
-    print("env = ", args.env)
-    print("**************** Start to evaluate ****************")
-    print('model0 is: ', args.model0)
-    print('model1 is: ', args.model1)
-    print('model2 is: ', args.model2)
-    print('model3 is: ', args.model3)
+    print('----------------------------------------------')
+    print('|               E V A L U A T E              |')
+    print('----------------------------------------------')
+    env_id = 'PommeRadioCompetition-v4'
+    env = utils.make_env(env_id)
+    model_type = 'ppo'
+    model_path0 = 'models/pretrain_v3/pgn_v3_e79.zip'
+    # model_path0 = 'models/pretrain_v3/pgn_v3_e79.zip'
+    model_path1 = 'models/pretrain_v1/pgn_e118.zip'
+    model_path2 = 'models/pretrain_v1/pgn_e118.zip'
+    model_path3 = 'models/pretrain_v1/pgn_e118.zip'
+    model_paths = [model_path0, model_path1, model_path2, model_path3]
+    models = utils.get_load_models(model_type, model_paths)
 
     win = 0
     tie = 0
     loss = 0
 
-    if args.using_prune:
-        using_prune = [0, 2]  # 哪些智能体使用剪枝
-        nokicks = [False] * 4  # 调整是否使用kick
-        print('using_prune = ', using_prune)
+    using_prune = False
+    if using_prune:
+        prune_agnets = [0, 1, 2, 3]  # 哪些智能体使用剪枝
+        nokicks = [True, True, True, True]  # 调整是否使用kick
+        print('prune_agents = ', prune_agnets)
         print('nokicks', nokicks)
 
-    for episode in range(10000):
+    for episode in range(100):
         start = time.time()
         obs = env.reset()
         done = False
@@ -59,18 +65,17 @@ def _evaluate():
                     if type(action) == list:
                         action = action[0]
                     all_actions[i] = action
-                    nokicks[i] = False
 
             # Use prune
-            if args.using_prune:
-                for i in using_prune:
+            if using_prune:
+                for i in prune_agnets:
                     all_actions[i] = get_modify_act(obs[i], all_actions[i], prev2s[i], nokick=nokicks[i])
                     prev2s[i] = get_prev2obs(prev2s[i], obs[i])
 
             # 修正为适应通信的动作
-            if args.env == 'PommeRadioCompetition-v2':
-                for i in range(len(all_actions)):
-                    all_actions[i] = [all_actions[i], 1, 1]
+            # if args.env == 'PommeRadioCompetition-v2':
+            for i in range(len(all_actions)):
+                all_actions[i] = [all_actions[i], 1, 1]
 
             obs, rewards, done, info = env.step(all_actions)
 
@@ -85,33 +90,6 @@ def _evaluate():
         print(
             " %d  /  %d  /  %d  win rate: %f  use time: %f" % (win, tie, loss, (win / (episode + 1)), end - start))
     env.close()
-
-
-def load_models():
-    if args.model0_path:
-        print()
-        print("Load a model0 from", args.model0_path)
-        model0 = PPO2.load(args.model0_path, using_pgn=args.using_pgn)
-    else:
-        print("No model0")
-        model0 = None
-    if args.model1_path:
-        model1 = PPO2.load(args.model1_path, using_pgn=args.using_pgn)
-    else:
-        print("No model1")
-        model1 = None
-    if args.model2_path:
-        model2 = PPO2.load(args.model2_path, using_pgn=args.using_pgn)
-    else:
-        print("No model2")
-        model2 = None
-    if args.model3_path:
-        model3 = PPO2.load(args.model3_path, using_pgn=args.using_pgn)
-    else:
-        print("No model3")
-        model3 = None
-
-    return model0, model1, model2, model3
 
 
 if __name__ == '__main__':

@@ -7,5 +7,5 @@ class RandAgent(BaseAgent):
     """The Random Agent that returns random actions given an action_space."""
 
     def act(self, obs, action_space):
-        return random.randint(0, 120)
-        # return 121
+        # return random.randint(0, 120)
+        return 121

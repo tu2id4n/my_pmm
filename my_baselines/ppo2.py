@@ -463,7 +463,7 @@ class PPO2(ActorCriticRLModel):
                     t_start = time.time()
                     obs, returns, masks, actions, values, neglogpacs, reward_change = hindsight_buffer.run()
                     if reward_change:
-                        print('-------------｜ hindsigt ｜-------------')
+                        print('-------------| hindsigt |-------------')
                         self.num_timesteps += self.n_batch
                         mb_loss_vals = []
 
