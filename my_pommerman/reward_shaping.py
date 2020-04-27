@@ -535,7 +535,8 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
 
 # 即时奖励, 根据目的设计奖励, 升级版本, 使用_djikstra_v2探路
 def get_rewards_v3_8(agents, step_count, max_steps, whole_obs_pre, whole_obs, act_abs_pres, idx):
-    print_info('Agent idx  -->', idx)
+    print_info('-------------------| Agent', str(idx) +' |-------------------')
+
     def any_lst_equal(lst, values):
         """Checks if list are equal"""
         return any([lst == v for v in values])
@@ -546,6 +547,7 @@ def get_rewards_v3_8(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
     obs_pre = copy.deepcopy(whole_obs_pre[idx])
     obs_now = copy.deepcopy(whole_obs[idx])
     act_abs_pre = act_abs_pres[idx]
+    print(act_abs_pre)
     position_pre = obs_pre['position']
     position_now = obs_now['position']
 

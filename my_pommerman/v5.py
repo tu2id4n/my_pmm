@@ -103,7 +103,7 @@ class Pomme(v0.Pomme):
         return self.get_observations()
 
     def step(self, actions):
-        self.act_abs_pre = actions
+        self.act_abs_pre = copy.deepcopy(actions)
         self.obs_pre = copy.deepcopy(self.get_observations())
         actions[0] = feature_utils._djikstra_act(self.obs_pre[0], self.act_abs_pre[0])
         actions[2] = feature_utils._djikstra_act(self.obs_pre[2], self.act_abs_pre[2])
