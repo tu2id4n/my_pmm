@@ -7,52 +7,38 @@ from pommerman import *
 from stable_baselines.common.vec_env import VecEnv, CloudpickleWrapper
 from stable_baselines.common.tile_images import tile_images
 
-from my_common.feature_utils import *
+from my_common import feature_utils
+import numpy as np
 
 
 def _worker(remote, parent_remote, env_fn_wrapper):
     parent_remote.close()
     env = env_fn_wrapper.var()
     # TODO:记得设置训练智能体的 index
-    train_idx = 0  # 设置训练的 agent 的 index
-    teammates = [train_idx, (train_idx + 2) % 4]
-    teammates.sort()
-    enemies = [(train_idx + 1) % 4, (train_idx + 3) % 4]
-    enemies.sort()
+    train_idx = [0, 2]  # 设置训练的 agent 的 index
     while True:
         try:
             cmd, data = remote.recv()
             if cmd == 'step':
                 whole_obs = env.get_observations()
                 all_actions = env.act(whole_obs)  # 得到所有智能体的 actions
-
-                # 如果其他智能体动作不是元组（只有单一动作），改成list
-                # for i in range(4):
-                #     if not isinstance(all_actions[i], list):
-                #         all_actions[i] = [all_actions[i], 0, 0]
-
-                # data = _djikstra_act(whole_obs[train_idx], data)  # v4 否则取消_djikstra
-                # data = all_actions[i] = get_modify_act(whole_obs[train_idx], data)
-                # data = [data, 0, 0]
-
-                all_actions[train_idx] = data  # 当前训练的 agent 的动作也加进来
+                all_actions[train_idx[0]], all_actions[train_idx[1]] = data  # 当前训练的 agents 的动作也加进来
                 whole_obs, whole_rew, done, info = env.step(all_actions)  # 得到所有 agent 的四元组
-                rew = whole_rew[train_idx]  # 得到训练智能体的当前步的 reward
+                rew0 = whole_rew[train_idx[0]]  # 得到训练智能体的当前步的 reward
+                rew2 = whole_rew[train_idx[1]]
                 win_rate = 0  # 输出胜率
                 tie_rate = 0  # 输出平局
                 loss_rate = 0  # 输出输率
-                first_dead_rate = 0
+                dead_flag0 = 0
+                dead_flag2 = 0
                 # 判断智能体是否死亡, 死亡则结束，并将奖励设置为-1
-                if not done and not env._agents[train_idx].is_alive:
-                    done = True
-                    # 如果先死则增加死亡几率
-                    first_dead_rate = 1
-                    # rew = rew - 1
+                if not done and not env._agents[train_idx[0]].is_alive:
+                    dead_flag0 = 1  # 死亡后数据不可用
+                if not done and not env._agents[train_idx[1]].is_alive:
+                    dead_flag2 = 1  # 死亡后数据不可用
 
                 if done:  # 如果结束, 重新开一把
                     info['terminal_observation'] = whole_obs  # 保存终结的 observation，否则 reset 后将丢失
-                    # if info['winners'] == enemies:
-                    #     info = constants.Result.Loss
                     if info['result'] == constants.Result.Win:
                         win_rate = 1
                     elif info['result'] == constants.Result.Loss:
@@ -61,16 +47,18 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                         tie_rate += 1
                     whole_obs = env.reset()  # 重新开一把
 
-                obs = featurize(whole_obs[train_idx])
+                obs0 = feature_utils.featurize(whole_obs[train_idx[0]])
+                obs2 = feature_utils.featurize(whole_obs[train_idx[1]])
                 # remote.send((obs, rew, done, win_rate))
-                remote.send((obs, rew, done, win_rate, tie_rate, loss_rate, first_dead_rate, whole_obs[train_idx]))
+                remote.send((obs0, rew0, whole_obs[train_idx[0]], obs2, rew2, whole_obs[train_idx[1]],
+                             done, dead_flag0, dead_flag2, win_rate, tie_rate, loss_rate))
 
             elif cmd == 'reset':
                 whole_obs = env.reset()
-                obs = featurize(whole_obs[train_idx])
-
+                obs0 = feature_utils.featurize(whole_obs[train_idx[0]])
+                obs1 = feature_utils.featurize(whole_obs[train_idx[1]])
                 # remote.send(obs)
-                remote.send((obs, whole_obs[train_idx]))
+                remote.send((obs0, whole_obs[train_idx[0]], obs1, whole_obs[train_idx[1]]))
 
             elif cmd == 'render':
                 remote.send(env.render(*data[0], **data[1]))
@@ -79,8 +67,8 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                 break
             elif cmd == 'get_spaces':
                 """增加前三行，注释最后一行。自定义 observation 和 action 的 space"""
-                observation_space = get_observertion_space()
-                action_space = get_action_space()
+                observation_space = feature_utils.get_observertion_space()
+                action_space = feature_utils.get_action_space()
                 remote.send((observation_space, action_space))
                 # remote.send((env.observation_space, env.action_space))
             elif cmd == 'env_method':
@@ -96,7 +84,7 @@ def _worker(remote, parent_remote, env_fn_wrapper):
             break
 
 
-class SubprocVecEnv(VecEnv):
+class SubprocVecEnv2(VecEnv):
     """
     Creates a multiprocess vectorized wrapper for multiple environments, distributing each environment to its own
     process, allowing significant speed up when the environment is computationally complex.
@@ -158,16 +146,18 @@ class SubprocVecEnv(VecEnv):
     def step_wait(self):
         results = [remote.recv() for remote in self.remotes]
         self.waiting = False
-        obs, rews, dones, win_rate, tie_rate, loss_rate, first_dead_rate, obs_nf = zip(*results)
-        return _flatten_obs(obs, self.observation_space), np.stack(rews), np.stack(dones), np.stack(win_rate), np.stack(
-            tie_rate), np.stack(loss_rate), np.stack(first_dead_rate), obs_nf
+        obs0, rews0, obs_nf0, obs2, rews2, obs_nf2, dones, dead_flag0, dead_flag2, win_rate, tie_rate, loss_rate = zip(*results)
+        return _flatten_obs(obs0, self.observation_space), np.stack(rews0), obs_nf0, \
+               _flatten_obs(obs2, self.observation_space), np.stack(rews2), obs_nf2, \
+               np.stack(dones), np.stack(dead_flag0), np.stack(dead_flag2), \
+               np.stack(win_rate), np.stack(tie_rate), np.stack(loss_rate)
 
     def reset(self):
         for remote in self.remotes:
             remote.send(('reset', None))
         results = [remote.recv() for remote in self.remotes]
-        obs, obs_nf = zip(*results)
-        return _flatten_obs(obs, self.observation_space), obs_nf
+        obs0, obs_nf0, obs2, obs_nf2 = zip(*results)
+        return _flatten_obs(obs0, self.observation_space), obs_nf0, _flatten_obs(obs2, self.observation_space), obs_nf2
 
     def close(self):
         if self.closed:

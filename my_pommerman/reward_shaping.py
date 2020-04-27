@@ -5,8 +5,8 @@ import copy
 import queue
 
 
-def print_info(name, info, Visualize=False):
-    if Visualize:
+def print_info(name, info, vb=False):
+    if vb:
         print(name, info)
 
 
@@ -532,3 +532,136 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
     else:
         # No team has yet won or lost.
         return [reward] * 4
+
+# 即时奖励, 根据目的设计奖励, 升级版本, 使用_djikstra_v2探路
+def get_rewards_v3_8(agents, step_count, max_steps, whole_obs_pre, whole_obs, act_abs_pres, idx):
+    def any_lst_equal(lst, values):
+        """Checks if list are equal"""
+        return any([lst == v for v in values])
+
+    alive_agents = [num for num, agent in enumerate(agents) \
+                    if agent.is_alive]
+
+    obs_pre = copy.deepcopy(whole_obs_pre[idx])
+    obs_now = copy.deepcopy(whole_obs[idx])
+    act_abs_pre = act_abs_pres[idx]
+    position_pre = obs_pre['position']
+    position_now = obs_now['position']
+
+    bomb_life_now = feature_utils.get_bomb_life(obs_now)
+    bomb_life_pre = feature_utils.get_bomb_life(obs_pre)
+    my_bomb_life_now = feature_utils.get_my_bomb_life(bomb_life_now, position_now)
+
+    extrabomb = constants.Item.ExtraBomb.value
+    kick = constants.Item.Kick.value
+    incrrange = constants.Item.IncrRange.value
+    bomb = constants.Item.Bomb.value
+    wood = constants.Item.Wood.value
+    agent1 = constants.Item.Agent1.value
+    agent3 = constants.Item.Agent3.value
+    teamate = obs_pre['teammate'].value
+
+    reward = 0
+
+    # 自己被炸死
+    if 0 < bomb_life_now[position_now] < 4:
+        reward -= 1
+        print_info('You dead', '-1')
+
+    act_pre = feature_utils._djikstra_act(obs_pre, act_abs_pre)  # 这里只用来判断
+    goal_pre = feature_utils.extra_goal(act_abs_pre, obs_pre)
+    # 如果是放bomb
+    if act_pre == 5:
+        # 没有ammo放bomb
+        if obs_pre['ammo'] == 0:
+            reward -= 0.1
+            print_info('No ammo', '-0.1')
+        # 如果有ammo
+        else:
+            nothing = True
+            # 放的bomb可以波及到wood/enemy
+            for r in range(11):
+                for c in range(11):
+                    if my_bomb_life_now[(r, c)] > 0:
+                        if obs_pre['board'][(r, c)] in [wood]:
+                            reward += 0.2
+                            nothing = False
+                            print_info('bomb -> wood', '+0.2')
+                        if obs_pre['board'][(r, c)] in [agent1, agent3]:
+                            reward += 0.3
+                            nothing = False
+                            print_info('bomb -> enemy', '+0.3')
+                        if obs_pre['board'][(r, c)] in [incrrange, extrabomb, kick]:
+                            reward -= 0.05
+                            print_info('bomb -> powerup', '-0.05')
+                        if obs_pre['board'][(r, c)] in [teamate]:
+                            reward -= 0.05
+                            print_info('bomb -> teammate', '-0.05')
+            if nothing:
+                reward -= 0.1
+                print_info('Useless bomb', '-0.1')
+    # 没有动
+    elif act_pre == 0:
+        if obs_pre['position'] != goal_pre:
+            reward -= 0.1
+            print_info('Faultal goal', '-0.1')
+    # 如果是移动
+    else:
+        # 踢炸弹获得奖励
+        if position_now != position_pre:
+            if obs_pre['can_kick']:
+                if obs_pre['board'][goal_pre] == bomb:
+                    reward += 0.01
+                    print_info('Want to kick', '+0.01')
+                if obs_pre['board'][position_now] == bomb:
+                    reward += 0.2
+                    print_info('Kick', '+0.2')
+            # 从安全位置进入到被炸弹波及之中
+            if bomb_life_pre[position_pre] == 0 and bomb_life_now[position_now] > 0:
+                reward -= 0.15
+                print_info('Enter the explosion range', '-0.15')
+            # 被炸弹波及但是在向安全的位置移动
+            if bomb_life_pre[position_pre] > 0 and bomb_life_pre[goal_pre] == 0:
+                reward += 0.05
+                print_info('Escape from the explosin range ', '+0.05')
+            # 向着items移动
+            if obs_pre['board'][goal_pre] in [extrabomb, kick, incrrange]:
+                reward += 0.01
+                print_info('Want a Item', '+0.01')
+                # 吃到items
+                if obs_pre['board'][position_now] in [extrabomb, kick, incrrange]:
+                    reward += 0.1
+                    print_info('Eat a Item', '+0.1')
+            # 吃到items
+            elif obs_pre['board'][position_now] in [extrabomb, kick, incrrange]:
+                reward += 0.05
+                print_info('Passing by a Item', '+0.05')
+
+    # We are playing a team game.
+    if any_lst_equal(alive_agents, [[0, 2], [0], [2]]):
+        # Team [0, 2] wins.
+        print_info('Wins and agent0 alive.', reward + 1)
+        return reward + 1
+    elif any_lst_equal(alive_agents, [[1, 3]]):
+        # Team [1, 3] wins and no enemy dead.
+        print_info('Loss and no enemy dead.', reward - 1)
+        return reward - 1
+    elif any_lst_equal(alive_agents, [[1], [3]]):
+        # Team [1, 3] wins and one enemy dead.
+        print_info('Loss and one enemy dead.', reward - 0.6)
+        return reward - 0.6
+    elif step_count >= max_steps and any_lst_equal(alive_agents, [[0, 1], [0, 1, 2], [0, 3], [0, 2, 3]]):
+        # tie and one enemy dead.
+        print_info('Tie and one enemy dead.', reward - 0.6)
+        return reward - 0.6
+    elif step_count >= max_steps:
+        # Game is over by max_steps. All agents tie.
+        print_info('Game is over by max_steps. All agents tie.', reward - 1)
+        return reward - 1
+    elif len(alive_agents) == 0:
+        # Everyone's dead. All agents tie.
+        print_info('Everyone is dead. All agents tie.', reward)
+        return reward
+    else:
+        # No team has yet won or lost.
+        return reward

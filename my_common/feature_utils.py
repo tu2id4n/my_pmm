@@ -27,6 +27,11 @@ def featurize(obs_nf, position_trav=set(), action_pre=None):
     return _featurize2(obs_nf)  # 11 * 11 * 30
 
 
+def _djikstra_act(obs_nf, goal_abs):
+    # return _djikstra_act_v1(obs_nf, goal_abs)
+    return _djikstra_act_v2(obs_nf, goal_abs)
+
+
 # 提取goal_abs:
 def extra_goal(goal_abs, obs=None):
     if goal_abs == 121:
@@ -66,11 +71,6 @@ def get_my_bomb_life(bomb_life, my_position):
                         my_bomb_life[(r, c)] = bomb_life[(r, c)]
                         used_position.append((r, c))
     return my_bomb_life
-
-
-def _djikstra_act(obs_nf, goal_abs):
-    # return _djikstra_act_v1(obs_nf, goal_abs)
-    return _djikstra_act_v2(obs_nf, goal_abs)
 
 
 def _djikstra_act_v1(obs_nf, goal_abs, exclude=None):

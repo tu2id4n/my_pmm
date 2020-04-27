@@ -30,8 +30,8 @@ def _evaluate():
     env_id = 'PommeRadioCompetition-v4'
     env = utils.make_env(env_id)
     model_type = 'ppo'
-    model_path0 = 'models/pretrain_v3/pgn_v3_e79.zip'
     # model_path0 = 'models/pretrain_v3/pgn_v3_e79.zip'
+    model_path0 = 'models/test/v14_2000k.zip'
     model_path1 = 'models/pretrain_v1/pgn_e118.zip'
     model_path2 = 'models/pretrain_v1/pgn_e118.zip'
     model_path3 = 'models/pretrain_v1/pgn_e118.zip'
@@ -74,8 +74,8 @@ def _evaluate():
 
             # 修正为适应通信的动作
             # if args.env == 'PommeRadioCompetition-v2':
-            for i in range(len(all_actions)):
-                all_actions[i] = [all_actions[i], 1, 1]
+            #     for i in range(len(all_actions)):
+                    # all_actions[i] = [all_actions[i], 1, 1]
 
             obs, rewards, done, info = env.step(all_actions)
 

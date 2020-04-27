@@ -82,12 +82,6 @@ class Pomme(v0.Pomme):
         self.observations = observations
         return observations
 
-    def make_board(self):
-        self._board = make_board_v3(self._board_size, self._num_rigid,
-                                         self._num_wood, len(self._agents))
-    def make_items(self):
-        self._items = make_items_v3(self._board, self._num_items)
-
     def reset(self):
         assert (self._agents is not None)
         self.act_abs_pre = None
@@ -109,9 +103,10 @@ class Pomme(v0.Pomme):
         return self.get_observations()
 
     def step(self, actions):
-        self.act_abs_pre = actions[0]
+        self.act_abs_pre = actions
         self.obs_pre = copy.deepcopy(self.get_observations())
-        actions[0] = feature_utils._djikstra_act(self.obs_pre[0], self.act_abs_pre)
+        actions[0] = feature_utils._djikstra_act(self.obs_pre[0], self.act_abs_pre[0])
+        actions[2] = feature_utils._djikstra_act(self.obs_pre[2], self.act_abs_pre[2])
         # act_abs_pre2 = actions[2]
         # actions[2] = feature_utils._djikstra_act(self.obs_pre[2], act_abs_pre2)
         actions = [int(act) for act in actions]
@@ -148,7 +143,9 @@ class Pomme(v0.Pomme):
 
         done = self._get_done()
         obs = self.get_observations()
-        reward = self._get_rewards()
+        reward0 = self._get_rewards(idx = 0)
+        reward2 = self._get_rewards(idx = 2)
+        reward = [reward0,0,reward2,0]
         info = self.get_info()
         if done:
             # Callback to let the agents know that the game has ended.
@@ -158,8 +155,9 @@ class Pomme(v0.Pomme):
         self._step_count += 1
         return obs, reward, done, info
 
-    def _get_rewards(self):
-        return reward_shaping.get_rewards_v3_7(self._agents, self._step_count, self._max_steps, self.obs_pre, self.get_observations(), self.act_abs_pre)
+    def _get_rewards(self,idx):
+        return reward_shaping.get_rewards_v3_8(self._agents, self._step_count, self._max_steps,
+                                               self.obs_pre, self.get_observations(), self.act_abs_pre, idx=idx)
 
     def get_info(self):
         def any_lst_equal(lst, values):
