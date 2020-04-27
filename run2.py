@@ -23,7 +23,7 @@ def _learn():
         model = PPO2.load(load_path=args.load_path, using_pgn=args.using_pgn,
                           tensorboard_log=args.log_path, env=env)
     else:
-        model = PPO2(my_policy, env=env, verbose=1, tensorboard_log=args.log_path, n_steps=64)
+        model = PPO2(my_policy, env=env, verbose=1, tensorboard_log=args.log_path, n_steps=128)
 
     model.learn(total_timesteps=total_timesteps, save_path=args.save_path, save_interval=args.save_interval)
 

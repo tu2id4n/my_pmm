@@ -410,21 +410,21 @@ class PPO2(ActorCriticRLModel):
                 if writer is not None:
                     self.episode_reward = total_episode_reward_logger(self.episode_reward,
                                                                       true_reward.reshape((self.n_envs, 2*self.n_steps)),
-                                                                      masks.reshape((self.n_envs, self.n_steps)),
+                                                                      masks.reshape((self.n_envs, 2*self.n_steps)),
                                                                       writer, self.num_timesteps)
                     self.win_rate = total_rate_logger(self.win_rate,
                                                       win_rates.reshape((self.n_envs, self.n_steps)),
-                                                      masks.reshape((self.n_envs, self.n_steps)),
+                                                      masks[:5120].reshape((self.n_envs, self.n_steps)),
                                                       writer, self.num_timesteps,
                                                       name='win_rate')
                     self.tie_rate = total_rate_logger(self.tie_rate,
                                                       tie_rates.reshape((self.n_envs, self.n_steps)),
-                                                      masks.reshape((self.n_envs, self.n_steps)),
+                                                      masks[:5120].reshape((self.n_envs, self.n_steps)),
                                                       writer, self.num_timesteps,
                                                       name='tie_rate')
                     self.loss_rate = total_rate_logger(self.loss_rate,
                                                        loss_rates.reshape((self.n_envs, self.n_steps)),
-                                                       masks.reshape((self.n_envs, self.n_steps)),
+                                                       masks[:5120].reshape((self.n_envs, self.n_steps)),
                                                        writer, self.num_timesteps,
                                                        name='loss_rate')
 
