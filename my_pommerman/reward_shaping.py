@@ -535,6 +535,7 @@ def get_rewards_v3_7(agents, step_count, max_steps, whole_obs_pre, whole_obs, ac
 
 # 即时奖励, 根据目的设计奖励, 升级版本, 使用_djikstra_v2探路
 def get_rewards_v3_8(agents, step_count, max_steps, whole_obs_pre, whole_obs, act_abs_pres, idx):
+
     def any_lst_equal(lst, values):
         """Checks if list are equal"""
         return any([lst == v for v in values])

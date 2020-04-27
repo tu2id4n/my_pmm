@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a06fd0df-76e2-40ba-860c-97824a54f2d9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/my_baselines/ppo2_v2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_common/runners_v2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_common/subproc_vec_env_v2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_pommerman/v5.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_baselines/ppo2.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_baselines/ppo2.py" afterDir="false" />
@@ -24,7 +29,7 @@
     <SUITE FILE_PATH="coverage/my_pmm$tutorial.coverage" NAME="tutorial Coverage Results" MODIFIED="1574235483826" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_agents/hit18_agent" />
     <SUITE FILE_PATH="coverage/my_pmm$sac.coverage" NAME="sac Coverage Results" MODIFIED="1587543621114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/stable_baselines/sac" />
     <SUITE FILE_PATH="coverage/my_pmm$pretrain_v1.coverage" NAME="pretrain Coverage Results" MODIFIED="1587321607195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/my_pmm$run2_server.coverage" NAME="run2_server Coverage Results" MODIFIED="1587962222193" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/my_pmm$run2_server.coverage" NAME="run2_server Coverage Results" MODIFIED="1587963457175" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$play.coverage" NAME="play Coverage Results" MODIFIED="1587867304877" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$test.coverage" NAME="test Coverage Results" MODIFIED="1587271947271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$convert_dataset.coverage" NAME="convert_dataset Coverage Results" MODIFIED="1587313807669" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -43,8 +48,8 @@
             <file pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/my_pommerman/v5.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="581">
-                    <caret line="158" column="40" selection-start-line="158" selection-start-column="40" selection-end-line="158" selection-end-column="40" />
+                  <state relative-caret-position="527">
+                    <caret line="156" lean-forward="true" selection-start-line="156" selection-end-line="156" />
                     <folding>
                       <element signature="e#331#353#0" expanded="true" />
                     </folding>
@@ -67,8 +72,8 @@
             <file pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/my_baselines/ppo2_v2.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="271">
-                    <caret line="742" column="28" selection-start-line="742" selection-start-column="28" selection-end-line="742" selection-end-column="28" />
+                  <state relative-caret-position="315">
+                    <caret line="767" column="90" lean-forward="true" selection-start-line="767" selection-start-column="90" selection-end-line="767" selection-end-column="90" />
                     <folding>
                       <element signature="e#0#11#0" expanded="true" />
                     </folding>
@@ -131,7 +136,7 @@
           <entry key="Python Console" value="245" />
           <entry key="dummy" value="70" />
           <entry key="md" value="741" />
-          <entry key="py" value="33003" />
+          <entry key="py" value="33133" />
           <entry key="txt" value="68" />
         </counts>
       </usages-collector>
@@ -139,7 +144,7 @@
         <counts>
           <entry key="Markdown" value="741" />
           <entry key="PLAIN_TEXT" value="138" />
-          <entry key="Python" value="33248" />
+          <entry key="Python" value="33378" />
         </counts>
       </usages-collector>
     </session>
@@ -158,11 +163,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/my_common/feature_utils.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="227">
-              <caret line="37" column="21" selection-start-line="37" selection-start-column="21" selection-end-line="37" selection-end-column="21" />
+              <caret line="37" column="20" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="20" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
                 <element signature="e#915#1052#0" />
@@ -176,12 +181,12 @@
                 <element signature="e#11231#15501#0" />
                 <element signature="e#15582#15878#0" />
                 <element signature="e#15914#16045#0" />
-                <marker date="1587867455335" expanded="true" signature="277:311" ph="..." />
-                <marker date="1587867455335" expanded="true" signature="455:2041" ph="..." />
-                <marker date="1587867455335" expanded="true" signature="518:523" ph="..." />
-                <marker date="1587867455335" expanded="true" signature="1295:2041" ph="..." />
-                <marker date="1587867455335" expanded="true" signature="2038:2041" ph="..." />
-                <marker date="1587867455335" expanded="true" signature="6770:7364" ph="..." />
+                <marker date="1587962463216" expanded="true" signature="277:311" ph="..." />
+                <marker date="1587962463216" expanded="true" signature="455:2040" ph="..." />
+                <marker date="1587962463216" expanded="true" signature="518:523" ph="..." />
+                <marker date="1587962463216" expanded="true" signature="1294:2040" ph="..." />
+                <marker date="1587962463216" expanded="true" signature="2037:2040" ph="..." />
+                <marker date="1587962463216" expanded="true" signature="6769:7363" ph="..." />
               </folding>
             </state>
           </provider>
@@ -190,8 +195,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/my_pommerman/reward_shaping.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-839">
-              <caret line="548" column="38" lean-forward="true" selection-start-line="548" selection-start-column="38" selection-end-line="548" selection-end-column="38" />
+            <state relative-caret-position="-7">
+              <caret line="553" column="71" selection-start-line="553" selection-start-column="71" selection-end-line="553" selection-end-column="71" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
                 <element signature="e#316#2373#0" />
@@ -230,11 +235,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/my_common/subproc_vec_env_v2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-116">
-              <caret line="49" column="69" selection-start-line="49" selection-start-column="69" selection-end-line="49" selection-end-column="69" />
+            <state relative-caret-position="139">
+              <caret line="36" column="42" selection-start-line="36" selection-start-column="42" selection-end-line="36" selection-end-column="42" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -348,7 +353,6 @@
         <option value="$PROJECT_DIR$/my_pommerman/test_env.py" />
         <option value="$PROJECT_DIR$/evaluate.py" />
         <option value="$PROJECT_DIR$/play.py" />
-        <option value="$PROJECT_DIR$/my_common/feature_utils.py" />
         <option value="$PROJECT_DIR$/my_pommerman/v4.py" />
         <option value="$PROJECT_DIR$/my_common/subproc_vec_env.py" />
         <option value="$PROJECT_DIR$/my_common/subproc_vec.env_v2.py" />
@@ -360,6 +364,7 @@
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/my_common/subproc_vec_env_v2.py" />
         <option value="$PROJECT_DIR$/run2.py" />
+        <option value="$PROJECT_DIR$/my_common/feature_utils.py" />
         <option value="$PROJECT_DIR$/my_pommerman/reward_shaping.py" />
         <option value="$PROJECT_DIR$/my_baselines/ppo2_v2.py" />
       </list>
@@ -1126,33 +1131,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my_pommerman/v5.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="581">
-          <caret line="158" column="40" selection-start-line="158" selection-start-column="40" selection-end-line="158" selection-end-column="40" />
-          <folding>
-            <element signature="e#331#353#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/my_pommerman/reward_shaping.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-839">
-          <caret line="548" column="38" lean-forward="true" selection-start-line="548" selection-start-column="38" selection-end-line="548" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-            <element signature="e#316#2373#0" />
-            <element signature="e#2488#3735#0" />
-            <element signature="e#3852#4529#0" />
-            <element signature="e#4640#6702#0" />
-            <element signature="e#6819#8312#0" />
-            <element signature="e#8428#12873#0" />
-            <element signature="e#13013#19518#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/my_common/subproc_vec_env.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3185">
@@ -1163,20 +1141,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/my_common/subproc_vec_env_v2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-116">
-          <caret line="49" column="69" selection-start-line="49" selection-start-column="69" selection-end-line="49" selection-end-column="69" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/my_common/feature_utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="227">
-          <caret line="37" column="21" selection-start-line="37" selection-start-column="21" selection-end-line="37" selection-end-column="21" />
+          <caret line="37" column="20" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="20" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
             <element signature="e#915#1052#0" />
@@ -1190,20 +1158,57 @@
             <element signature="e#11231#15501#0" />
             <element signature="e#15582#15878#0" />
             <element signature="e#15914#16045#0" />
-            <marker date="1587867455335" expanded="true" signature="277:311" ph="..." />
-            <marker date="1587867455335" expanded="true" signature="455:2041" ph="..." />
-            <marker date="1587867455335" expanded="true" signature="518:523" ph="..." />
-            <marker date="1587867455335" expanded="true" signature="1295:2041" ph="..." />
-            <marker date="1587867455335" expanded="true" signature="2038:2041" ph="..." />
-            <marker date="1587867455335" expanded="true" signature="6770:7364" ph="..." />
+            <marker date="1587962463216" expanded="true" signature="277:311" ph="..." />
+            <marker date="1587962463216" expanded="true" signature="455:2040" ph="..." />
+            <marker date="1587962463216" expanded="true" signature="518:523" ph="..." />
+            <marker date="1587962463216" expanded="true" signature="1294:2040" ph="..." />
+            <marker date="1587962463216" expanded="true" signature="2037:2040" ph="..." />
+            <marker date="1587962463216" expanded="true" signature="6769:7363" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_pommerman/v5.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="156" lean-forward="true" selection-start-line="156" selection-end-line="156" />
+          <folding>
+            <element signature="e#331#353#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_pommerman/reward_shaping.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7">
+          <caret line="553" column="71" selection-start-line="553" selection-start-column="71" selection-end-line="553" selection-end-column="71" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#316#2373#0" />
+            <element signature="e#2488#3735#0" />
+            <element signature="e#3852#4529#0" />
+            <element signature="e#4640#6702#0" />
+            <element signature="e#6819#8312#0" />
+            <element signature="e#8428#12873#0" />
+            <element signature="e#13013#19518#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/my_common/subproc_vec_env_v2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="36" column="42" selection-start-line="36" selection-start-column="42" selection-end-line="36" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/my_baselines/ppo2_v2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="742" column="28" selection-start-line="742" selection-start-column="28" selection-end-line="742" selection-end-column="28" />
+        <state relative-caret-position="315">
+          <caret line="767" column="90" lean-forward="true" selection-start-line="767" selection-start-column="90" selection-end-line="767" selection-end-column="90" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>

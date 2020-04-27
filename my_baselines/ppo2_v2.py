@@ -765,15 +765,14 @@ class Runner(AbstractEnvRunner):
             else:
                 nextnonterminal = 1.0 - mb_dones[step + 1]
                 nextvalues = mb_values[step + 1]
-            if dead_flags[step] == 1:
-                mb_advs = np.delete(mb_advs, step)
-                mb_dones = np.delete(mb_dones, step)
-                mb_actions = np.delete(mb_actions, step)
-                mb_values = np.delete(mb_values, step)
-                mb_neglogpacs = np.delete(mb_neglogpacs, step)
-                mb_rewards = np.delete(mb_rewards, step)
-                true_reward = np.delete(true_reward, step)
-                mb_obs.pop(step)
+            if dead_flags[step] == 1 and mb_dones[step] != 1 and step+1 < len(mb_rewards):
+                mb_advs = np.delete(mb_advs, step+1)
+                mb_actions = np.delete(mb_actions, step+1)
+                mb_values = np.delete(mb_values, step+1)
+                mb_neglogpacs = np.delete(mb_neglogpacs, step+1)
+                mb_rewards = np.delete(mb_rewards, step+1)
+                mb_obs.pop(step+1)
+                true_reward[step] = 0
 
                 continue
             # ∆ = r + 𝛄 * v' - v
@@ -782,14 +781,14 @@ class Runner(AbstractEnvRunner):
             mb_advs[step] = last_gae_lam = delta + self.gamma * self.lam * nextnonterminal * last_gae_lam
         mb_returns = mb_advs + mb_values
 
-        # mb_obs = np.array(mb_obs)
-        # print('obs', mb_obs.shape)
-        # print('actions', mb_actions.shape)
-        # print('values', mb_values.shape)
-        # print('rewards', true_reward.shape)
-        # print('dones', mb_dones.shape)
-        # print('last_values', last_values.shape)
-        # print('return', mb_returns.shape)
+        mb_obs = np.array(mb_obs)
+        print('obs', mb_obs.shape)
+        print('actions', mb_actions.shape)
+        print('values', mb_values.shape)
+        print('rewards', true_reward.shape)
+        print('dones', mb_dones.shape)
+        print('last_values', last_values.shape)
+        print('return', mb_returns.shape)
 
         return mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, mb_states, true_reward, \
                win_rates, tie_rates, loss_rates, mb_obs_nf
