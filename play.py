@@ -7,16 +7,16 @@ def _play():
     print('----------------------------------------------')
     print('|                  P L A Y                   |')
     print('----------------------------------------------')
-    env_id = 'PommeRadioCompetition-v4'
+    env_id = 'PommeRadioCompetition-v5'
     env = utils.make_env(env_id)
 
     model_type = 'ppo'
     vb = False
     pretrain = False
-    model_path0 = 'models/test/v14_2000k.zip'
+    model_path0 = 'models/test/v16_20k.zip'
     # model_path0 = 'models/pretrain_v1/pgn_e118.zip'
     model_path1 = None
-    model_path2 = 'models/pretrain_v3/pgn_v3_e79.zip'
+    model_path2 = 'models/test/v16_20k.zip'
     model_path3 = None
     model_paths = [model_path0, model_path1, model_path2, model_path3]
     models = utils.get_load_models(model_type, model_paths)

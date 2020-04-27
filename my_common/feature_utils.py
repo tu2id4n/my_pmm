@@ -35,7 +35,7 @@ def _djikstra_act(obs_nf, goal_abs):
 # 提取goal_abs:
 def extra_goal(goal_abs, obs=None):
     if goal_abs == 121:
-        return obs['osition']
+        return obs['position']
     for r in range(0, 11):
         for c in range(0, 11):
             if r * 11 + c == goal_abs:
