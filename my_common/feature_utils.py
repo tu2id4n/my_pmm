@@ -28,8 +28,8 @@ def featurize(obs_nf, position_trav=set(), action_pre=None):
 
 
 def _djikstra_act(obs_nf, goal_abs):
-    # return _djikstra_act_v1(obs_nf, goal_abs)
     return _djikstra_act_v2(obs_nf, goal_abs)
+    # return _djikstra_act_v2(obs_nf, goal_abs)
 
 
 # 提取goal_abs:
@@ -410,6 +410,7 @@ def get_bomb_life(obs_nf):
                     if board[pos] == 2:
                         bomb_life[pos] = bomb_life[(x, y)]
                         break
+
                     # if a bomb
                     if board[pos] == 3:
                         if bomb_life[(x, y)] < bomb_life[pos]:

@@ -32,9 +32,10 @@ def _evaluate():
     model_type = 'ppo'
     # model_path0 = 'models/pretrain_v3/pgn_v3_e79.zip'
     model_path0 = 'models/test/v14_2000k.zip'
-    model_path1 = 'models/pretrain_v1/pgn_e118.zip'
-    model_path2 = 'models/pretrain_v1/pgn_e118.zip'
-    model_path3 = 'models/pretrain_v1/pgn_e118.zip'
+    model_path1 = None
+    model_path2 = None
+    # model_path3 = 'models/pretrain_v1/pgn_e118.zip'
+    model_path3 = None
     model_paths = [model_path0, model_path1, model_path2, model_path3]
     models = utils.get_load_models(model_type, model_paths)
 

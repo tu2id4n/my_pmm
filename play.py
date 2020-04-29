@@ -13,10 +13,10 @@ def _play():
     model_type = 'ppo'
     vb = False
     pretrain = False
-    model_path0 = 'models/test/v14_2000k.zip'
+    model_path0 = 'models/test/v17_740k.zip'
     # model_path0 = 'models/pretrain_v1/pgn_e118.zip'
     model_path1 = None
-    model_path2 = 'models/test/v14_2000k.zip'
+    model_path2 = 'models/test/v17_740k.zip'
     model_path3 = None
     model_paths = [model_path0, model_path1, model_path2, model_path3]
     models = utils.get_load_models(model_type, model_paths)
@@ -52,7 +52,7 @@ def _play():
                     if type(action) == list:
                         action = action[0]
                     # print('action', action)
-                    print('model' + str(i) + ' action: ', action)
+                    # print('model' + str(i) + ' action: ', action)
                     # if action == 3:
                     #     action = random.randint(0, 5)
                     all_actions[i] = action

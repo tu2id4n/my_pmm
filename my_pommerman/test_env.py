@@ -16,16 +16,16 @@ def main():
     # Create a set of agents (exactly four)
     agent_list = [
         # RandAgent(),
-        # agents.PlayerAgent(agent_control="wasd"),  # W,A,S,D to move, E to lay bomb
         # SuicideAgent(),
+        agents.PlayerAgent(agent_control="wasd"),  # W,A,S,D to move, E to lay bomb
+        StopAgent(),
+        StopAgent(),
         # StopAgent(),
-        # StopAgent(),
-        # StopAgent(),
-        agents.SimpleAgent(),
-        agents.SimpleAgent(),
-        agents.SimpleAgent(),
-        agents.SimpleAgent(),
-        # agents.PlayerAgent(agent_control="arrows"),  # arrows to move, space to lay bomb
+        # agents.SimpleAgent(),
+        # agents.SimpleAgent(),
+        # agents.SimpleAgent(),
+        # agents.SimpleAgent(),
+        agents.PlayerAgent(agent_control="arrows"),  # arrows to move, space to lay bomb
         # SuicideAgent(),
         # SuicideAgent(),
         # SuicideAgent(),
@@ -43,13 +43,15 @@ def main():
         while not done:
             actions = env.act(state)
             # print(actions[0])
-            actions[0] = [actions[0], 1, 1]
+            # actions[0] = [actions[0], 1, 1]
             state, reward, done, info = env.step(actions)
+            bomb_life = state[0]['bomb_life']
+            bomb_strenth = state[0]['bomb_blast_strength']
             bomb_life = feature_utils.get_bomb_life(state[0])
             # obs = featurize(state[0], env.position_trav)
             env.render()
             # print(reward)
-            print()
+            # print()
         print(info)
         print('Episode {} finished'.format(i_episode))
     env.close()
