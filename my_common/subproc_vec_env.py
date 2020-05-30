@@ -167,6 +167,7 @@ class SubprocVecEnv(VecEnv):
             remote.send(('reset', None))
         results = [remote.recv() for remote in self.remotes]
         obs, obs_nf = zip(*results)
+        # print(obs)
         return _flatten_obs(obs, self.observation_space), obs_nf
 
     def close(self):

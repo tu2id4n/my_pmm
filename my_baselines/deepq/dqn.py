@@ -5,7 +5,7 @@ import numpy as np
 import gym
 
 from stable_baselines import logger  # , deepq
-from stable_baselines.common import tf_util  # OffPolicyRLModel, SetVerbosity, TensorboardWriter
+from stable_baselines.common import tf_util  # , OffPolicyRLModel, SetVerbosity, TensorboardWriter
 from stable_baselines.common.vec_env import VecEnv
 from stable_baselines.common.schedules import LinearSchedule
 # from stable_baselines.deepq.replay_buffer import ReplayBuffer, PrioritizedReplayBuffer
@@ -15,8 +15,7 @@ from stable_baselines.a2c.utils import total_episode_reward_logger
 from my_baselines import deepq
 from my_baselines.deepq.replay_buffer import ReplayBuffer, PrioritizedReplayBuffer
 from my_baselines.deepq.policies import DQNPolicy
-from my_common import get_action_space, get_observertion_space
-from my_common import get_modify_act, get_prev2obs
+from my_common import feature_utils
 import random
 from my_baselines import OffPolicyRLModel, SetVerbosity, TensorboardWriter
 
@@ -68,7 +67,7 @@ class DQN(OffPolicyRLModel):
                  prioritized_replay_alpha=0.6, prioritized_replay_beta0=0.4, prioritized_replay_beta_iters=None,
                  prioritized_replay_eps=1e-6, param_noise=False,
                  n_cpu_tf_sess=None, verbose=0, tensorboard_log=None,
-                 _init_setup_model=True, policy_kwargs=None, full_tensorboard_log=False, seed=None):
+                 _init_setup_model=True, policy_kwargs=None, full_tensorboard_log=False, seed=None, k=4, temp_size=15):
 
         # TODO: replay_buffer refactoring
         super(DQN, self).__init__(policy=policy, env=env, replay_buffer=None, verbose=verbose, policy_base=DQNPolicy,
@@ -108,8 +107,11 @@ class DQN(OffPolicyRLModel):
         self.summary = None
         self.episode_reward = None
 
-        self.observation_space = get_observertion_space()
-        self.action_space = get_action_space()
+        self.observation_space = feature_utils.get_observertion_space()
+        self.action_space = feature_utils.get_action_space()
+        self.temp_buffer = []
+        self.temp_size = temp_size
+        self.k = k
 
         if _init_setup_model:
             self.setup_model()
@@ -202,7 +204,7 @@ class DQN(OffPolicyRLModel):
 
             episode_rewards = [0.0]
             episode_successes = []
-            obs, obs_p = self.env.reset()
+            obs = self.env.reset()
             reset = True
             self.episode_reward = np.zeros((1,))
 
@@ -210,6 +212,9 @@ class DQN(OffPolicyRLModel):
             探索使用prune
             """
             prev2s = [None, None]
+
+            def input_formate(obs):
+                return np.stack(obs, axis=2)
 
             for _ in range(total_timesteps):
                 if callback is not None:
@@ -236,32 +241,61 @@ class DQN(OffPolicyRLModel):
                     kwargs['update_param_noise_scale'] = True
                 # tf.summary.scalar('update_eps', update_eps)
                 with self.sess.as_default():
-                    action = self.act(np.array(obs)[None], update_eps=-1, **kwargs)[0]  # 原本为update_eps=update_eps
+                    # action = self.act(np.array(obs)[None], update_eps=-1, **kwargs)[0]  # 永不探索 原本为update_eps=update_eps
                     # print(action)
-                    print(update_eps)
+                    # print(update_eps)
                     # writer.add_summary(update_eps)
-                    if random.random() < update_eps:
-                        choose_random = True
-                    else:
-                        choose_random = False
-                    if choose_random:
-                        action = random.randint(0, 5)
-                        action = get_modify_act(obs_p, action, prev2s, nokick=True)
+                    # if random.random() < update_eps:
+                    #     choose_random = True
+                    # else:
+                    #     choose_random = False
+                    # if choose_random:
+                    #     action = random.randint(0, 5)
+                    # action = feature_utils.get_modify_act(obs_p, action, prev2s, nokick=True)
                     # if action == 0 or action == 5 or self.num_timesteps > 50000:
                     #     action = self.act(np.array(obs)[None], update_eps=update_eps, **kwargs)[0]
+                    # obs_input = np.stack(obs, axis=2)
+                    # print(obs_input.shape)
+                    action = self.act(np.array(input_formate(obs))[None], update_eps=update_eps, **kwargs)[0]
+                    # print(action)
                 env_action = action
                 reset = False
-                new_obs, rew, done, info, obs_p = self.env.step(env_action)  # .ntc
-                prev2s = get_prev2obs(prev2s, obs_p)
+                new_obs, rew, done, info = self.env.step(env_action)  # .ntc
+                # new_obs_input = np.stack(new_obs, axis=2)
+                # prev2s = get_prev2obs(prev2s, obs_p)
                 # Store transition in the replay buffer.
-                self.replay_buffer.add(obs, action, rew, new_obs, float(done))
+                self.replay_buffer.add(input_formate(obs), action, rew, input_formate(new_obs), float(done))
+
                 '''
-                每次重置环境的话，需要清空replay_buffer
-                这里添加一个判断 can_add_future
-                然后将new_obs作为future传进去，然后添加到当前的replay_buffer中去
-                最好把更新全部加入到if done里
-                需要写一个距离对比的函数
+                    HER
                 '''
+                self.temp_buffer.append((obs, action, rew, new_obs, float(done)))
+                if len(self.temp_buffer) >= self.temp_size:
+                    for t in range(self.temp_size):
+                        s, a, r, s_n, d = self.temp_buffer[t]
+                        for k in range(self.k):
+                            _s = s
+                            _r = r
+                            future = np.random.randint(t, self.temp_size)
+                            s_f, g, _, _, _ = self.temp_buffer[future]
+                            if g == 64:
+                                goal_map = s_f[-2]
+                                for r in range(0, 8):
+                                    for c in range(0, 8):
+                                        if goal_map[(r, c)] == 1:
+                                            goal = (r, c)
+                                            break
+                            else:
+                                goal = feature_utils.extra_goal_8m8(g)  # 加入目标
+                                goal_map = np.zeros((8, 8))
+                                goal_map[(goal)] = 1
+                            _s[-1] = goal_map
+                            if _s[-2][goal] == 1:
+                                # print('HER')
+                                _r = 1
+                            self.replay_buffer.add(input_formate(_s), a, _r, input_formate(s_n), d)
+                    self.temp_buffer.clear()
+
                 obs = new_obs
 
                 if writer is not None:
@@ -276,7 +310,7 @@ class DQN(OffPolicyRLModel):
                     if maybe_is_success is not None:
                         episode_successes.append(float(maybe_is_success))
                     if not isinstance(self.env, VecEnv):
-                        obs, obs_p = self.env.reset()
+                        obs = self.env.reset()
                     episode_rewards.append(0.0)
                     reset = True
                     prev2s = [None, None]
@@ -286,7 +320,7 @@ class DQN(OffPolicyRLModel):
                 can_sample = self.replay_buffer.can_sample(self.batch_size)
                 if can_sample and self.num_timesteps > self.learning_starts \
                         and self.num_timesteps % self.train_freq == 0:
-                    # self.replay_buffer.add_k_goals(k=k)  # 加入goal sample
+                    # print('update')
                     # Minimize the error in Bellman's equation on a batch sampled from replay buffer.
                     if self.prioritized_replay:
                         experience = self.replay_buffer.sample(self.batch_size,
@@ -295,7 +329,9 @@ class DQN(OffPolicyRLModel):
                     else:
                         obses_t, actions, rewards, obses_tp1, dones = self.replay_buffer.sample(self.batch_size)
                         weights, batch_idxes = np.ones_like(rewards), None
-
+                    # print(rewards.shape)
+                    # print(dones.shape)
+                    # print(actions.shape)
                     if writer is not None:
                         # run loss backprop with summary, but once every 100 steps save the metadata
                         # (memory, compute time, ...)

@@ -8,3 +8,4 @@ from .dataset import ExpertDataset
 from .model_utils import total_rate_logger
 from .runners import AbstractEnvRunner
 from .hindsight import HindSightBuffer
+from .subproc_vec_env_8m8 import SubprocVecEnv

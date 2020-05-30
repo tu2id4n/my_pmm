@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="c4415a20-98f5-4878-938f-6366e7c6d422" name="my_pmm_158">
+        <fileTransfer rootFolder="/root/my_pmm" accessType="SFTP" host="219.223.251.158" port="11000" sshConfigId="6f96ec95-b6d3-4079-ae0a-cf5b9e648b17" sshConfig="root@219.223.251.158:11000 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

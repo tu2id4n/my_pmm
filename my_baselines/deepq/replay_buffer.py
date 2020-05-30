@@ -66,30 +66,6 @@ class ReplayBuffer(object):
             self._storage[self._next_idx] = data
         self._next_idx = (self._next_idx + 1) % self._maxsize
 
-    def add_k_goals(self, k=10):
-        if self.can_sample(k):
-            self.sample(batch_size=k, goal=True)
-
-    def add_goals(self, idxes):
-        idxes.sort()
-        idxes = list(set(idxes))
-        for i in idxes:
-            data = self._storage[i]
-            data_g = self._storage[i + 1]
-            obs, act, rew, next_obs, done = data
-            obs_g, act_g, rew_g, next_obs_g, done_g = data_g
-            if rew >= 0 and rew_g >= 0:
-                new_data = (obs, act, 1, next_obs, done)
-                if self._next_idx >= len(self._storage):
-                    self._storage.append(new_data)
-                else:
-                    self._storage[self._next_idx] = new_data
-                self._next_idx = (self._next_idx + 1) % self._maxsize
-
-    def _clear(self):
-        self._storage = []
-        self._next_idx = 0
-
     def _encode_sample(self, idxes):
         obses_t, actions, rewards, obses_tp1, dones = [], [], [], [], []
         for i in idxes:
@@ -102,11 +78,10 @@ class ReplayBuffer(object):
             dones.append(done)
         return np.array(obses_t), np.array(actions), np.array(rewards), np.array(obses_tp1), np.array(dones)
 
-    def sample(self, batch_size, goal=False, **_kwargs):
+    def sample(self, batch_size, **_kwargs):
         """
         Sample a batch of experiences.
 
-        :param goal:use her
         :param batch_size: (int) How many transitions to sample.
         :return:
             - obs_batch: (np.ndarray) batch of observations
@@ -116,12 +91,8 @@ class ReplayBuffer(object):
             - done_mask: (numpy bool) done_mask[i] = 1 if executing act_batch[i] resulted in the end of an episode
                 and 0 otherwise.
         """
-        if goal:
-            idxes = [random.randint(0, len(self._storage) - 2) for _ in range(batch_size)]
-            return self.add_goals(idxes)
-        else:
-            idxes = [random.randint(0, len(self._storage) - 1) for _ in range(batch_size)]
-            return self._encode_sample(idxes)
+        idxes = [random.randint(0, len(self._storage) - 1) for _ in range(batch_size)]
+        return self._encode_sample(idxes)
 
 
 class PrioritizedReplayBuffer(ReplayBuffer):

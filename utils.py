@@ -35,6 +35,7 @@ def make_envs(env_id):
             agents.SimpleAgent(),
             agents.SimpleAgent(),
             agents.SimpleAgent(),
+            # my_agents.SimpleNoBombAgent(),
             # hit18Agent('1'),
             # hit18Agent('3')
         ]

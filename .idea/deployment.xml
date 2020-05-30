@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="my_pmm158">
+  <component name="PublishConfigData" autoUpload="Always" serverName="root@219.223.251.158:11000 password">
     <serverData>
-      <paths name="my_pmm158">
+      <paths name="my_pmm_158">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="root@219.223.251.158:11000 password">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" />
           </mappings>
           <excludedPaths>
-            <excludedPath local="true" path="$PROJECT_DIR$/dataset" />
-            <excludedPath local="true" path="$PROJECT_DIR$/logs" />
             <excludedPath local="true" path="$PROJECT_DIR$/models" />
+            <excludedPath local="true" path="$PROJECT_DIR$/logs" />
+            <excludedPath local="true" path="$PROJECT_DIR$/logs/test" />
           </excludedPaths>
         </serverdata>
       </paths>
