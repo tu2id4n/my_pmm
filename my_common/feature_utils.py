@@ -542,13 +542,14 @@ def _featurize_8m8(obs_nf):
     # # if not teammate_idx == 9:  # AgentDummy
     #     maps.append(board == teammate_idx)  # 1
 
-    """三个敌人的位置 one-hot"""
-    enemies_idx = [11, 12, 13]
+    """敌人的位置 one-hot"""
+    # enemies_idx = []
     # for e in obs['enemies']:
     #     if not e.value == 9:  # AgentDummy
     #         enemies_idx.append(e.value)
     # print(enemies_idx)
-    maps.append(np.logical_or(board == enemies_idx[0], board == enemies_idx[1], board == enemies_idx[2]))  # 1
+    # maps.append(np.logical_or(board == enemies_idx[0], board == enemies_idx[1], board == enemies_idx[2]))  # 1
+    maps.append(board == 11)  # 1
 
     """训练智能体的位置 one-hot"""
     # for idx in [10, 11, 12, 13]:

@@ -18,7 +18,7 @@ from my_baselines.deepq.policies import DQNPolicy
 from my_common import feature_utils
 import random
 from my_baselines import OffPolicyRLModel, SetVerbosity, TensorboardWriter
-
+import copy
 
 class DQN(OffPolicyRLModel):
     """
@@ -257,6 +257,7 @@ class DQN(OffPolicyRLModel):
                     # obs_input = np.stack(obs, axis=2)
                     # print(obs_input.shape)
                     action = self.act(np.array(input_formate(obs))[None], update_eps=update_eps, **kwargs)[0]
+                    # print(update_eps)
                     # print(action)
                 env_action = action
                 reset = False
@@ -274,8 +275,9 @@ class DQN(OffPolicyRLModel):
                     for t in range(self.temp_size):
                         s, a, r, s_n, d = self.temp_buffer[t]
                         for k in range(self.k):
-                            _s = s
-                            _r = r
+                            _s = copy.deepcopy(s)
+                            _r = copy.deepcopy(r)
+                            _s_n = copy.deepcopy(s_n)
                             future = np.random.randint(t, self.temp_size)
                             s_f, g, _, _, _ = self.temp_buffer[future]
                             if g == 64:
@@ -288,12 +290,13 @@ class DQN(OffPolicyRLModel):
                             else:
                                 goal = feature_utils.extra_goal_8m8(g)  # 加入目标
                                 goal_map = np.zeros((8, 8))
-                                goal_map[(goal)] = 1
+                                goal_map[goal] = 1
+
                             _s[-1] = goal_map
-                            if _s[-2][goal] == 1:
-                                # print('HER')
-                                _r = 1
-                            self.replay_buffer.add(input_formate(_s), a, _r, input_formate(s_n), d)
+                            _s_n[-1] = goal_map
+                            if _s_n[-2][goal] == 1:  # 判断_s是否通过a到达goal
+                                _r = 0.01
+                            self.replay_buffer.add(input_formate(_s), a, _r, input_formate(_s_n), d)
                     self.temp_buffer.clear()
 
                 obs = new_obs

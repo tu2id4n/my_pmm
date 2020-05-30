@@ -33,20 +33,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a06fd0df-76e2-40ba-860c-97824a54f2d9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my_common/subproc_vec_env_8m8.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/my_pmm.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/my_pmm.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_baselines/deepq/dqn.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_baselines/deepq/dqn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_baselines/deepq/replay_buffer.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_baselines/deepq/replay_buffer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_common/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_common/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_common/feature_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_common/feature_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_common/subproc_vec_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_common/subproc_vec_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_policies/cnn.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_policies/cnn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my_common/subproc_vec_env_8m8.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_common/subproc_vec_env_8m8.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pommerman/forward_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/pommerman/forward_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_dqn.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_dqn.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
@@ -97,7 +90,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -115,28 +108,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.run_dqn">
-    <configuration name="evaluate" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="my_pmm" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/pommerman/bin/python3.6" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluate.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="play" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="my_pmm" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -151,6 +122,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/play.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="play_8m8" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="my_pmm" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/play_8m8.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -188,9 +181,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="sftp://root@219.223.251.158:11000/usr/bin/python" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -210,9 +203,31 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\Users\lenovo\anaconda3\envs\pommerman\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run_dqn.py" />
+      <option name="PARAMETERS" value="--num_timesteps=1e8 --log_path=logs/ --save_path=models/ --save_interval=1e5" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="run_dqn_server" type="PythonConfigurationType" factoryName="Python">
+      <module name="my_pmm" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="sftp://root@219.223.251.158:11000/usr/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -295,19 +310,20 @@
       <item itemvalue="Python.pretrain" />
       <item itemvalue="Python.run_loacl" />
       <item itemvalue="Python.run2_server" />
+      <item itemvalue="Python.run_dqn_server" />
       <item itemvalue="Python.test_env" />
       <item itemvalue="Python.play" />
-      <item itemvalue="Python.evaluate" />
       <item itemvalue="Python.test" />
       <item itemvalue="Python.run_dqn" />
+      <item itemvalue="Python.play_8m8" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.run_dqn" />
+        <item itemvalue="Python.play_8m8" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.play" />
         <item itemvalue="Python.test_env" />
-        <item itemvalue="Python.evaluate" />
       </list>
     </recent_temporary>
   </component>
@@ -322,7 +338,7 @@
       <option name="presentableId" value="Default" />
       <updated>1573626470474</updated>
       <workItem from="1590757197336" duration="2006000" />
-      <workItem from="1590826750384" duration="14189000" />
+      <workItem from="1590826750384" duration="19829000" />
     </task>
     <servers />
   </component>
@@ -348,42 +364,47 @@
     </ignored-roots>
   </component>
   <component name="WindowStateProjectService">
-    <state x="2472" y="178" key="#Deployment" timestamp="1590826065660">
-      <screen x="1920" y="0" width="1920" height="1040" />
+    <state x="-1368" y="178" key="#Deployment" timestamp="1590847826538">
+      <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
+    <state x="-1368" y="178" key="#Deployment/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590847826538" />
     <state x="2472" y="178" key="#Deployment/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1590826065660" />
     <state x="2456" y="165" key="#SSH_Configurations" timestamp="1590825801940">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="536" y="165" key="#SSH_Configurations/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1590825486614" />
     <state x="2456" y="165" key="#SSH_Configurations/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1590825801940" />
-    <state x="-1506" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590842014812">
+    <state x="-1506" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590847879118">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="-1506" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590842014812" />
+    <state x="-1506" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590847879118" />
     <state x="2334" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1590826183862" />
-    <state width="1877" height="356" key="GridCell.Tab.0.bottom" timestamp="1590842671390">
+    <state x="-1230" y="266" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1590847559681">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="356" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590842671390" />
+    <state x="-1230" y="266" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590847559681" />
+    <state width="1877" height="356" key="GridCell.Tab.0.bottom" timestamp="1590848395444">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="356" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590848395444" />
     <state width="1877" height="356" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1590837206454" />
     <state width="1877" height="361" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1590826738998" />
-    <state width="1877" height="356" key="GridCell.Tab.0.center" timestamp="1590842671390">
+    <state width="1877" height="356" key="GridCell.Tab.0.center" timestamp="1590848395444">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="356" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590842671390" />
+    <state width="1877" height="356" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590848395444" />
     <state width="1877" height="356" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1590837206454" />
     <state width="1877" height="361" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1590826738998" />
-    <state width="1877" height="356" key="GridCell.Tab.0.left" timestamp="1590842671390">
+    <state width="1877" height="356" key="GridCell.Tab.0.left" timestamp="1590848395444">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="356" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590842671390" />
+    <state width="1877" height="356" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590848395444" />
     <state width="1877" height="356" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1590837206453" />
     <state width="1877" height="361" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1590826738998" />
-    <state width="1877" height="356" key="GridCell.Tab.0.right" timestamp="1590842671390">
+    <state width="1877" height="356" key="GridCell.Tab.0.right" timestamp="1590848395444">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="356" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590842671390" />
+    <state width="1877" height="356" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590848395444" />
     <state width="1877" height="356" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1590837206454" />
     <state width="1877" height="361" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1590826738998" />
     <state width="1877" height="345" key="GridCell.Tab.1.bottom" timestamp="1590837860976">
@@ -410,15 +431,16 @@
     <state width="1877" height="345" key="GridCell.Tab.1.right/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590837860976" />
     <state width="1877" height="345" key="GridCell.Tab.1.right/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1590836876193" />
     <state width="1877" height="361" key="GridCell.Tab.1.right/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1590826738998" />
-    <state x="2342" y="164" key="SettingsEditor" timestamp="1590826243119">
-      <screen x="1920" y="0" width="1920" height="1040" />
+    <state x="-1498" y="164" key="SettingsEditor" timestamp="1590847043377">
+      <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
+    <state x="-1498" y="164" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590847043377" />
     <state x="461" y="164" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1590825370032" />
     <state x="2342" y="164" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1590826243119" />
-    <state x="47" y="0" width="1621" height="1028" maximized="true" key="dock-window-1" timestamp="1590831649191">
+    <state x="47" y="0" width="1621" height="1028" maximized="true" key="dock-window-1" timestamp="1590843801525">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="47" y="0" width="1621" height="1028" maximized="true" key="dock-window-1/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590831649191" />
+    <state x="47" y="0" width="1621" height="1028" maximized="true" key="dock-window-1/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1590843801525" />
     <state x="360" y="120" width="1200" height="800" key="dock-window-6" timestamp="1590758829693">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -461,9 +483,11 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/my_pmm$test.coverage" NAME="test Coverage Results" MODIFIED="1590837845757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/my_pmm$test.coverage" NAME="test Coverage Results" MODIFIED="1590846286010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/my_pmm$run_dqn_server.coverage" NAME="run_dqn_server Coverage Results" MODIFIED="1590847163863" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$run_loacl.coverage" NAME="run_loacl Coverage Results" MODIFIED="1590839395041" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/my_pmm$run_dqn.coverage" NAME="run_dqn Coverage Results" MODIFIED="1590842391339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/my_pmm$play_8m8.coverage" NAME="play_8m8 Coverage Results" MODIFIED="1590847519417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/my_pmm$run_dqn.coverage" NAME="run_dqn Coverage Results" MODIFIED="1590848395428" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/my_pmm$play.coverage" NAME="play Coverage Results" MODIFIED="1590826168325" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

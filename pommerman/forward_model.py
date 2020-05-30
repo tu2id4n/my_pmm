@@ -648,13 +648,13 @@ class ForwardModel(object):
         elif game_type == constants.GameType.OneVsOne:
             if len(alive_agents) == 1:
                 # An agent won. Give them +1, the other -1.
-                return [1 for agent in agents]
+                return [2 * int(agent.is_alive) - 1 for agent in agents]
             elif step_count >= max_steps:
                 # Game is over from time. Everyone gets -1.
-                return [-1] * 4
+                return [-1] * 2
             else:
                 # Game running
-                return [0] * 4
+                return [0, 0]
         else:
             # We are playing a team game.
             if any_lst_equal(alive_agents, [[0, 2], [0], [2]]):

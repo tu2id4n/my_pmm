@@ -43,7 +43,7 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                 goal = feature_utils.extra_goal_8m8(data, whole_obs[train_idx])  # 加入目标
                 # print(goal)
                 goal_map = np.zeros((8, 8))
-                goal_map[(goal)] = 1
+                goal_map[goal] = 1
                 goal_map = goal_map.reshape(1, 8, 8)
                 obs = np.concatenate((obs, goal_map))
                 remote.send((obs, rew, done, info))

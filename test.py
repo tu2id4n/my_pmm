@@ -8,10 +8,10 @@ agent_list = [
     # agents.DockerAgent('tu2id4n/hit_pmm:fix2', port=1023),
     agents.SimpleAgent(),
     agents.SimpleAgent(),
-    agents.SimpleAgent(),
+    # agents.SimpleAgent(),
     # agents.DockerAgent('multiagentlearning/hakozakijunctions', port=1023),
     # agents.DockerAgent('tu2id4n/hit_pmm:fix2', port=1025),
-    agents.SimpleAgent()
+    # agents.SimpleAgent()
     # agents.SimpleAgent()
 ]
 env = pommerman.make('OneVsOne-v0', agent_list)
@@ -22,7 +22,7 @@ for episode in tqdm(range(1000)):
     while not done:
         all_actions = env.act(obs)
         obs, rewards, done, info = env.step(all_actions)
-        print(obs[0])
+        print(obs)
         env.render()
     print(info)
 print('1000 test ok')
