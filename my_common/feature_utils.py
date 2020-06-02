@@ -371,19 +371,19 @@ def isLegal_act(obs_nf, act_to, rang=11):
         return False
 
 
-def get_act_abs(obs, action):
+def get_act_abs(obs, action, rang=11):
     if action == 5:
-        return 121
+        return rang * rang
 
     r, c = obs['position']
-    act_abs = r * 11 + c
+    act_abs = r * rang + c
     if action == 0:
         return act_abs
 
     count = 1000
     while count > 0:
-        rand_act_obs = random.randint(0, 120)
-        if _djikstra_act(obs_nf=obs, goal_abs=rand_act_obs) == action:
+        rand_act_obs = random.randint(0, rang * rang-1)
+        if _djikstra_act(obs_nf=obs, goal_abs=rand_act_obs, rang=rang) == action:
             return rand_act_obs
         count -= 1
 

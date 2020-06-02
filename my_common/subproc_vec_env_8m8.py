@@ -48,13 +48,13 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                 goal_map = goal_map.reshape(1, 8, 8)
                 obs = np.concatenate((obs, goal_map))
 
-                remote.send((obs, rew, done, win_rate))
+                remote.send((obs, rew, done, win_rate, whole_obs[train_idx]))
 
             elif cmd == 'reset':
                 whole_obs = env.reset()
                 obs = feature_utils.featurize(whole_obs[train_idx])
                 obs = np.concatenate((obs, np.zeros((1, 8, 8))))  # 初始obs添加空目标
-                remote.send(obs)
+                remote.send((obs, whole_obs[train_idx]))
 
             elif cmd == 'render':
                 remote.send(env.render(*data[0], **data[1]))
@@ -142,17 +142,17 @@ class SubprocVecEnv(VecEnv):
     def step_wait(self):
         results = [remote.recv() for remote in self.remotes]
         self.waiting = False
-        obs, rews, dones, infos = zip(*results)
-        return _flatten_obs(obs, self.observation_space), np.stack(rews), np.stack(dones), np.stack(infos)
+        obs, rews, dones, infos, obs_nfs = zip(*results)
+        return _flatten_obs(obs, self.observation_space), np.stack(rews), np.stack(dones), np.stack(infos), obs_nfs
 
     def reset(self):
         for remote in self.remotes:
             remote.send(('reset', None))
         results = [remote.recv() for remote in self.remotes]
-        # obs = zip(*results)
+        obs, obs_nf = zip(*results)
         # print(results)
         # print(_flatten_obs(results, self.observation_space).shape)
-        return _flatten_obs(results, self.observation_space)
+        return _flatten_obs(obs, self.observation_space), obs_nf
 
     def close(self):
         if self.closed:

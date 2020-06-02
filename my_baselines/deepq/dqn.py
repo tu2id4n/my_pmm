@@ -206,11 +206,11 @@ class DQN(OffPolicyRLModel):
 
             episode_rewards = [0.0]
             episode_successes = []
-            obs = self.env.reset()
+            obs, obs_nf = self.env.reset()
             reset = True
             self.episode_reward = np.zeros((1,))
             self.win_rate = np.zeros((1,))
-
+            # print(obs_nf)
             """
             探索使用prune
             """
@@ -244,27 +244,22 @@ class DQN(OffPolicyRLModel):
                     kwargs['update_param_noise_scale'] = True
                 # tf.summary.scalar('update_eps', update_eps)
                 with self.sess.as_default():
-                    # action = self.act(np.array(obs)[None], update_eps=-1, **kwargs)[0]  # 永不探索 原本为update_eps=update_eps
-                    # print(action)
-                    # print(update_eps)
-                    # writer.add_summary(update_eps)
-                    # if random.random() < update_eps:
-                    #     choose_random = True
-                    # else:
-                    #     choose_random = False
-                    # if choose_random:
-                    #     action = random.randint(0, 5)
-                    # action = feature_utils.get_modify_act(obs_p, action, prev2s, nokick=True)
-                    # if action == 0 or action == 5 or self.num_timesteps > 50000:
-                    #     action = self.act(np.array(obs)[None], update_eps=update_eps, **kwargs)[0]
-                    # obs_input = np.stack(obs, axis=2)
-                    # print(obs_input.shape)
-                    action = self.act(np.array(input_formate(obs))[None], update_eps=update_eps, **kwargs)[0]
-                    # print(update_eps)
-                    # print(action)
+                    # 永不探索 原本为update_eps=update_eps
+                    action = self.act(np.array(input_formate(obs))[None], update_eps=-1, **kwargs)[0]
+                    if random.random() < update_eps:
+                        choose_random = True
+                    else:
+                        choose_random = False
+                    if choose_random:
+                        action = random.randint(0, 5)
+                        if type(obs_nf) == tuple:
+                            obs_nf = obs_nf[0]
+                        action = feature_utils.get_modify_act(obs_nf, action, prev2s, nokick=True)
+                        action = feature_utils.get_act_abs(obs_nf, action, rang=8)
+                        # print('random:', action)
                 env_action = action
                 reset = False
-                new_obs, rew, done, info = self.env.step(env_action)  # .ntc
+                new_obs, rew, done, info, new_obs_nf = self.env.step(env_action)  # .ntc
                 self.replay_buffer.add(input_formate(obs), action, rew, input_formate(new_obs), float(done))
 
                 '''
@@ -297,12 +292,13 @@ class DQN(OffPolicyRLModel):
                             # print(_s_n[-2][goal])
                             if (_s_n[-2] == g_map).all() or ((_s[-2] == _s[-1]).all() and _a_f == a == 64):  # 判断_s是否通过a到达goal
                                 # if (_s[-2]) or g == 64:  # 是否为原地不动
-                                print('HER')
+                                # print('HER')
                                 _r = _r + 0.1
                             self.replay_buffer.add(input_formate(_s), a, _r, input_formate(_s_n), d)
                     self.temp_buffer.clear()
 
                 obs = new_obs
+                obs_nf = new_obs_nf
 
                 if writer is not None:
                     ep_rew = np.array([rew]).reshape((1, -1))
@@ -319,7 +315,7 @@ class DQN(OffPolicyRLModel):
                     if maybe_is_success is not None:
                         episode_successes.append(float(maybe_is_success))
                     if not isinstance(self.env, VecEnv):
-                        obs = self.env.reset()
+                        obs, obs_nf = self.env.reset()
                     episode_rewards.append(0.0)
                     reset = True
                     prev2s = [None, None]

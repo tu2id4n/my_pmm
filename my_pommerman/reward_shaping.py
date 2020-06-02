@@ -790,3 +790,19 @@ def get_rewards_8m8(agents, step_count, max_steps, whole_obs_pre, whole_obs, act
     else:
         # Game running
         return [reward] * 2
+
+# 即时奖励, 根据目的设计奖励, 升级版本, 使用_djikstra_v2探路
+def get_rewards_8m8_v1(agents, step_count, max_steps):
+    alive_agents = [num for num, agent in enumerate(agents) \
+                    if agent.is_alive]
+    if len(alive_agents) == 1:
+        # An agent won. Give them +1, the other -1.
+        print('Game Over', int(agents[0].is_alive), int(agents[1].is_alive))
+        return [2 * int(agent.is_alive) - 1 for agent in agents]
+    elif step_count >= max_steps:
+        # Game is over from time. Everyone gets -1.
+        print('Game Tie', int(agents[0].is_alive), int(agents[1].is_alive))
+        return [-1] * 2
+    else:
+        # Game running
+        return [0] * 2

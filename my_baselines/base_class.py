@@ -1012,14 +1012,15 @@ class _UnvecWrapper(VecEnvWrapper):
         return obs_
 
     def reset(self):
-        return self.unvec_obs(self.venv.reset())
+        obs, obs_nf = self.venv.reset()
+        return self.unvec_obs(obs), obs_nf
 
     def step_async(self, actions):
         self.venv.step_async([actions])
 
     def step_wait(self):
-        obs, rewards, dones, information = self.venv.step_wait()
-        return self.unvec_obs(obs), float(rewards[0]), dones[0], information[0]
+        obs, rewards, dones, information, obs_nfs = self.venv.step_wait()
+        return self.unvec_obs(obs), float(rewards[0]), dones[0], information[0], obs_nfs[0]
 
     def render(self, mode='human'):
         return self.venv.render(mode=mode)
