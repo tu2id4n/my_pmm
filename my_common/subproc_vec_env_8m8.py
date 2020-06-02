@@ -27,26 +27,28 @@ def _worker(remote, parent_remote, env_fn_wrapper):
             if cmd == 'step':
                 whole_obs = env.get_observations()
                 all_actions = env.act(whole_obs)  # 得到所有智能体的 actions
-                train_act = feature_utils._djikstra_act_8m8(whole_obs[train_idx], data)
-                all_actions[train_idx] = train_act  # 当前训练的 agent 的动作也加进来
+                # train_act = feature_utils._djikstra_act(whole_obs[train_idx], data, rang=8)
+                all_actions[train_idx] = data  # 当前训练的 agent 的动作也加进来
                 whole_obs, whole_rew, done, info = env.step(all_actions)  # 得到所有 agent 的四元组
                 rew = whole_rew[train_idx]  # 得到训练智能体的当前步的 reward
-                if not done and not env._agents[train_idx].is_alive:
-                    done = True
-
-
+                win_rate = 0  # 输出胜率
                 if done:  # 如果结束, 重新开一把
                     info['terminal_observation'] = whole_obs  # 保存终结的 observation，否则 reset 后将丢失
+                    if info['result'] == constants.Result.Win:
+                        win_rate = 1
+                    elif info['result'] == constants.Result.Loss:
+                        win_rate = -1
                     whole_obs = env.reset()  # 重新开一把
 
                 obs = feature_utils.featurize(whole_obs[train_idx])
-                goal = feature_utils.extra_goal_8m8(data, whole_obs[train_idx])  # 加入目标
+                goal = feature_utils.extra_goal(data, whole_obs[train_idx], rang=8)  # 加入目标
                 # print(goal)
                 goal_map = np.zeros((8, 8))
                 goal_map[goal] = 1
                 goal_map = goal_map.reshape(1, 8, 8)
                 obs = np.concatenate((obs, goal_map))
-                remote.send((obs, rew, done, info))
+
+                remote.send((obs, rew, done, win_rate))
 
             elif cmd == 'reset':
                 whole_obs = env.reset()

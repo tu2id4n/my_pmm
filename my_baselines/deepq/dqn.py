@@ -19,6 +19,8 @@ from my_common import feature_utils
 import random
 from my_baselines import OffPolicyRLModel, SetVerbosity, TensorboardWriter
 import copy
+from my_common import total_rate_logger
+
 
 class DQN(OffPolicyRLModel):
     """
@@ -207,6 +209,7 @@ class DQN(OffPolicyRLModel):
             obs = self.env.reset()
             reset = True
             self.episode_reward = np.zeros((1,))
+            self.win_rate = np.zeros((1,))
 
             """
             探索使用prune
@@ -262,9 +265,6 @@ class DQN(OffPolicyRLModel):
                 env_action = action
                 reset = False
                 new_obs, rew, done, info = self.env.step(env_action)  # .ntc
-                # new_obs_input = np.stack(new_obs, axis=2)
-                # prev2s = get_prev2obs(prev2s, obs_p)
-                # Store transition in the replay buffer.
                 self.replay_buffer.add(input_formate(obs), action, rew, input_formate(new_obs), float(done))
 
                 '''
@@ -276,26 +276,29 @@ class DQN(OffPolicyRLModel):
                         s, a, r, s_n, d = self.temp_buffer[t]
                         for k in range(self.k):
                             _s = copy.deepcopy(s)
+                            _a = a
                             _r = copy.deepcopy(r)
                             _s_n = copy.deepcopy(s_n)
                             future = np.random.randint(t, self.temp_size)
-                            s_f, g, _, _, _ = self.temp_buffer[future]
-                            if g == 64:
-                                goal_map = s_f[-2]
-                                for r in range(0, 8):
-                                    for c in range(0, 8):
-                                        if goal_map[(r, c)] == 1:
-                                            goal = (r, c)
-                                            break
-                            else:
-                                goal = feature_utils.extra_goal_8m8(g)  # 加入目标
-                                goal_map = np.zeros((8, 8))
-                                goal_map[goal] = 1
-
-                            _s[-1] = goal_map
-                            _s_n[-1] = goal_map
-                            if _s_n[-2][goal] == 1:  # 判断_s是否通过a到达goal
-                                _r = 0.01
+                            s_f, _a_f, _, _, _ = self.temp_buffer[future]
+                            g_map = s_f[-2]
+                            # if g == 64:
+                            #     goal_map = s_f[-2]
+                            #     for r in range(0, 8):
+                            #         for c in range(0, 8):
+                            #             if goal_map[(r, c)] == 1:
+                            #                 goal = (r, c)
+                            #                 break
+                            # else:
+                            #     goal = feature_utils.extra_goal(g, rang=8)
+                            #     goal_map = np.zeros((8, 8))
+                            #     goal_map[goal] = 1
+                            _s[-1] = g_map
+                            # print(_s_n[-2][goal])
+                            if (_s_n[-2] == g_map).all() or ((_s[-2] == _s[-1]).all() and _a_f == a == 64):  # 判断_s是否通过a到达goal
+                                # if (_s[-2]) or g == 64:  # 是否为原地不动
+                                print('HER')
+                                _r = _r + 0.1
                             self.replay_buffer.add(input_formate(_s), a, _r, input_formate(_s_n), d)
                     self.temp_buffer.clear()
 
@@ -303,9 +306,12 @@ class DQN(OffPolicyRLModel):
 
                 if writer is not None:
                     ep_rew = np.array([rew]).reshape((1, -1))
+                    ep_win = np.array([info]).reshape((1, -1))
                     ep_done = np.array([done]).reshape((1, -1))
                     self.episode_reward = total_episode_reward_logger(self.episode_reward, ep_rew, ep_done, writer,
                                                                       self.num_timesteps)
+                    self.win_rate = total_rate_logger(self.win_rate, ep_win, ep_done, writer,
+                                                      self.num_timesteps, name='win_rate')
 
                 episode_rewards[-1] += rew
                 if done:

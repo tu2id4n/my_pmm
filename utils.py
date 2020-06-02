@@ -33,11 +33,12 @@ def make_envs(env_id):
     def _thunk():
         agent_list = [
             my_agents.StopAgent(),
-            agents.SimpleAgent(),
-            # agents.SimpleAgent(),
-            # agents.SimpleAgent(),
+            my_agents.StopAgent(),
             # agents.SimpleAgent(),
             # my_agents.SimpleNoBombAgent(),
+            # agents.SimpleAgent(),
+            # agents.SimpleAgent(),
+            # agents.SimpleAgent(),
             # hit18Agent('1'),
             # hit18Agent('3')
         ]

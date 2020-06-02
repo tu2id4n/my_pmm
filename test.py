@@ -3,6 +3,7 @@ from pommerman import agents
 from pommerman import constants
 from my_agents import *
 from tqdm import tqdm
+from my_common import feature_utils
 agent_list = [
     # agents.DockerAgent('multiagentlearning/hakozakijunctions', port=1021),
     # agents.DockerAgent('tu2id4n/hit_pmm:fix2', port=1023),
@@ -22,7 +23,8 @@ for episode in tqdm(range(1000)):
     while not done:
         all_actions = env.act(obs)
         obs, rewards, done, info = env.step(all_actions)
-        print(obs)
+        bomb_life = feature_utils.get_bomb_life(obs_nf=obs[0],rang=8)
+        # print(obs)
         env.render()
     print(info)
 print('1000 test ok')
