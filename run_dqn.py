@@ -19,11 +19,11 @@ def _learn():
     # envs = [make_envs(args.env) for _ in range(num_envs)]
     env = SubprocVecEnv([make_envs('OneVsOne-v8')])
 
-    model = DQN(env=env, policy=CnnPolicy, tensorboard_log=args.log_path, buffer_size=10000,
+    model = DQN(env=env, policy=CnnPolicy, tensorboard_log=args.log_path, buffer_size=50000,
                 param_noise=False, verbose=1,
                 train_freq=1, target_network_update_freq=500, gamma=0.99,
                 exploration_fraction=0.1, exploration_final_eps=0.02,
-                temp_size=8, k=1)
+                learning_starts=1000, temp_size=5, k=1)
 
     model.learn(total_timesteps=total_timesteps, save_path=args.save_path, save_interval=args.save_interval)
     env.close()

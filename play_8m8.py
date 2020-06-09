@@ -7,8 +7,8 @@ import numpy as np
 import my_agents
 import pommerman
 from pommerman import agents
-
-
+from pommerman import constants
+from tqdm import tqdm
 def _play():
     print('----------------------------------------------')
     print('|                  P L A Y                   |')
@@ -17,7 +17,8 @@ def _play():
     print('env = ', env_id)
     agent_list = [
         my_agents.StopAgent(),
-        my_agents.StopAgent(),
+        # my_agents.StopAgent(),
+        my_agents.SimpleNoBombAgent(),
         # agents.SimpleAgent(),
         # agents.SimpleAgent(),
         # agents.SimpleAgent(),
@@ -28,10 +29,13 @@ def _play():
     # env = utils.make_env(env_id)
 
     vb = True
-    model_path = 'models/nobomb_1400k.zip'
+    model_path = 'models/nobomb1_10k.zip'
     model = DQN.load(load_path=model_path)
 
-    for episode in range(100):
+    win = 0
+    tie = 0
+    loss = 0
+    for episode in tqdm(range(100)):
         obs = env.reset()
         done = False
         total_reward = 0
@@ -48,9 +52,10 @@ def _play():
                 goal_map[(goal)] = 1
                 goal_map = goal_map.reshape(1, 8, 8)
                 feature_obs = np.concatenate((feature_obs, goal_map))
-            feature_obs = np.stack(feature_obs, axis=2)
+            feature_obs = feature_obs.transpose((1, 2, 0))
             # 模型预测
             action_abs, _states = model.predict(feature_obs)
+            print(action_abs)
             # goal = feature_utils.extra_goal(action_abs, obs[0], rang=8)
             # print(obs[0])
             # action = feature_utils._djikstra_act(obs[0], action_abs, rang=8)
@@ -62,15 +67,25 @@ def _play():
             all_actions[0] = action_abs
 
             obs, rewards, done, info = env.step(all_actions)
-            print('reward', rewards[0])
+            # print('reward', rewards[0])
             env.render()
             total_reward += rewards[0]
             # if not env._agents[0].is_alive:
             #     done = True
-        print(info)
-        print('total_reward', total_reward)
+        # print(info)
+        # print('total_reward', total_reward)
+        print(info['result'])
+        print()
+        if info['result'] == constants.Result.Win:
+            win += 1
+        elif info['result'] == constants.Result.Tie:
+            tie += 1
+        elif info['result'] == constants.Result.Loss:
+            loss += 1
     env.close()
-
+    print('Win rate:', win/100)
+    print('Tie rate:', tie / 100)
+    print('Loss rate:', loss / 100)
 
 if __name__ == '__main__':
     arg_parser = cmd_utils.arg_parser()

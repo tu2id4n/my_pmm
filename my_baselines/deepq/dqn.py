@@ -20,6 +20,7 @@ import random
 from my_baselines import OffPolicyRLModel, SetVerbosity, TensorboardWriter
 import copy
 from my_common import total_rate_logger
+from tqdm import tqdm
 
 
 class DQN(OffPolicyRLModel):
@@ -205,6 +206,7 @@ class DQN(OffPolicyRLModel):
                                               final_p=self.exploration_final_eps)
 
             episode_rewards = [0.0]
+            episode_win_rates = [0.0]
             episode_successes = []
             obs, obs_nf = self.env.reset()
             reset = True
@@ -217,9 +219,9 @@ class DQN(OffPolicyRLModel):
             prev2s = [None, None]
 
             def input_formate(obs):
-                return np.stack(obs, axis=2)
+                return obs.transpose((1, 2, 0))
 
-            for _ in range(total_timesteps):
+            for _ in tqdm(range(total_timesteps)):
                 if callback is not None:
                     # Only stop training if return value is False, not when it is None. This is for backwards
                     # compatibility with callbacks that have no return statement.
@@ -246,55 +248,58 @@ class DQN(OffPolicyRLModel):
                 with self.sess.as_default():
                     # 永不探索 原本为update_eps=update_eps
                     action = self.act(np.array(input_formate(obs))[None], update_eps=-1, **kwargs)[0]
+                    filter_action = random.randint(0, 5)
+                    if type(obs_nf) == tuple:
+                        obs_nf = obs_nf[0]
+                    filter_action = feature_utils.get_modify_act(obs_nf, filter_action, prev2s, nokick=True)
+                    filter_action = feature_utils.get_act_abs(obs_nf, filter_action, rang=8)
+                    # 统计100次filter_actions的概率
+                    fil_acts = []
+                    for _ in range(100):
+                        rand_act = random.randint(0, 5)
+                        fil_act = feature_utils.get_modify_act(obs_nf, rand_act, prev2s, nokick=True)
+                        fil_act = feature_utils.get_act_abs(obs_nf, fil_act, rang=8)
+                        fil_acts.append(fil_act)
+                    # print('fil', fil_acts)
+                    # print()
+                    fil_acts = np.eye(65)[fil_acts]
+                    # print('eye', fil_acts)
+                    # print()
+                    fil_acts = fil_acts.sum(axis=0)
+                    # print('sum', fil_acts)
+                    # print()
+
                     if random.random() < update_eps:
-                        choose_random = True
-                    else:
-                        choose_random = False
-                    if choose_random:
-                        action = random.randint(0, 5)
-                        if type(obs_nf) == tuple:
-                            obs_nf = obs_nf[0]
-                        action = feature_utils.get_modify_act(obs_nf, action, prev2s, nokick=True)
-                        action = feature_utils.get_act_abs(obs_nf, action, rang=8)
-                        # print('random:', action)
+                        action = filter_action
+
                 env_action = action
                 reset = False
                 new_obs, rew, done, info, new_obs_nf = self.env.step(env_action)  # .ntc
-                self.replay_buffer.add(input_formate(obs), action, rew, input_formate(new_obs), float(done))
+                self.replay_buffer.add(input_formate(obs), action, rew, input_formate(new_obs), float(done), fil_acts)
 
                 '''
                     HER
                 '''
-                self.temp_buffer.append((obs, action, rew, new_obs, float(done)))
+                self.temp_buffer.append((obs, action, rew, new_obs, float(done), fil_acts))
                 if len(self.temp_buffer) >= self.temp_size:
                     for t in range(self.temp_size):
-                        s, a, r, s_n, d = self.temp_buffer[t]
+                        s, a, r, s_n, d, fa = self.temp_buffer[t]
                         for k in range(self.k):
                             _s = copy.deepcopy(s)
                             _a = a
                             _r = copy.deepcopy(r)
                             _s_n = copy.deepcopy(s_n)
                             future = np.random.randint(t, self.temp_size)
-                            s_f, _a_f, _, _, _ = self.temp_buffer[future]
+                            s_f, _a_f, _, _, _, _ = self.temp_buffer[future]
                             g_map = s_f[-2]
-                            # if g == 64:
-                            #     goal_map = s_f[-2]
-                            #     for r in range(0, 8):
-                            #         for c in range(0, 8):
-                            #             if goal_map[(r, c)] == 1:
-                            #                 goal = (r, c)
-                            #                 break
-                            # else:
-                            #     goal = feature_utils.extra_goal(g, rang=8)
-                            #     goal_map = np.zeros((8, 8))
-                            #     goal_map[goal] = 1
                             _s[-1] = g_map
                             # print(_s_n[-2][goal])
-                            if (_s_n[-2] == g_map).all() or ((_s[-2] == _s[-1]).all() and _a_f == a == 64):  # 判断_s是否通过a到达goal
+                            if (_s_n[-2] == g_map).all() or (
+                                    (_s[-2] == _s[-1]).all() and _a_f == a == 64):  # 判断_s是否通过a到达goal
                                 # if (_s[-2]) or g == 64:  # 是否为原地不动
                                 # print('HER')
-                                _r = _r + 0.1
-                            self.replay_buffer.add(input_formate(_s), a, _r, input_formate(_s_n), d)
+                                _r = _r + 0.01
+                            self.replay_buffer.add(input_formate(_s), a, _r, input_formate(_s_n), d, fa)
                     self.temp_buffer.clear()
 
                 obs = new_obs
@@ -310,6 +315,7 @@ class DQN(OffPolicyRLModel):
                                                       self.num_timesteps, name='win_rate')
 
                 episode_rewards[-1] += rew
+                episode_win_rates[-1] += info
                 if done:
                     maybe_is_success = (rew > 0)  # info.get('is_success')  # .ntc
                     if maybe_is_success is not None:
@@ -317,6 +323,7 @@ class DQN(OffPolicyRLModel):
                     if not isinstance(self.env, VecEnv):
                         obs, obs_nf = self.env.reset()
                     episode_rewards.append(0.0)
+                    episode_win_rates.append(0.0)
                     reset = True
                     prev2s = [None, None]
 
@@ -325,14 +332,15 @@ class DQN(OffPolicyRLModel):
                 can_sample = self.replay_buffer.can_sample(self.batch_size)
                 if can_sample and self.num_timesteps > self.learning_starts \
                         and self.num_timesteps % self.train_freq == 0:
-                    # print('update')
+                    print('Sampling ... ...', self.num_timesteps)
                     # Minimize the error in Bellman's equation on a batch sampled from replay buffer.
                     if self.prioritized_replay:
                         experience = self.replay_buffer.sample(self.batch_size,
                                                                beta=self.beta_schedule.value(self.num_timesteps))
                         (obses_t, actions, rewards, obses_tp1, dones, weights, batch_idxes) = experience
                     else:
-                        obses_t, actions, rewards, obses_tp1, dones = self.replay_buffer.sample(self.batch_size)
+                        obses_t, actions, rewards, obses_tp1, dones, filter_actions = self.replay_buffer.sample(
+                            self.batch_size)
                         weights, batch_idxes = np.ones_like(rewards), None
                     # print(rewards.shape)
                     # print(dones.shape)
@@ -340,16 +348,27 @@ class DQN(OffPolicyRLModel):
                     if writer is not None:
                         # run loss backprop with summary, but once every 100 steps save the metadata
                         # (memory, compute time, ...)
+                        # print("fils", filter_actions)
+                        # print("acts", actions)
+                        print('   Training ... ...')
                         if (1 + self.num_timesteps) % 100 == 0:
                             run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
                             run_metadata = tf.RunMetadata()
-                            summary, td_errors = self._train_step(obses_t, actions, rewards, obses_tp1, obses_tp1,
-                                                                  dones, weights, sess=self.sess, options=run_options,
-                                                                  run_metadata=run_metadata)
+                            summary, td_errors, kl_errors = self._train_step(obses_t, actions, rewards, obses_tp1,
+                                                                             obses_tp1,
+                                                                             dones, weights, filter_actions,
+                                                                             sess=self.sess, options=run_options,
+                                                                             run_metadata=run_metadata)
                             writer.add_run_metadata(run_metadata, 'step%d' % self.num_timesteps)
                         else:
-                            summary, td_errors = self._train_step(obses_t, actions, rewards, obses_tp1, obses_tp1,
-                                                                  dones, weights, sess=self.sess)
+                            summary, td_errors, kl_errors = self._train_step(obses_t, actions, rewards, obses_tp1,
+                                                                                 obses_tp1,
+                                                                                 dones, weights, filter_actions,
+                                                                                 sess=self.sess)
+                            # print('er', pr[0])
+                            # print('kl', pr[1])
+                            # print('x', pr[2])
+                            # print('y', pr[3])
                         writer.add_summary(summary, self.num_timesteps)
                     else:
                         _, td_errors = self._train_step(obses_t, actions, rewards, obses_tp1, obses_tp1, dones, weights,
@@ -369,6 +388,11 @@ class DQN(OffPolicyRLModel):
                 else:
                     mean_100ep_reward = round(float(np.mean(episode_rewards[-101:-1])), 1)
 
+                if len(episode_win_rates[-101:-1]) == 0:
+                    mean_100ep_win_rate = -np.inf
+                else:
+                    mean_100ep_win_rate = round(float(np.mean(episode_win_rates[-101:-1])), 1)
+
                 num_episodes = len(episode_rewards)
                 if self.verbose >= 1 and done and log_interval is not None and len(episode_rewards) % log_interval == 0:
                     logger.record_tabular("steps", self.num_timesteps)
@@ -376,6 +400,7 @@ class DQN(OffPolicyRLModel):
                     if len(episode_successes) > 0:
                         logger.logkv("success rate", np.mean(episode_successes[-100:]))
                     logger.record_tabular("mean 100 episode reward", mean_100ep_reward)
+                    logger.record_tabular("mean 100 win rate", mean_100ep_win_rate)
                     logger.record_tabular("% time spent exploring",
                                           int(100 * self.exploration.value(self.num_timesteps)))
                     logger.dump_tabular()

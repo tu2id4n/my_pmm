@@ -36,8 +36,8 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                     info['terminal_observation'] = whole_obs  # 保存终结的 observation，否则 reset 后将丢失
                     if info['result'] == constants.Result.Win:
                         win_rate = 1
-                    elif info['result'] == constants.Result.Loss:
-                        win_rate = -1
+                    # elif info['result'] == constants.Result.Loss:
+                    #     win_rate = -1
                     whole_obs = env.reset()  # 重新开一把
 
                 obs = feature_utils.featurize(whole_obs[train_idx])

@@ -48,7 +48,7 @@ class ReplayBuffer(object):
         """
         return len(self) == self.buffer_size
 
-    def add(self, obs_t, action, reward, obs_tp1, done):
+    def add(self, obs_t, action, reward, obs_tp1, done, filter_action):
         """
         add a new transition to the buffer
 
@@ -58,7 +58,7 @@ class ReplayBuffer(object):
         :param obs_tp1: (Any) the current observation
         :param done: (bool) is the episode done
         """
-        data = (obs_t, action, reward, obs_tp1, done)
+        data = (obs_t, action, reward, obs_tp1, done, filter_action)
 
         if self._next_idx >= len(self._storage):
             self._storage.append(data)
@@ -67,16 +67,17 @@ class ReplayBuffer(object):
         self._next_idx = (self._next_idx + 1) % self._maxsize
 
     def _encode_sample(self, idxes):
-        obses_t, actions, rewards, obses_tp1, dones = [], [], [], [], []
+        obses_t, actions, rewards, obses_tp1, dones, filter_actions = [], [], [], [], [], []
         for i in idxes:
             data = self._storage[i]
-            obs_t, action, reward, obs_tp1, done = data
+            obs_t, action, reward, obs_tp1, done, filter_action = data
             obses_t.append(np.array(obs_t, copy=False))
             actions.append(np.array(action, copy=False))
             rewards.append(reward)
             obses_tp1.append(np.array(obs_tp1, copy=False))
             dones.append(done)
-        return np.array(obses_t), np.array(actions), np.array(rewards), np.array(obses_tp1), np.array(dones)
+            filter_actions.append(np.array(filter_action, copy=False))
+        return np.array(obses_t), np.array(actions), np.array(rewards), np.array(obses_tp1), np.array(dones), np.array(filter_actions)
 
     def sample(self, batch_size, **_kwargs):
         """
@@ -118,7 +119,7 @@ class PrioritizedReplayBuffer(ReplayBuffer):
         self._it_min = MinSegmentTree(it_capacity)
         self._max_priority = 1.0
 
-    def add(self, obs_t, action, reward, obs_tp1, done):
+    def add(self, obs_t, action, reward, obs_tp1, done, filter_action):
         """
         add a new transition to the buffer
 
@@ -129,7 +130,7 @@ class PrioritizedReplayBuffer(ReplayBuffer):
         :param done: (bool) is the episode done
         """
         idx = self._next_idx
-        super().add(obs_t, action, reward, obs_tp1, done)
+        super().add(obs_t, action, reward, obs_tp1, done, filter_action)
         self._it_sum[idx] = self._max_priority ** self._alpha
         self._it_min[idx] = self._max_priority ** self._alpha
 

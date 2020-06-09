@@ -5,7 +5,7 @@ import copy
 import queue
 
 
-def print_info(name, info, vb=True):
+def print_info(name, info, vb=False):
     if vb:
         print(name, info)
 
@@ -729,7 +729,7 @@ def get_rewards_8m8(agents, step_count, max_steps, whole_obs_pre, whole_obs, act
                             reward += 0.3
                             nothing = False
                             print_info('bomb -> enemy', '+0.3')
-                            print(obs_pre['board'][(r, c)])
+                            # print(obs_pre['board'][(r, c)])
                         if obs_pre['board'][(r, c)] in [incrrange, extrabomb, kick]:
                             reward -= 0.05
                             print_info('bomb -> powerup', '-0.05')
@@ -738,7 +738,7 @@ def get_rewards_8m8(agents, step_count, max_steps, whole_obs_pre, whole_obs, act
                             print_info('bomb -> teammate', '-0.05')
             if nothing:
                 reward -= 0.1
-                print(obs_pre['board'][(r, c)])
+                # print(obs_pre['board'][(r, c)])
                 print_info('Useless bomb', '-0.1')
     # 没有动
     elif act_pre == 0:
@@ -797,11 +797,11 @@ def get_rewards_8m8_v1(agents, step_count, max_steps):
                     if agent.is_alive]
     if len(alive_agents) == 1:
         # An agent won. Give them +1, the other -1.
-        print('Game Over', int(agents[0].is_alive), int(agents[1].is_alive))
+        # print('Game Over', int(agents[0].is_alive), int(agents[1].is_alive))
         return [2 * int(agent.is_alive) - 1 for agent in agents]
     elif step_count >= max_steps:
         # Game is over from time. Everyone gets -1.
-        print('Game Tie', int(agents[0].is_alive), int(agents[1].is_alive))
+        # print('Game Tie', int(agents[0].is_alive), int(agents[1].is_alive))
         return [-1] * 2
     else:
         # Game running

@@ -16,7 +16,7 @@ def print_info(info, vb=False):
 
 def get_observertion_space():
     # return spaces.Box(low=0, high=1, shape=(11, 11, 30))
-    return spaces.Box(low=0, high=1, shape=(8, 8, 30))
+    return spaces.Box(low=0, high=1, shape=(8, 8, 26))
 
 
 def get_action_space():
@@ -27,12 +27,12 @@ def get_action_space():
 def featurize(obs_nf, position_trav=set(), action_pre=None):
     # return _featurize1(obs_nf, position_trav, action_pre)  # 11 * 11 * 24
     # return _featurize2(obs_nf)  # 11 * 11 * 30
-    return _featurize_8m8(obs_nf)  # 29*8*8
+    return _featurize_8m8(obs_nf)  # 25*8*8
 
 
 def _djikstra_act(obs_nf, goal_abs, rang=11):
     # return _djikstra_act_v3(obs_nf, goal_abs, rang=rang)
-    return _djikstra_act_v2(obs_nf, goal_abs, rang=rang)
+    return _djikstra_act_v4(obs_nf, goal_abs, rang=rang)
 
 
 # 提取goal_abs:
@@ -356,6 +356,93 @@ def _djikstra_act_v3(obs_nf, goal_abs, exclude=None, rang=11):
     print_info('非法的移动动作')
     return 0
 
+def _djikstra_act_v4(obs_nf, goal_abs, exclude=None, rang=11):
+    # 放炸弹
+    if goal_abs == rang * rang:
+        print_info('释放炸弹')
+        return 5
+
+    # 停止在原地
+    my_position = tuple(obs_nf['position'])
+    goal = extra_goal(goal_abs, rang=rang)
+    if goal == my_position:
+        print_info('停在原地')
+        return 0
+
+    board = np.array(obs_nf['board'])
+    enemies = [constants.Item(e) for e in obs_nf['enemies']]
+
+    if exclude is None:
+        exclude = [
+            constants.Item.Rigid,
+            constants.Item.Wood,
+        ]
+
+    dist = {}
+    prev = {}
+    Q = queue.Queue()
+
+    # my_x, my_y = my_position
+    for r in range(0, rang):
+        for c in range(0, rang):
+            position = (r, c)
+
+            if any([utility.position_in_items(board, position, exclude)]):
+                continue
+
+            prev[position] = None
+
+            if position == my_position:
+                Q.put(position)
+                dist[position] = 0
+            else:
+                dist[position] = np.inf
+
+    while not Q.empty():
+        position = Q.get()
+
+        if position_is_passable(board, position, enemies):
+            x, y = position
+            val = dist[(x, y)] + 1
+            for row, col in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                new_position = (row + x, col + y)
+                if new_position not in dist:
+                    continue
+
+                if val < dist[new_position]:
+                    dist[new_position] = val
+                    prev[new_position] = position
+                    Q.put(new_position)
+                elif val == dist[new_position] and random.random() < .5:
+                    dist[new_position] = val
+                    prev[new_position] = position
+
+    row_g, col_g = goal
+    my_x, my_y = my_position
+    up = (-1, 0)
+    down = (1, 0)
+    left = (0, -1)
+    right = (0, 1)
+    # 判断goal是否可以达到
+    while goal in dist and prev[goal] != my_position:
+        goal = prev[goal]
+
+    legal_act = []
+    # 无法到达有效目的
+    if goal not in dist:
+        goal_abs = random.randint(0, rang * rang)
+        return _djikstra_act_v4(obs_nf, goal_abs, rang=rang)
+    # 可以达到的目的
+    else:
+        count = 1
+        for act_to in [up, down, left, right]:
+            row, col = act_to
+            if goal == (my_x + row, my_y + col):
+                print_info('向目的地移动')
+                return count
+            count += 1
+    print_info('非法的移动动作')
+    return 0
 
 def isLegal_act(obs_nf, act_to, rang=11):
     my_x, my_y = obs_nf['position']
@@ -606,6 +693,8 @@ def get_bomb_life(obs_nf, rang=11):
 
 def get_modify_act(obs, act, prev=[None, None], info=False, nokick=True):
     valid_actions = get_filtered_actions(obs.copy(), prev_two_obs=prev, nokick=nokick)
+    # if 5 in valid_actions:
+    #     return 5
     if act not in valid_actions:
         if info:
             print(act)
@@ -631,8 +720,8 @@ def _featurize_8m8(obs_nf):
 
     maps = []
     """棋盘物体 one-hot"""
-    for i in range(9):
-        maps.append(board == i)  # --> 9
+    for i in range(1, 9):
+        maps.append(board == i)  # --> 8
 
     '''爆炸威胁 one-hot'''
     bomb_life = get_bomb_life(obs, rang=8)
@@ -642,8 +731,9 @@ def _featurize_8m8(obs_nf):
     '''bomb_direction one-hot'''
     bomb_moving_direction = obs['bomb_moving_direction'].copy()
     bomb_moving_direction = np.array(bomb_moving_direction)
-    for i in range(1, 5):
-        maps.append(bomb_moving_direction == i)  # --> 4
+    # for i in range(1, 5):
+    #     maps.append(bomb_moving_direction == i)  # --> 4
+    maps.append(np.full(board.shape, obs['bomb_moving_direction'] / 4))  # --> 1
 
     """标量映射为11*11的矩阵"""
     maps.append(np.full(board.shape, obs['ammo'] / 5))  # --> 1
@@ -658,4 +748,4 @@ def _featurize_8m8(obs_nf):
     train_agent_idx = 10
     maps.append(board == train_agent_idx)  # 1
 
-    return np.stack(maps, axis=0)  # 29*8*8
+    return np.stack(maps, axis=0)  # 25*8*8

@@ -13,6 +13,8 @@ def nature_cnn(scaled_images, **kwargs):
     """
     activ = tf.nn.relu
     print(scaled_images)
+    # scaled_images = tf.transpose(scaled_images, [0, 3, 1, 2])
+    # print(scaled_images)
     layer_1 = activ(
         conv(scaled_images, 'c1', n_filters=256, filter_size=3, stride=1, init_scale=np.sqrt(2), pad='SAME', **kwargs))
     print('layer_1', layer_1)

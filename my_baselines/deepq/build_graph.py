@@ -147,7 +147,6 @@ def build_act(q_func, ob_space, ac_space, stochastic_ph, update_eps_ph, sess):
     random_actions = tf.random_uniform(tf.stack([batch_size]), minval=0, maxval=n_actions, dtype=tf.int64)
     chose_random = tf.random_uniform(tf.stack([batch_size]), minval=0, maxval=1, dtype=tf.float32) < eps
     stochastic_actions = tf.where(chose_random, random_actions, deterministic_actions)
-
     output_actions = tf.cond(stochastic_ph, lambda: stochastic_actions, lambda: deterministic_actions)
     update_eps_expr = eps.assign(tf.cond(update_eps_ph >= 0, lambda: update_eps_ph, lambda: eps))
     _act = tf_util.function(inputs=[policy.obs_ph, stochastic_ph, update_eps_ph],
@@ -395,7 +394,7 @@ def build_train(q_func, ob_space, ac_space, optimizer, sess, grad_norm_clipping=
         rew_t_ph = tf.placeholder(tf.float32, [None], name="reward")
         done_mask_ph = tf.placeholder(tf.float32, [None], name="done")
         importance_weights_ph = tf.placeholder(tf.float32, [None], name="weight")
-
+        filter_act_t_ph = tf.placeholder(tf.float32, [None, n_actions], name="filter_action")
         # q scores for actions which we know were selected in the given state.
         q_t_selected = tf.reduce_sum(step_model.q_values * tf.one_hot(act_t_ph, n_actions), axis=1)
 
@@ -413,10 +412,23 @@ def build_train(q_func, ob_space, ac_space, optimizer, sess, grad_norm_clipping=
 
         # compute the error (potentially clipped)
         td_error = q_t_selected - tf.stop_gradient(q_t_selected_target)
-        errors = tf_util.huber_loss(td_error)
+        errors1 = tf_util.huber_loss(td_error)
+
+        X = tf.distributions.Categorical(probs=tf.nn.softmax(step_model.q_values))
+        Y1 = tf.nn.softmax(filter_act_t_ph)
+        # Y2 = tf.constant([[1 / 65] * 65] * 32, name='cst')
+        Y = tf.distributions.Categorical(probs=Y1)
+        kl_error = tf.distributions.kl_divergence(X, Y)
+        prkl = tf.Print(kl_error, ['kl:', kl_error])
+        prer = tf.Print(errors1, ['el:', errors1])
+        prx = tf.Print(tf.nn.softmax(step_model.q_values), ['X:', tf.nn.softmax(step_model.q_values)])
+        pry = tf.Print(Y1, ['Y:', Y1])
+
+        errors = errors1 + 0.02 * kl_error
         weighted_error = tf.reduce_mean(importance_weights_ph * errors)
 
         tf.summary.scalar("td_error", tf.reduce_mean(td_error))
+        tf.summary.scalar("kl_error", tf.reduce_mean(kl_error))
         tf.summary.scalar("loss", weighted_error)
 
         if full_tensorboard_log:
@@ -461,9 +473,10 @@ def build_train(q_func, ob_space, ac_space, optimizer, sess, grad_norm_clipping=
             target_policy.obs_ph,
             double_obs_ph,
             done_mask_ph,
-            importance_weights_ph
+            importance_weights_ph,
+            filter_act_t_ph,
         ],
-        outputs=[summary, td_error],
+        outputs=[summary, td_error, kl_error], #(prer, prkl, prx, pry)],
         updates=[optimize_expr]
     )
     update_target = tf_util.function([], [], updates=[update_target_expr])

@@ -17,7 +17,6 @@ def total_rate_logger(rew_acc, rewards, masks, writer, steps, name):
     with tf.variable_scope("environment_info", reuse=True):
         for env_idx in range(rewards.shape[0]):
             dones_idx = np.sort(np.argwhere(masks[env_idx]))
-
             if len(dones_idx) == 0:
                 rew_acc[env_idx] += sum(rewards[env_idx])
             else:
