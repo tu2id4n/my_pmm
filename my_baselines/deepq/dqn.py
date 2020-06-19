@@ -169,7 +169,9 @@ class DQN(OffPolicyRLModel):
     def learn(self, total_timesteps, callback=None, log_interval=100, tb_log_name="DQN",
               reset_num_timesteps=True, replay_wrapper=None, save_interval=None, save_path=None):
 
-        print("**************** LEARN ****************************************************************")
+        print('----------------------------------------------')
+        print('|                 L E A R N                  |')
+        print('----------------------------------------------')
         print("num timesteps = " + str(int(total_timesteps / 1000)) + 'k')
         print("save_interval = " + str(int(save_interval / 1000)) + 'k')
         print()
@@ -332,7 +334,7 @@ class DQN(OffPolicyRLModel):
                 can_sample = self.replay_buffer.can_sample(self.batch_size)
                 if can_sample and self.num_timesteps > self.learning_starts \
                         and self.num_timesteps % self.train_freq == 0:
-                    print('Sampling ... ...', self.num_timesteps)
+                    # print('Sampling ... ...', self.num_timesteps)
                     # Minimize the error in Bellman's equation on a batch sampled from replay buffer.
                     if self.prioritized_replay:
                         experience = self.replay_buffer.sample(self.batch_size,
@@ -350,7 +352,7 @@ class DQN(OffPolicyRLModel):
                         # (memory, compute time, ...)
                         # print("fils", filter_actions)
                         # print("acts", actions)
-                        print('   Training ... ...')
+                        # print('   Training ... ...')
                         if (1 + self.num_timesteps) % 100 == 0:
                             run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
                             run_metadata = tf.RunMetadata()
@@ -487,8 +489,9 @@ class DQN(OffPolicyRLModel):
 
         params_to_save = self.get_parameters()
 
-        print()
-        print("**************** SAVE ****************************************************************")
+        print('----------------------------------------------')
+        print('|                  S A V E                   |')
+        print('----------------------------------------------')
         print('load_path =', save_path)
         print("len_parm = ", len(params_to_save))
         print()

@@ -418,13 +418,13 @@ def build_train(q_func, ob_space, ac_space, optimizer, sess, grad_norm_clipping=
         Y1 = tf.nn.softmax(filter_act_t_ph)
         # Y2 = tf.constant([[1 / 65] * 65] * 32, name='cst')
         Y = tf.distributions.Categorical(probs=Y1)
-        kl_error = tf.distributions.kl_divergence(X, Y)
-        prkl = tf.Print(kl_error, ['kl:', kl_error])
-        prer = tf.Print(errors1, ['el:', errors1])
-        prx = tf.Print(tf.nn.softmax(step_model.q_values), ['X:', tf.nn.softmax(step_model.q_values)])
-        pry = tf.Print(Y1, ['Y:', Y1])
+        kl_error = tf.distributions.kl_divergence(Y, X)
+        # prkl = tf.Print(kl_error, ['kl:', kl_error])
+        # prer = tf.Print(errors1, ['el:', errors1])
+        # prx = tf.Print(tf.nn.softmax(step_model.q_values), ['X:', tf.nn.softmax(step_model.q_values)])
+        # pry = tf.Print(Y1, ['Y:', Y1])
 
-        errors = errors1 + 0.02 * kl_error
+        errors = errors1 + 0.1 * kl_error
         weighted_error = tf.reduce_mean(importance_weights_ph * errors)
 
         tf.summary.scalar("td_error", tf.reduce_mean(td_error))

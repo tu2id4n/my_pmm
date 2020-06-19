@@ -1,3 +1,19 @@
+# 需要修正
+state abstraction
+[减少item | 将frog设置为墙壁]
+
+featurize 
+[step 要加入进去]
+
+progressive neural network
+[加入lateral connection 以及可学习的参数alpha]
+
+hierarchies with hindsight
+[目标设定]
+
+_djikstra
+
+
 # 注意
 不要使用中文输出，在服务器上跑会出错
 

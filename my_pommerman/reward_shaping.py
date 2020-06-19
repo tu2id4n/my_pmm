@@ -736,10 +736,10 @@ def get_rewards_8m8(agents, step_count, max_steps, whole_obs_pre, whole_obs, act
                         if obs_pre['board'][(r, c)] in [teamate]:
                             reward -= 0.05
                             print_info('bomb -> teammate', '-0.05')
-            if nothing:
-                reward -= 0.1
-                # print(obs_pre['board'][(r, c)])
-                print_info('Useless bomb', '-0.1')
+            # if nothing:
+            #     reward -= 0.1
+            #     # print(obs_pre['board'][(r, c)])
+            #     print_info('Useless bomb', '-0.1')
     # 没有动
     elif act_pre == 0:
         if obs_pre['position'] != goal_pre:

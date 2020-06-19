@@ -23,7 +23,7 @@ def _learn():
                 param_noise=False, verbose=1,
                 train_freq=1, target_network_update_freq=500, gamma=0.99,
                 exploration_fraction=0.1, exploration_final_eps=0.02,
-                learning_starts=1000, temp_size=5, k=1)
+                learning_starts=500, temp_size=5, k=1)
 
     model.learn(total_timesteps=total_timesteps, save_path=args.save_path, save_interval=args.save_interval)
     env.close()

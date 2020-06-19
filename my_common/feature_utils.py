@@ -365,6 +365,7 @@ def _djikstra_act_v4(obs_nf, goal_abs, exclude=None, rang=11):
     # 停止在原地
     my_position = tuple(obs_nf['position'])
     goal = extra_goal(goal_abs, rang=rang)
+    # print('goal', goal)
     if goal == my_position:
         print_info('停在原地')
         return 0
@@ -430,6 +431,7 @@ def _djikstra_act_v4(obs_nf, goal_abs, exclude=None, rang=11):
     legal_act = []
     # 无法到达有效目的
     if goal not in dist:
+        # print('random')
         goal_abs = random.randint(0, rang * rang)
         return _djikstra_act_v4(obs_nf, goal_abs, rang=rang)
     # 可以达到的目的

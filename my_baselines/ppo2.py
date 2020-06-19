@@ -582,7 +582,7 @@ class PPO2(ActorCriticRLModel):
                 # print(key,val.shape)
             model.old_params.append(old)
             # print(model.old_params)
-            print("**************** Save the old learned params")
+            print("=======================> Save the old learned params")
             print("num of old networks = ", len(model.old_params))
             print("len_parm = ", len_parm)
             print()

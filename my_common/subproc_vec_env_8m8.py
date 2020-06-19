@@ -53,7 +53,10 @@ def _worker(remote, parent_remote, env_fn_wrapper):
             elif cmd == 'reset':
                 whole_obs = env.reset()
                 obs = feature_utils.featurize(whole_obs[train_idx])
-                obs = np.concatenate((obs, np.zeros((1, 8, 8))))  # 初始obs添加空目标
+                goal_map = np.zeros((8, 8))
+                goal_map[(1, 3)] = 1
+                goal_map = goal_map.reshape(1, 8, 8)
+                obs = np.concatenate((obs, goal_map))  # 初始obs添加空目标
                 remote.send((obs, whole_obs[train_idx]))
 
             elif cmd == 'render':

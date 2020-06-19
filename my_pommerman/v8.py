@@ -149,9 +149,9 @@ class Pomme(gym.Env):
         return self.observations
 
     def _get_rewards(self):
-        return reward_shaping.get_rewards_8m8_v1(self._agents, self._step_count, self._max_steps)
-        # return reward_shaping.get_rewards_8m8(self._agents, self._step_count, self._max_steps, self.obs_pre,
-        #                                       self.get_observations(), self.act_abs_pre)
+        # return reward_shaping.get_rewards_8m8_v1(self._agents, self._step_count, self._max_steps)
+        return reward_shaping.get_rewards_8m8(self._agents, self._step_count, self._max_steps, self.obs_pre,
+                                              self.get_observations(), self.act_abs_pre)
         # return self.model.get_rewards(self._agents, self._game_type,
         #                               self._step_count, self._max_steps)
 
@@ -217,6 +217,7 @@ class Pomme(gym.Env):
         self.act_abs_pre = actions[0]
         self.obs_pre = copy.deepcopy(self.get_observations())
         actions[0] = feature_utils._djikstra_act(self.obs_pre[0], self.act_abs_pre, rang=8)
+        # print('action', actions[0])
         self._intended_actions = actions
 
         # print('act_abs:', self.act_abs_pre)

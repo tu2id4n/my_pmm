@@ -29,7 +29,7 @@ def _play():
     # env = utils.make_env(env_id)
 
     vb = True
-    model_path = 'models/nobomb1_10k.zip'
+    model_path = 'models/dqn/kl_135k.zip'
     model = DQN.load(load_path=model_path)
 
     win = 0
@@ -45,17 +45,18 @@ def _play():
             # 规格化输入
             feature_obs = feature_utils.featurize(obs[0])
             if action_abs == 65:
-                feature_obs = np.concatenate((feature_obs, np.zeros((1, 8, 8))))
+                goal_map = np.zeros((8, 8))
+                goal_map[(1, 3)] = 1
+
             else:
                 goal = feature_utils.extra_goal(action_abs, obs[0], rang=8)  # 加入目标
                 goal_map = np.zeros((8, 8))
-                goal_map[(goal)] = 1
-                goal_map = goal_map.reshape(1, 8, 8)
-                feature_obs = np.concatenate((feature_obs, goal_map))
+                goal_map[goal] = 1
+            goal_map = goal_map.reshape(1, 8, 8)
+            feature_obs = np.concatenate((feature_obs, goal_map))
             feature_obs = feature_obs.transpose((1, 2, 0))
             # 模型预测
             action_abs, _states = model.predict(feature_obs)
-            print(action_abs)
             # goal = feature_utils.extra_goal(action_abs, obs[0], rang=8)
             # print(obs[0])
             # action = feature_utils._djikstra_act(obs[0], action_abs, rang=8)
@@ -65,9 +66,10 @@ def _play():
                 action_abs = action_abs[0]
 
             all_actions[0] = action_abs
-
+            # print('act_abs', all_actions[0])
             obs, rewards, done, info = env.step(all_actions)
             # print('reward', rewards[0])
+            # print()
             env.render()
             total_reward += rewards[0]
             # if not env._agents[0].is_alive:
